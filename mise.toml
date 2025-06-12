@@ -1,0 +1,3 @@
+[tools]
+go = "1.24"
+"go:github.com/melkeydev/go-blueprint" = "0.10"
