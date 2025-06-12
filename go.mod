@@ -8,6 +8,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/testcontainers/testcontainers-go v0.37.0
 	github.com/testcontainers/testcontainers-go/modules/mongodb v0.37.0
+	go-simpler.org/env v0.12.0
 	go.mongodb.org/mongo-driver v1.17.4
 )
 

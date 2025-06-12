@@ -2,18 +2,24 @@ package main
 
 import (
 	"card-watcher/internal/cardtrader"
+	"card-watcher/internal/mongo"
 	"card-watcher/internal/watcher"
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"os/signal"
-	"strconv"
 	"syscall"
 	"time"
 
-	_ "github.com/joho/godotenv/autoload"
+	"go-simpler.org/env"
 )
+
+type WatcherConfig struct {
+	Port        int    `env:"PORT"`
+	AccessToken string `env:"ACCESS_TOKEN"`
+	MongoHost   string `env:"MONGO_HOST"`
+	MongoPort   string `env:"MONGO_PORT"`
+}
 
 func gracefulShutdown(fiberServer *watcher.FiberServer, done chan bool) {
 	// Create context that listens for the interrupt signal from the OS.
@@ -41,18 +47,23 @@ func gracefulShutdown(fiberServer *watcher.FiberServer, done chan bool) {
 }
 
 func main() {
-	cardtraderAdapter := cardtrader.NewCardtraderAdapter(os.Getenv("ACCESS_TOKEN"), "https://www.cardtrader.com")
+	var watcherConfig WatcherConfig
+	if err := env.Load(&watcherConfig, nil); err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	watcher := watcher.New(cardtraderAdapter)
+	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, "https://www.cardtrader.com")
+	mongoAdapter := mongo.New(watcherConfig.MongoHost, watcherConfig.MongoPort)
 
+	watcher := watcher.New(cardtraderAdapter, mongoAdapter)
 	watcher.RegisterFiberRoutes()
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
 
 	go func() {
-		port, _ := strconv.Atoi(os.Getenv("PORT"))
-		err := watcher.Listen(fmt.Sprintf(":%d", port))
+		err := watcher.Listen(fmt.Sprintf(":%d", watcherConfig.Port))
 		if err != nil {
 			panic(fmt.Sprintf("http server error: %s", err))
 		}

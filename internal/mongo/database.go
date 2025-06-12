@@ -1,10 +1,9 @@
-package database
+package mongo
 
 import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -12,33 +11,27 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Service interface {
+type MongoAdapter interface {
 	Health() map[string]string
 }
 
-type service struct {
+type mongoAdapter struct {
 	db *mongo.Client
 }
 
-var (
-	host = os.Getenv("BLUEPRINT_DB_HOST")
-	port = os.Getenv("BLUEPRINT_DB_PORT")
-	//database = os.Getenv("BLUEPRINT_DB_DATABASE")
-)
-
-func New() Service {
+func New(
+	host, port string,
+) MongoAdapter {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
-
 	if err != nil {
 		log.Fatal(err)
-
 	}
-	return &service{
+	return &mongoAdapter{
 		db: client,
 	}
 }
 
-func (s *service) Health() map[string]string {
+func (s *mongoAdapter) Health() map[string]string {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 

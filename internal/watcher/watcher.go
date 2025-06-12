@@ -2,7 +2,7 @@ package watcher
 
 import (
 	"card-watcher/internal/cardtrader"
-	"card-watcher/internal/database"
+	"card-watcher/internal/mongo"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,11 +11,12 @@ type FiberServer struct {
 	*fiber.App
 
 	cardtraderAdapter cardtrader.CardtraderAdapter
-	db                database.Service
+	mongoAdapter      mongo.MongoAdapter
 }
 
 func New(
 	cardtraderAdapter cardtrader.CardtraderAdapter,
+	mongoAdapter mongo.MongoAdapter,
 ) *FiberServer {
 	server := &FiberServer{
 		App: fiber.New(fiber.Config{
@@ -24,7 +25,7 @@ func New(
 		}),
 		cardtraderAdapter: cardtraderAdapter,
 
-		db: database.New(),
+		mongoAdapter: mongoAdapter,
 	}
 
 	return server
