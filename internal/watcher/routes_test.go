@@ -1,11 +1,14 @@
-package server
+package watcher
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/gofiber/fiber/v2"
 )
+
+// TODO: move this to an actual test
 
 func TestHandler(t *testing.T) {
 	// Create a Fiber app for testing

@@ -1,7 +1,8 @@
 package main
 
 import (
-	"card-watcher/internal/server"
+	"card-watcher/internal/cardtrader"
+	"card-watcher/internal/watcher"
 	"context"
 	"fmt"
 	"log"
@@ -14,7 +15,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-func gracefulShutdown(fiberServer *server.FiberServer, done chan bool) {
+func gracefulShutdown(fiberServer *watcher.FiberServer, done chan bool) {
 	// Create context that listens for the interrupt signal from the OS.
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -40,24 +41,25 @@ func gracefulShutdown(fiberServer *server.FiberServer, done chan bool) {
 }
 
 func main() {
+	cardtraderAdapter := cardtrader.NewCardtraderAdapter(os.Getenv("ACCESS_TOKEN"), "https://www.cardtrader.com")
 
-	server := server.New()
+	watcher := watcher.New(cardtraderAdapter)
 
-	server.RegisterFiberRoutes()
+	watcher.RegisterFiberRoutes()
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
 
 	go func() {
 		port, _ := strconv.Atoi(os.Getenv("PORT"))
-		err := server.Listen(fmt.Sprintf(":%d", port))
+		err := watcher.Listen(fmt.Sprintf(":%d", port))
 		if err != nil {
 			panic(fmt.Sprintf("http server error: %s", err))
 		}
 	}()
 
 	// Run graceful shutdown in a separate goroutine
-	go gracefulShutdown(server, done)
+	go gracefulShutdown(watcher, done)
 
 	// Wait for the graceful shutdown to complete
 	<-done
