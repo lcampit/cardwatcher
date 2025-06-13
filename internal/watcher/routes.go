@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
-func (s *FiberServer) RegisterFiberRoutes() {
+func (s *Watcher) RegisterFiberRoutes() {
 	// Apply CORS middleware
 	s.App.Use(cors.New(cors.Config{
 		AllowOrigins:     "*",
@@ -15,12 +15,12 @@ func (s *FiberServer) RegisterFiberRoutes() {
 		MaxAge:           300,
 	}))
 
-	s.App.Get("/", s.HelloWorldHandler)
+	s.App.Get("/expansions", s.GetExpansions)
 
 	s.App.Get("/health", s.healthHandler)
 }
 
-func (s *FiberServer) HelloWorldHandler(c *fiber.Ctx) error {
+func (s *Watcher) HelloWorldHandler(c *fiber.Ctx) error {
 	resp := fiber.Map{
 		"message": "Hello World",
 	}
@@ -28,6 +28,6 @@ func (s *FiberServer) HelloWorldHandler(c *fiber.Ctx) error {
 	return c.JSON(resp)
 }
 
-func (s *FiberServer) healthHandler(c *fiber.Ctx) error {
+func (s *Watcher) healthHandler(c *fiber.Ctx) error {
 	return c.JSON(s.mongoAdapter.Health())
 }

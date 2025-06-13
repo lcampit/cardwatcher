@@ -15,13 +15,14 @@ import (
 )
 
 type WatcherConfig struct {
-	Port        int    `env:"PORT"`
-	AccessToken string `env:"ACCESS_TOKEN"`
-	MongoHost   string `env:"MONGO_HOST"`
-	MongoPort   string `env:"MONGO_PORT"`
+	Port                 int    `env:"PORT"`
+	AccessToken          string `env:"ACCESS_TOKEN"`
+	MongoHost            string `env:"MONGO_HOST"`
+	MongoPort            string `env:"MONGO_PORT"`
+	CardtraderApiBaseUrl string `env:"CARDTRADER_API_BASE_URL"`
 }
 
-func gracefulShutdown(fiberServer *watcher.FiberServer, done chan bool) {
+func gracefulShutdown(fiberServer *watcher.Watcher, done chan bool) {
 	// Create context that listens for the interrupt signal from the OS.
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -53,7 +54,7 @@ func main() {
 		return
 	}
 
-	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, "https://www.cardtrader.com")
+	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, watcherConfig.CardtraderApiBaseUrl)
 	mongoAdapter := mongo.New(watcherConfig.MongoHost, watcherConfig.MongoPort)
 
 	watcher := watcher.New(cardtraderAdapter, mongoAdapter)

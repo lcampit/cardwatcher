@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type FiberServer struct {
+type Watcher struct {
 	*fiber.App
 
 	cardtraderAdapter cardtrader.CardtraderAdapter
@@ -17,8 +17,8 @@ type FiberServer struct {
 func New(
 	cardtraderAdapter cardtrader.CardtraderAdapter,
 	mongoAdapter mongo.MongoAdapter,
-) *FiberServer {
-	server := &FiberServer{
+) *Watcher {
+	server := &Watcher{
 		App: fiber.New(fiber.Config{
 			ServerHeader: "card-watcher",
 			AppName:      "card-watcher",
