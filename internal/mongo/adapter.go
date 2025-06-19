@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	"card-watcher/internal/entities"
 	"context"
 	"fmt"
 	"log"
@@ -12,9 +13,9 @@ import (
 )
 
 type MongoAdapter interface {
-	SaveWatch(ctx context.Context, watch *Watch) error
-	GetWatchByWatchId(ctx context.Context, watchId string) (*Watch, error)
-	DeleteWatch(ctx context.Context, watchId string) error
+	SaveWatch(ctx context.Context, watch *entities.Watch) (string, error)
+	GetWatchByWatchId(ctx context.Context, watchId string) (*entities.Watch, error)
+	DeleteWatchById(ctx context.Context, watchId string) error
 	DeleteWatchesByUserId(ctx context.Context, userId string) error
 	Health() map[string]string
 }
