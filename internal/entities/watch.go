@@ -10,18 +10,19 @@ import (
 type WatchCondition string
 
 const (
-	WATCH_CONDITION_NEAR_MINT         WatchCondition = "NEAR_MINT"
-	WATCH_CONDITION_SLIGHTLY_PLAYED   WatchCondition = "SLIGHTLY_PLAYED"
-	WATCH_CONDITION_MODERATELY_PLAYED WatchCondition = "MODERATELY_PLAYED"
-	WATCH_CONDITION_PLAYED            WatchCondition = "PLAYED"
-	WATCH_CONDITION_POOR              WatchCondition = "POOR"
+	WATCH_CONDITION_NEAR_MINT         WatchCondition = "Near Mint"
+	WATCH_CONDITION_SLIGHTLY_PLAYED   WatchCondition = "Slightly Played"
+	WATCH_CONDITION_MODERATELY_PLAYED WatchCondition = "Moderately Played"
+	WATCH_CONDITION_PLAYED            WatchCondition = "Played"
+	WATCH_CONDITION_POOR              WatchCondition = "Poor"
 )
 
 type Watch struct {
 	WatchId     bson.ObjectID  `bson:"_id"`
+	Name        string         `bson:"name"`
 	UserId      string         `bson:"userId"`
-	ExpansionId string         `bson:"expansionId"`
-	BlueprintId string         `bson:"blueprintId"`
+	ExpansionId int            `bson:"expansionId"`
+	BlueprintId int            `bson:"blueprintId"`
 	Condition   WatchCondition `bson:"condition"`
 	Foil        bool           `bson:"foil"`
 }

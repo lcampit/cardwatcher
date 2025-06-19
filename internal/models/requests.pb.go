@@ -24,8 +24,8 @@ const (
 type SaveWatchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
-	ExpansionId   string                 `protobuf:"bytes,2,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
-	BlueprintId   string                 `protobuf:"bytes,3,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
+	ExpansionId   int32                  `protobuf:"varint,2,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	BlueprintId   int32                  `protobuf:"varint,3,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 	Condition     Condition              `protobuf:"varint,4,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,5,opt,name=foil,proto3" json:"foil,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -69,18 +69,18 @@ func (x *SaveWatchRequest) GetAccessToken() string {
 	return ""
 }
 
-func (x *SaveWatchRequest) GetExpansionId() string {
+func (x *SaveWatchRequest) GetExpansionId() int32 {
 	if x != nil {
 		return x.ExpansionId
 	}
-	return ""
+	return 0
 }
 
-func (x *SaveWatchRequest) GetBlueprintId() string {
+func (x *SaveWatchRequest) GetBlueprintId() int32 {
 	if x != nil {
 		return x.BlueprintId
 	}
-	return ""
+	return 0
 }
 
 func (x *SaveWatchRequest) GetCondition() Condition {
@@ -104,8 +104,8 @@ const file_cardwatcher_requests_proto_rawDesc = "" +
 	"\x1acardwatcher/requests.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"\xc5\x01\n" +
 	"\x10SaveWatchRequest\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12!\n" +
-	"\fexpansion_id\x18\x02 \x01(\tR\vexpansionId\x12!\n" +
-	"\fblueprint_id\x18\x03 \x01(\tR\vblueprintId\x124\n" +
+	"\fexpansion_id\x18\x02 \x01(\x05R\vexpansionId\x12!\n" +
+	"\fblueprint_id\x18\x03 \x01(\x05R\vblueprintId\x124\n" +
 	"\tcondition\x18\x04 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x05 \x01(\bR\x04foilB\x11Z\x0finternal/modelsb\x06proto3"
 

@@ -9,7 +9,7 @@ import (
 )
 
 type Service interface {
-	SaveWatch(ctx context.Context, accessToken, blueprintId, expansionId string, condition models.Condition, foil bool) (string, error)
+	SaveWatch(ctx context.Context, accessToken string, expansionId, blueprintId int, condition models.Condition, foil bool) (string, error)
 }
 
 type service struct {

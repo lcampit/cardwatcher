@@ -20,16 +20,16 @@ func TestCRUDWatches(t *testing.T) {
 	watch1 := &entities.Watch{
 		WatchId:     watchId1,
 		UserId:      "userId1",
-		ExpansionId: "ExpansionId1",
-		BlueprintId: "BlueprintId1",
+		ExpansionId: 1,
+		BlueprintId: 1,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
 		Foil:        false,
 	}
 	watch2 := &entities.Watch{
 		WatchId:     watchId2,
 		UserId:      "userId1",
-		ExpansionId: "ExpansionId2",
-		BlueprintId: "BlueprintId2",
+		ExpansionId: 2,
+		BlueprintId: 2,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
 		Foil:        false,
 	}
@@ -37,8 +37,8 @@ func TestCRUDWatches(t *testing.T) {
 	watch3 := &entities.Watch{
 		WatchId:     watchId3,
 		UserId:      "userId3",
-		ExpansionId: "ExpansionId3",
-		BlueprintId: "BlueprintId3",
+		ExpansionId: 2,
+		BlueprintId: 3,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
 		Foil:        false,
 	}

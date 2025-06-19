@@ -10,7 +10,7 @@ import (
 func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*models.SaveWatchResponse, error) {
 	log.Info().Msg("Received a SaveWatch request")
 	log.Debug().Interface("request", in).Msg("")
-	watchId, err := s.service.SaveWatch(ctx, in.AccessToken, in.BlueprintId, in.ExpansionId, in.Condition, in.Foil)
+	watchId, err := s.service.SaveWatch(ctx, in.AccessToken, int(in.ExpansionId), int(in.BlueprintId), in.Condition, in.Foil)
 	if err != nil {
 		log.Error().Err(err).Msg("error in save watch")
 		return nil, err
