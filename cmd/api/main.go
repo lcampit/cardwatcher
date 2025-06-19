@@ -19,6 +19,7 @@ type WatcherConfig struct {
 	AccessToken          string `env:"ACCESS_TOKEN"`
 	MongoHost            string `env:"MONGO_HOST"`
 	MongoPort            string `env:"MONGO_PORT"`
+	MongoDatabase        string `env:"MONGO_DATABASE"`
 	CardtraderApiBaseUrl string `env:"CARDTRADER_API_BASE_URL"`
 }
 
@@ -55,7 +56,7 @@ func main() {
 	}
 
 	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, watcherConfig.CardtraderApiBaseUrl)
-	mongoAdapter := mongo.New(watcherConfig.MongoHost, watcherConfig.MongoPort)
+	mongoAdapter := mongo.NewMongoAdapter(watcherConfig.MongoHost, watcherConfig.MongoPort, watcherConfig.MongoDatabase)
 
 	watcher := watcher.New(cardtraderAdapter, mongoAdapter)
 	watcher.RegisterFiberRoutes()

@@ -12,22 +12,28 @@ import (
 )
 
 type MongoAdapter interface {
+	SaveWatch(ctx context.Context, watch *Watch) error
+	GetWatchByWatchId(ctx context.Context, watchId string) (*Watch, error)
+	DeleteWatch(ctx context.Context, watchId string) error
+	DeleteWatchesByUserId(ctx context.Context, userId string) error
 	Health() map[string]string
 }
 
 type mongoAdapter struct {
-	db *mongo.Client
+	client   *mongo.Client
+	database string
 }
 
-func New(
-	host, port string,
+func NewMongoAdapter(
+	host, port, database string,
 ) MongoAdapter {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
 	if err != nil {
 		log.Fatal(err)
 	}
 	return &mongoAdapter{
-		db: client,
+		client:   client,
+		database: database,
 	}
 }
 
@@ -35,7 +41,7 @@ func (s *mongoAdapter) Health() map[string]string {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	err := s.db.Ping(ctx, nil)
+	err := s.client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatalf("db down: %v", err)
 	}

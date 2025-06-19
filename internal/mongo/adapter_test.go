@@ -10,7 +10,7 @@ import (
 	"github.com/testcontainers/testcontainers-go/modules/mongodb"
 )
 
-var testHost, testPort string
+var testHost, testPort, testDatabase string
 
 func mustStartMongoContainer() (func(context.Context, ...testcontainers.TerminateOption) error, error) {
 	dbContainer, err := mongodb.Run(context.Background(), "mongo:latest")
@@ -30,6 +30,7 @@ func mustStartMongoContainer() (func(context.Context, ...testcontainers.Terminat
 
 	testHost = dbHost
 	testPort = dbPort.Port()
+	testDatabase = "testDatabase"
 
 	return dbContainer.Terminate, err
 }
@@ -48,14 +49,14 @@ func TestMain(m *testing.M) {
 }
 
 func TestNew(t *testing.T) {
-	srv := New(testHost, testPort)
+	srv := NewMongoAdapter(testHost, testPort, testDatabase)
 	if srv == nil {
 		t.Fatal("New() returned nil")
 	}
 }
 
 func TestHealth(t *testing.T) {
-	srv := New(testHost, testPort)
+	srv := NewMongoAdapter(testHost, testPort, testDatabase)
 
 	stats := srv.Health()
 
