@@ -7,14 +7,12 @@ import (
 	"fmt"
 )
 
-func (s *service) SaveWatch(ctx context.Context, accessToken string, expansionId, blueprintId int, condition models.Condition, foil bool) (string, error) {
-	userId := HashAccessToken(accessToken)
-	blueprintName, err := s.cardtraderAdapter.GetBlueprintNameByExpansionId(ctx, accessToken, expansionId, blueprintId)
+func (s *service) SaveWatch(ctx context.Context, expansionId, blueprintId int, condition models.Condition, foil bool) (string, error) {
+	blueprintName, err := s.cardtraderAdapter.GetBlueprintNameByExpansionId(ctx, expansionId, blueprintId)
 	if err != nil {
 		return "", fmt.Errorf("error finding name for expansion %d and blueprint %d: %w", expansionId, blueprintId, err)
 	}
 	newWatchId, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
-		UserId:      userId,
 		Name:        blueprintName,
 		ExpansionId: expansionId,
 		BlueprintId: blueprintId,

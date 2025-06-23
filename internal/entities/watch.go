@@ -20,7 +20,6 @@ const (
 type Watch struct {
 	WatchId     bson.ObjectID  `bson:"_id"`
 	Name        string         `bson:"name"`
-	UserId      string         `bson:"userId"`
 	ExpansionId int            `bson:"expansionId"`
 	BlueprintId int            `bson:"blueprintId"`
 	Condition   WatchCondition `bson:"condition"`

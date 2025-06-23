@@ -19,7 +19,7 @@ import (
 type WatcherConfig struct {
 	AppMode              string `env:"APP_MODE"`
 	Port                 int    `env:"PORT"`
-	AccessToken          string `env:"ACCESS_TOKEN"`
+	AccessToken          string `env:"CARDTRADER_ACCESS_TOKEN"`
 	MongoHost            string `env:"MONGO_HOST"`
 	MongoPort            string `env:"MONGO_PORT"`
 	MongoDatabase        string `env:"MONGO_DATABASE"`

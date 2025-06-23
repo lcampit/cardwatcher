@@ -23,11 +23,11 @@ type blueprint struct {
 	TcgPlayerId        int                  `json:"tcg_player_id"`
 }
 
-func (a *cardtraderAdapter) GetBlueprintNameByExpansionId(ctx context.Context, accessToken string, expansionId, blueprintId int) (string, error) {
+func (a *cardtraderAdapter) GetBlueprintNameByExpansionId(ctx context.Context, expansionId, blueprintId int) (string, error) {
 	var response []blueprint
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseUrl, "blueprints", "export")
 	expansionIdString := strconv.Itoa(expansionId)
-	err := requests.URL(endpoint).Bearer(accessToken).
+	err := requests.URL(endpoint).Bearer(a.accessToken).
 		Param("expansion_id", expansionIdString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {

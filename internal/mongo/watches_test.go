@@ -19,7 +19,6 @@ func TestCRUDWatches(t *testing.T) {
 
 	watch1 := &entities.Watch{
 		WatchId:     watchId1,
-		UserId:      "userId1",
 		ExpansionId: 1,
 		BlueprintId: 1,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
@@ -27,7 +26,6 @@ func TestCRUDWatches(t *testing.T) {
 	}
 	watch2 := &entities.Watch{
 		WatchId:     watchId2,
-		UserId:      "userId1",
 		ExpansionId: 2,
 		BlueprintId: 2,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
@@ -36,7 +34,6 @@ func TestCRUDWatches(t *testing.T) {
 
 	watch3 := &entities.Watch{
 		WatchId:     watchId3,
-		UserId:      "userId3",
 		ExpansionId: 2,
 		BlueprintId: 3,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
@@ -55,14 +52,13 @@ func TestCRUDWatches(t *testing.T) {
 	assert.NotNil(t, watchFromDb1, "watcher 1 not found by get")
 
 	assert.Equal(t, watch1.WatchId, watchFromDb1.WatchId)
-	assert.Equal(t, watch1.UserId, watchFromDb1.UserId)
 	assert.Equal(t, watch1.ExpansionId, watchFromDb1.ExpansionId)
 	assert.Equal(t, watch1.BlueprintId, watchFromDb1.BlueprintId)
 	assert.Equal(t, watch1.Condition, watchFromDb1.Condition)
 	assert.Equal(t, watch1.Foil, watchFromDb1.Foil)
 
-	err = mongoAdapter.DeleteWatchesByUserId(ctx, "userId1")
-	assert.Nil(t, err)
+	mongoAdapter.DeleteWatchById(ctx, insertedWatchId1)
+	mongoAdapter.DeleteWatchById(ctx, insertedWatchId2)
 
 	absentWatches, err := mongoAdapter.GetWatchByWatchId(ctx, insertedWatchId1)
 	assert.Nil(t, absentWatches)
@@ -75,7 +71,6 @@ func TestCRUDWatches(t *testing.T) {
 	assert.NotNil(t, watchFromDb3, "watcher 3 not found by get")
 
 	assert.Equal(t, watch3.WatchId, watchFromDb3.WatchId)
-	assert.Equal(t, watch3.UserId, watchFromDb3.UserId)
 	assert.Equal(t, watch3.ExpansionId, watchFromDb3.ExpansionId)
 	assert.Equal(t, watch3.BlueprintId, watchFromDb3.BlueprintId)
 	assert.Equal(t, watch3.Condition, watchFromDb3.Condition)

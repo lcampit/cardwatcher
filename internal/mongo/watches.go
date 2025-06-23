@@ -34,15 +34,6 @@ func (a *mongoAdapter) DeleteWatchById(ctx context.Context, watchId string) erro
 	return nil
 }
 
-func (a *mongoAdapter) DeleteWatchesByUserId(ctx context.Context, userId string) error {
-	_, err := a.client.Database(a.database).Collection(WATCH_COLLECTION).
-		DeleteMany(ctx, bson.M{"userId": userId})
-	if err != nil {
-		return fmt.Errorf("error deleting watch by user id %s: %w", userId, err)
-	}
-	return nil
-}
-
 func (a *mongoAdapter) GetWatchByWatchId(ctx context.Context, watchId string) (*entities.Watch, error) {
 	convertedId, err := bson.ObjectIDFromHex(watchId)
 	if err != nil {
