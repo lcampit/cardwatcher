@@ -4,6 +4,7 @@ import "context"
 
 type CardtraderAdapter interface {
 	GetBlueprintNameByExpansionId(ctx context.Context, expansionId, blueprintId int) (string, error)
+	GetExpansions(ctx context.Context) ([]*expansion, error)
 }
 
 type cardtraderAdapter struct {

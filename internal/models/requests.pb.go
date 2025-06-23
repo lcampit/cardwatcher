@@ -21,6 +21,110 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ListExpansionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListExpansionsRequest) Reset() {
+	*x = ListExpansionsRequest{}
+	mi := &file_cardwatcher_requests_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListExpansionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListExpansionsRequest) ProtoMessage() {}
+
+func (x *ListExpansionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_requests_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListExpansionsRequest.ProtoReflect.Descriptor instead.
+func (*ListExpansionsRequest) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ListExpansionsRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ListExpansionsRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type ListBlueprintsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExpansionId   int32                  `protobuf:"varint,1,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBlueprintsRequest) Reset() {
+	*x = ListBlueprintsRequest{}
+	mi := &file_cardwatcher_requests_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBlueprintsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBlueprintsRequest) ProtoMessage() {}
+
+func (x *ListBlueprintsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_requests_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBlueprintsRequest.ProtoReflect.Descriptor instead.
+func (*ListBlueprintsRequest) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListBlueprintsRequest) GetExpansionId() int32 {
+	if x != nil {
+		return x.ExpansionId
+	}
+	return 0
+}
+
+func (x *ListBlueprintsRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 type SaveWatchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ExpansionId   int32                  `protobuf:"varint,2,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
@@ -33,7 +137,7 @@ type SaveWatchRequest struct {
 
 func (x *SaveWatchRequest) Reset() {
 	*x = SaveWatchRequest{}
-	mi := &file_cardwatcher_requests_proto_msgTypes[0]
+	mi := &file_cardwatcher_requests_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +149,7 @@ func (x *SaveWatchRequest) String() string {
 func (*SaveWatchRequest) ProtoMessage() {}
 
 func (x *SaveWatchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_requests_proto_msgTypes[0]
+	mi := &file_cardwatcher_requests_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +162,7 @@ func (x *SaveWatchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SaveWatchRequest.ProtoReflect.Descriptor instead.
 func (*SaveWatchRequest) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{0}
+	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SaveWatchRequest) GetExpansionId() int32 {
@@ -89,16 +193,68 @@ func (x *SaveWatchRequest) GetFoil() bool {
 	return false
 }
 
+type DeleteWatchByIdRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteWatchByIdRequest) Reset() {
+	*x = DeleteWatchByIdRequest{}
+	mi := &file_cardwatcher_requests_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteWatchByIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteWatchByIdRequest) ProtoMessage() {}
+
+func (x *DeleteWatchByIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_requests_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteWatchByIdRequest.ProtoReflect.Descriptor instead.
+func (*DeleteWatchByIdRequest) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteWatchByIdRequest) GetWatchId() string {
+	if x != nil {
+		return x.WatchId
+	}
+	return ""
+}
+
 var File_cardwatcher_requests_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_requests_proto_rawDesc = "" +
 	"\n" +
-	"\x1acardwatcher/requests.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"\xa2\x01\n" +
+	"\x1acardwatcher/requests.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"?\n" +
+	"\x15ListExpansionsRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"N\n" +
+	"\x15ListBlueprintsRequest\x12!\n" +
+	"\fexpansion_id\x18\x01 \x01(\x05R\vexpansionId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xa2\x01\n" +
 	"\x10SaveWatchRequest\x12!\n" +
 	"\fexpansion_id\x18\x02 \x01(\x05R\vexpansionId\x12!\n" +
 	"\fblueprint_id\x18\x03 \x01(\x05R\vblueprintId\x124\n" +
 	"\tcondition\x18\x04 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
-	"\x04foil\x18\x05 \x01(\bR\x04foilB\x11Z\x0finternal/modelsb\x06proto3"
+	"\x04foil\x18\x05 \x01(\bR\x04foil\"3\n" +
+	"\x16DeleteWatchByIdRequest\x12\x19\n" +
+	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\x11Z\x0finternal/modelsb\x06proto3"
 
 var (
 	file_cardwatcher_requests_proto_rawDescOnce sync.Once
@@ -112,13 +268,16 @@ func file_cardwatcher_requests_proto_rawDescGZIP() []byte {
 	return file_cardwatcher_requests_proto_rawDescData
 }
 
-var file_cardwatcher_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_cardwatcher_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_cardwatcher_requests_proto_goTypes = []any{
-	(*SaveWatchRequest)(nil), // 0: cardwatcher.SaveWatchRequest
-	(Condition)(0),           // 1: cardwatcher.Condition
+	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.ListExpansionsRequest
+	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.ListBlueprintsRequest
+	(*SaveWatchRequest)(nil),       // 2: cardwatcher.SaveWatchRequest
+	(*DeleteWatchByIdRequest)(nil), // 3: cardwatcher.DeleteWatchByIdRequest
+	(Condition)(0),                 // 4: cardwatcher.Condition
 }
 var file_cardwatcher_requests_proto_depIdxs = []int32{
-	1, // 0: cardwatcher.SaveWatchRequest.condition:type_name -> cardwatcher.Condition
+	4, // 0: cardwatcher.SaveWatchRequest.condition:type_name -> cardwatcher.Condition
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -138,7 +297,7 @@ func file_cardwatcher_requests_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_requests_proto_rawDesc), len(file_cardwatcher_requests_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

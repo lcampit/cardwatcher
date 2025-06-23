@@ -1,0 +1,51 @@
+package service
+
+import (
+	"card-watcher/internal/models"
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+)
+
+func (s *service) ListExpansions(ctx context.Context, name, code string) (models.ListExpansionsResponse, error) {
+	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
+	if err != nil {
+		return models.ListExpansionsResponse{}, fmt.Errorf("error getting expansions from adapter: %w", err)
+	}
+	var resultingExpanions []*models.Expansion
+	normalizedCode := strings.ToLower(code)
+	for _, expansion := range expansions {
+		// filter via name
+		if name != "" {
+			if strings.HasPrefix(expansion.Name, name) {
+				resultingExpanions = append(resultingExpanions, &models.Expansion{
+					Id:   int32(expansion.ID),
+					Code: expansion.Code,
+					Name: expansion.Name,
+				})
+			}
+		} else if code != "" {
+			// filter via code
+			if expansion.Code == normalizedCode {
+				resultingExpanions = append(resultingExpanions, &models.Expansion{
+					Id:   int32(expansion.ID),
+					Code: expansion.Code,
+					Name: expansion.Name,
+				})
+			}
+		} else {
+			// no filter provided, return all expansions
+			resultingExpanions = append(resultingExpanions, &models.Expansion{
+				Id:   int32(expansion.ID),
+				Code: expansion.Code,
+				Name: expansion.Name,
+			})
+		}
+	}
+	log.Debug().Msgf("returning %d filtered expansions", len(resultingExpanions))
+	return models.ListExpansionsResponse{
+		Expansions: resultingExpanions,
+	}, nil
+}

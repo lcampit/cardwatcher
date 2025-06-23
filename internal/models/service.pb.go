@@ -9,7 +9,7 @@ package models
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/emptypb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -25,19 +25,38 @@ var File_cardwatcher_service_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_service_proto_rawDesc = "" +
 	"\n" +
-	"\x19cardwatcher/service.proto\x12\vcardwatcher\x1a\x1acardwatcher/requests.proto\x1a\x1bcardwatcher/responses.proto\x1a\x1bgoogle/protobuf/empty.proto2Y\n" +
-	"\vCardWatcher\x12J\n" +
-	"\tSaveWatch\x12\x1d.cardwatcher.SaveWatchRequest\x1a\x1e.cardwatcher.SaveWatchResponseB\x11Z\x0finternal/modelsb\x06proto3"
+	"\x19cardwatcher/service.proto\x12\vcardwatcher\x1a\x1acardwatcher/requests.proto\x1a\x1bcardwatcher/responses.proto\x1a\x1bgoogle/protobuf/empty.proto2\xa8\x03\n" +
+	"\vCardWatcher\x12Y\n" +
+	"\x0eListExpansions\x12\".cardwatcher.ListExpansionsRequest\x1a#.cardwatcher.ListExpansionsResponse\x12Y\n" +
+	"\x0eListBlueprints\x12\".cardwatcher.ListBlueprintsRequest\x1a#.cardwatcher.ListBlueprintsResponse\x12J\n" +
+	"\tSaveWatch\x12\x1d.cardwatcher.SaveWatchRequest\x1a\x1e.cardwatcher.SaveWatchResponse\x12G\n" +
+	"\vListWatches\x12\x16.google.protobuf.Empty\x1a .cardwatcher.ListWatchesResponse\x12N\n" +
+	"\x0fDeleteWatchById\x12#.cardwatcher.DeleteWatchByIdRequest\x1a\x16.google.protobuf.EmptyB\x11Z\x0finternal/modelsb\x06proto3"
 
 var file_cardwatcher_service_proto_goTypes = []any{
-	(*SaveWatchRequest)(nil),  // 0: cardwatcher.SaveWatchRequest
-	(*SaveWatchResponse)(nil), // 1: cardwatcher.SaveWatchResponse
+	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.ListExpansionsRequest
+	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.ListBlueprintsRequest
+	(*SaveWatchRequest)(nil),       // 2: cardwatcher.SaveWatchRequest
+	(*emptypb.Empty)(nil),          // 3: google.protobuf.Empty
+	(*DeleteWatchByIdRequest)(nil), // 4: cardwatcher.DeleteWatchByIdRequest
+	(*ListExpansionsResponse)(nil), // 5: cardwatcher.ListExpansionsResponse
+	(*ListBlueprintsResponse)(nil), // 6: cardwatcher.ListBlueprintsResponse
+	(*SaveWatchResponse)(nil),      // 7: cardwatcher.SaveWatchResponse
+	(*ListWatchesResponse)(nil),    // 8: cardwatcher.ListWatchesResponse
 }
 var file_cardwatcher_service_proto_depIdxs = []int32{
-	0, // 0: cardwatcher.CardWatcher.SaveWatch:input_type -> cardwatcher.SaveWatchRequest
-	1, // 1: cardwatcher.CardWatcher.SaveWatch:output_type -> cardwatcher.SaveWatchResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: cardwatcher.CardWatcher.ListExpansions:input_type -> cardwatcher.ListExpansionsRequest
+	1, // 1: cardwatcher.CardWatcher.ListBlueprints:input_type -> cardwatcher.ListBlueprintsRequest
+	2, // 2: cardwatcher.CardWatcher.SaveWatch:input_type -> cardwatcher.SaveWatchRequest
+	3, // 3: cardwatcher.CardWatcher.ListWatches:input_type -> google.protobuf.Empty
+	4, // 4: cardwatcher.CardWatcher.DeleteWatchById:input_type -> cardwatcher.DeleteWatchByIdRequest
+	5, // 5: cardwatcher.CardWatcher.ListExpansions:output_type -> cardwatcher.ListExpansionsResponse
+	6, // 6: cardwatcher.CardWatcher.ListBlueprints:output_type -> cardwatcher.ListBlueprintsResponse
+	7, // 7: cardwatcher.CardWatcher.SaveWatch:output_type -> cardwatcher.SaveWatchResponse
+	8, // 8: cardwatcher.CardWatcher.ListWatches:output_type -> cardwatcher.ListWatchesResponse
+	3, // 9: cardwatcher.CardWatcher.DeleteWatchById:output_type -> google.protobuf.Empty
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

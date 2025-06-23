@@ -21,6 +21,94 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ListExpansionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Expansions    []*Expansion           `protobuf:"bytes,1,rep,name=expansions,proto3" json:"expansions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListExpansionsResponse) Reset() {
+	*x = ListExpansionsResponse{}
+	mi := &file_cardwatcher_responses_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListExpansionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListExpansionsResponse) ProtoMessage() {}
+
+func (x *ListExpansionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_responses_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListExpansionsResponse.ProtoReflect.Descriptor instead.
+func (*ListExpansionsResponse) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ListExpansionsResponse) GetExpansions() []*Expansion {
+	if x != nil {
+		return x.Expansions
+	}
+	return nil
+}
+
+type ListBlueprintsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Blueprints    []*Blueprint           `protobuf:"bytes,1,rep,name=blueprints,proto3" json:"blueprints,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBlueprintsResponse) Reset() {
+	*x = ListBlueprintsResponse{}
+	mi := &file_cardwatcher_responses_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBlueprintsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBlueprintsResponse) ProtoMessage() {}
+
+func (x *ListBlueprintsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_responses_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBlueprintsResponse.ProtoReflect.Descriptor instead.
+func (*ListBlueprintsResponse) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListBlueprintsResponse) GetBlueprints() []*Blueprint {
+	if x != nil {
+		return x.Blueprints
+	}
+	return nil
+}
+
 type SaveWatchResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
@@ -30,7 +118,7 @@ type SaveWatchResponse struct {
 
 func (x *SaveWatchResponse) Reset() {
 	*x = SaveWatchResponse{}
-	mi := &file_cardwatcher_responses_proto_msgTypes[0]
+	mi := &file_cardwatcher_responses_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +130,7 @@ func (x *SaveWatchResponse) String() string {
 func (*SaveWatchResponse) ProtoMessage() {}
 
 func (x *SaveWatchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_responses_proto_msgTypes[0]
+	mi := &file_cardwatcher_responses_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +143,7 @@ func (x *SaveWatchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SaveWatchResponse.ProtoReflect.Descriptor instead.
 func (*SaveWatchResponse) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{0}
+	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SaveWatchResponse) GetWatchId() string {
@@ -65,13 +153,67 @@ func (x *SaveWatchResponse) GetWatchId() string {
 	return ""
 }
 
+type ListWatchesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Watches       []*Watch               `protobuf:"bytes,1,rep,name=watches,proto3" json:"watches,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListWatchesResponse) Reset() {
+	*x = ListWatchesResponse{}
+	mi := &file_cardwatcher_responses_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListWatchesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListWatchesResponse) ProtoMessage() {}
+
+func (x *ListWatchesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_responses_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListWatchesResponse.ProtoReflect.Descriptor instead.
+func (*ListWatchesResponse) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListWatchesResponse) GetWatches() []*Watch {
+	if x != nil {
+		return x.Watches
+	}
+	return nil
+}
+
 var File_cardwatcher_responses_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_responses_proto_rawDesc = "" +
 	"\n" +
-	"\x1bcardwatcher/responses.proto\x12\vcardwatcher\".\n" +
+	"\x1bcardwatcher/responses.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"P\n" +
+	"\x16ListExpansionsResponse\x126\n" +
+	"\n" +
+	"expansions\x18\x01 \x03(\v2\x16.cardwatcher.ExpansionR\n" +
+	"expansions\"P\n" +
+	"\x16ListBlueprintsResponse\x126\n" +
+	"\n" +
+	"blueprints\x18\x01 \x03(\v2\x16.cardwatcher.BlueprintR\n" +
+	"blueprints\".\n" +
 	"\x11SaveWatchResponse\x12\x19\n" +
-	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\x11Z\x0finternal/modelsb\x06proto3"
+	"\bwatch_id\x18\x01 \x01(\tR\awatchId\"C\n" +
+	"\x13ListWatchesResponse\x12,\n" +
+	"\awatches\x18\x01 \x03(\v2\x12.cardwatcher.WatchR\awatchesB\x11Z\x0finternal/modelsb\x06proto3"
 
 var (
 	file_cardwatcher_responses_proto_rawDescOnce sync.Once
@@ -85,16 +227,25 @@ func file_cardwatcher_responses_proto_rawDescGZIP() []byte {
 	return file_cardwatcher_responses_proto_rawDescData
 }
 
-var file_cardwatcher_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_cardwatcher_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_cardwatcher_responses_proto_goTypes = []any{
-	(*SaveWatchResponse)(nil), // 0: cardwatcher.SaveWatchResponse
+	(*ListExpansionsResponse)(nil), // 0: cardwatcher.ListExpansionsResponse
+	(*ListBlueprintsResponse)(nil), // 1: cardwatcher.ListBlueprintsResponse
+	(*SaveWatchResponse)(nil),      // 2: cardwatcher.SaveWatchResponse
+	(*ListWatchesResponse)(nil),    // 3: cardwatcher.ListWatchesResponse
+	(*Expansion)(nil),              // 4: cardwatcher.Expansion
+	(*Blueprint)(nil),              // 5: cardwatcher.Blueprint
+	(*Watch)(nil),                  // 6: cardwatcher.Watch
 }
 var file_cardwatcher_responses_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4, // 0: cardwatcher.ListExpansionsResponse.expansions:type_name -> cardwatcher.Expansion
+	5, // 1: cardwatcher.ListBlueprintsResponse.blueprints:type_name -> cardwatcher.Blueprint
+	6, // 2: cardwatcher.ListWatchesResponse.watches:type_name -> cardwatcher.Watch
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_cardwatcher_responses_proto_init() }
@@ -102,13 +253,14 @@ func file_cardwatcher_responses_proto_init() {
 	if File_cardwatcher_responses_proto != nil {
 		return
 	}
+	file_cardwatcher_entities_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_responses_proto_rawDesc), len(file_cardwatcher_responses_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

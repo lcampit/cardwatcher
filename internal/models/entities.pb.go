@@ -79,11 +79,230 @@ func (Condition) EnumDescriptor() ([]byte, []int) {
 	return file_cardwatcher_entities_proto_rawDescGZIP(), []int{0}
 }
 
+type Expansion struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Expansion) Reset() {
+	*x = Expansion{}
+	mi := &file_cardwatcher_entities_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Expansion) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Expansion) ProtoMessage() {}
+
+func (x *Expansion) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_entities_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Expansion.ProtoReflect.Descriptor instead.
+func (*Expansion) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_entities_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Expansion) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Expansion) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *Expansion) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type Blueprint struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ExpansionId   int32                  `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Blueprint) Reset() {
+	*x = Blueprint{}
+	mi := &file_cardwatcher_entities_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Blueprint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Blueprint) ProtoMessage() {}
+
+func (x *Blueprint) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_entities_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Blueprint.ProtoReflect.Descriptor instead.
+func (*Blueprint) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_entities_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Blueprint) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Blueprint) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Blueprint) GetExpansionId() int32 {
+	if x != nil {
+		return x.ExpansionId
+	}
+	return 0
+}
+
+type Watch struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ExpantionId   int32                  `protobuf:"varint,3,opt,name=expantion_id,json=expantionId,proto3" json:"expantion_id,omitempty"`
+	BlueprintId   int32                  `protobuf:"varint,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
+	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
+	Foil          bool                   `protobuf:"varint,6,opt,name=foil,proto3" json:"foil,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Watch) Reset() {
+	*x = Watch{}
+	mi := &file_cardwatcher_entities_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Watch) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Watch) ProtoMessage() {}
+
+func (x *Watch) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_entities_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Watch.ProtoReflect.Descriptor instead.
+func (*Watch) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_entities_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Watch) GetWatchId() string {
+	if x != nil {
+		return x.WatchId
+	}
+	return ""
+}
+
+func (x *Watch) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Watch) GetExpantionId() int32 {
+	if x != nil {
+		return x.ExpantionId
+	}
+	return 0
+}
+
+func (x *Watch) GetBlueprintId() int32 {
+	if x != nil {
+		return x.BlueprintId
+	}
+	return 0
+}
+
+func (x *Watch) GetCondition() Condition {
+	if x != nil {
+		return x.Condition
+	}
+	return Condition_CONDITION_UNSPECIFIED
+}
+
+func (x *Watch) GetFoil() bool {
+	if x != nil {
+		return x.Foil
+	}
+	return false
+}
+
 var File_cardwatcher_entities_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_entities_proto_rawDesc = "" +
 	"\n" +
-	"\x1acardwatcher/entities.proto\x12\vcardwatcher*\xa9\x01\n" +
+	"\x1acardwatcher/entities.proto\x12\vcardwatcher\"C\n" +
+	"\tExpansion\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\"R\n" +
+	"\tBlueprint\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
+	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\"\xc6\x01\n" +
+	"\x05Watch\x12\x19\n" +
+	"\bwatch_id\x18\x01 \x01(\tR\awatchId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
+	"\fexpantion_id\x18\x03 \x01(\x05R\vexpantionId\x12!\n" +
+	"\fblueprint_id\x18\x04 \x01(\x05R\vblueprintId\x124\n" +
+	"\tcondition\x18\x05 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
+	"\x04foil\x18\x06 \x01(\bR\x04foil*\xa9\x01\n" +
 	"\tCondition\x12\x19\n" +
 	"\x15CONDITION_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13CONDITION_NEAR_MINT\x10\x01\x12\x1d\n" +
@@ -105,15 +324,20 @@ func file_cardwatcher_entities_proto_rawDescGZIP() []byte {
 }
 
 var file_cardwatcher_entities_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_cardwatcher_entities_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_cardwatcher_entities_proto_goTypes = []any{
-	(Condition)(0), // 0: cardwatcher.Condition
+	(Condition)(0),    // 0: cardwatcher.Condition
+	(*Expansion)(nil), // 1: cardwatcher.Expansion
+	(*Blueprint)(nil), // 2: cardwatcher.Blueprint
+	(*Watch)(nil),     // 3: cardwatcher.Watch
 }
 var file_cardwatcher_entities_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: cardwatcher.Watch.condition:type_name -> cardwatcher.Condition
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_cardwatcher_entities_proto_init() }
@@ -127,13 +351,14 @@ func file_cardwatcher_entities_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_entities_proto_rawDesc), len(file_cardwatcher_entities_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   0,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_cardwatcher_entities_proto_goTypes,
 		DependencyIndexes: file_cardwatcher_entities_proto_depIdxs,
 		EnumInfos:         file_cardwatcher_entities_proto_enumTypes,
+		MessageInfos:      file_cardwatcher_entities_proto_msgTypes,
 	}.Build()
 	File_cardwatcher_entities_proto = out.File
 	file_cardwatcher_entities_proto_goTypes = nil
