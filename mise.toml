@@ -27,8 +27,8 @@ description = "run the app"
 run = "go run cmd/api/main.go"
 alias = "r"
 
-[tasks.up]
-description = "starts supporting containers"
+[tasks.updb]
+description = "starts database container"
 run = "docker-compose up -d mongo"
 
 [tasks.down]
