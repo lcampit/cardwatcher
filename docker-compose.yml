@@ -9,7 +9,7 @@ services:
       - ${PORT}:${PORT}
     environment:
       APP_ENV: ${APP_ENV}
-      PORT: ${MONGO_PORT}
+      PORT: ${PORT}
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
       MONGO_USERNAME: ${MONGO_USERNAME}
