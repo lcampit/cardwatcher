@@ -16,3 +16,36 @@ PORT = 3000
 description = "generate code from protobuf files"
 run = "protoc -I=card-watcher-models --go_out ./ card-watcher-models/cardwatcher/* --go-grpc_out ./"
 alias = "g"
+
+[tasks.build]
+description = "build the app"
+run = "go build -o main cmd/api/main.go"
+alias = "b"
+
+[tasks.run]
+description = "run the app"
+run = "go run cmd/api/main.go"
+alias = "r"
+
+[tasks.up]
+description = "starts supporting containers"
+run = "docker-compose up -d mongo"
+
+[tasks.down]
+description = "stops supporting containers"
+run = "docker-compose down"
+
+[tasks.test]
+description = "run tests"
+run = "gotestsum ./... -v"
+alias = "t"
+
+[tasks.clean]
+description = "cleans artifacts produced"
+run = "rm -f main"
+alias = "c"
+
+[tasks.watch]
+description = "build and run the app watching for changes"
+run = "air | hl"
+alias = "w"
