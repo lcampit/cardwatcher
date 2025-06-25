@@ -14,6 +14,7 @@ import (
 
 type MongoAdapter interface {
 	SaveWatch(ctx context.Context, watch *entities.Watch) (string, error)
+	GetWatches(ctx context.Context) ([]*entities.Watch, error)
 	GetWatchByWatchId(ctx context.Context, watchId string) (*entities.Watch, error)
 	DeleteWatchById(ctx context.Context, watchId string) error
 	Health() map[string]string

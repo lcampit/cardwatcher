@@ -5,6 +5,7 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*models.SaveWatchResponse, error) {
@@ -18,4 +19,14 @@ func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*m
 	return &models.SaveWatchResponse{
 		WatchId: watchId,
 	}, nil
+}
+
+func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.ListWatchesResponse, error) {
+	log.Info().Msg("Received a ListWatches request")
+	response, err := s.service.ListWatches(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("error in list watches")
+		return nil, err
+	}
+	return &response, nil
 }

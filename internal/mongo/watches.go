@@ -34,6 +34,22 @@ func (a *mongoAdapter) DeleteWatchById(ctx context.Context, watchId string) erro
 	return nil
 }
 
+func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error) {
+	var watches []*entities.Watch
+	cursor, err := a.client.Database(a.database).Collection(WATCH_COLLECTION).
+		Find(ctx, bson.M{})
+	if err != nil {
+		return nil, fmt.Errorf("error finding all watches: %w", err)
+	}
+
+	err = cursor.All(ctx, &watches)
+	if err != nil {
+		return nil, fmt.Errorf("error decoding all watches: %w", err)
+	}
+
+	return watches, nil
+}
+
 func (a *mongoAdapter) GetWatchByWatchId(ctx context.Context, watchId string) (*entities.Watch, error) {
 	convertedId, err := bson.ObjectIDFromHex(watchId)
 	if err != nil {
