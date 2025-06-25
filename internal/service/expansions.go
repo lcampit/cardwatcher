@@ -15,11 +15,12 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 		return models.ListExpansionsResponse{}, fmt.Errorf("error getting expansions from adapter: %w", err)
 	}
 	var resultingExpanions []*models.Expansion
+	normalizedName := strings.ToLower(name)
 	normalizedCode := strings.ToLower(code)
 	for _, expansion := range expansions {
 		// filter via name
 		if name != "" {
-			if strings.HasPrefix(expansion.Name, name) {
+			if strings.Contains(strings.ToLower(expansion.Name), normalizedName) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
 					Id:   int32(expansion.ID),
 					Code: expansion.Code,
@@ -28,7 +29,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 			}
 		} else if code != "" {
 			// filter via code
-			if expansion.Code == normalizedCode {
+			if strings.Contains(expansion.Code, normalizedCode) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
 					Id:   int32(expansion.ID),
 					Code: expansion.Code,
