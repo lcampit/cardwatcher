@@ -20,7 +20,7 @@ func (s *service) ListBlueprints(ctx context.Context, expansionId int, name stri
 	for _, blueprint := range blueprints {
 		if name != "" {
 			// filter via card name
-			if strings.HasPrefix(strings.ToLower(blueprint.Name), normalizedName) {
+			if strings.Contains(strings.ToLower(blueprint.Name), normalizedName) {
 				resultingBlueprints = append(resultingBlueprints, &models.Blueprint{
 					Id:          int32(blueprint.Id),
 					Name:        blueprint.Name,
