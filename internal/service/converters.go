@@ -48,7 +48,7 @@ func convertEntityWatchToModelWatch(entityWatch *entities.Watch) *models.Watch {
 	return &models.Watch{
 		WatchId:     entityWatch.WatchId.Hex(),
 		Name:        entityWatch.Name,
-		ExpantionId: int32(entityWatch.ExpansionId),
+		ExpansionId: int32(entityWatch.ExpansionId),
 		BlueprintId: int32(entityWatch.BlueprintId),
 		Condition:   convertEntityConditionToModelCondition(entityWatch.Condition),
 		Foil:        entityWatch.Foil,

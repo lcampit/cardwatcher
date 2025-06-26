@@ -203,7 +203,7 @@ type Watch struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ExpantionId   int32                  `protobuf:"varint,3,opt,name=expantion_id,json=expantionId,proto3" json:"expantion_id,omitempty"`
+	ExpansionId   int32                  `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
 	BlueprintId   int32                  `protobuf:"varint,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,6,opt,name=foil,proto3" json:"foil,omitempty"`
@@ -255,9 +255,9 @@ func (x *Watch) GetName() string {
 	return ""
 }
 
-func (x *Watch) GetExpantionId() int32 {
+func (x *Watch) GetExpansionId() int32 {
 	if x != nil {
-		return x.ExpantionId
+		return x.ExpansionId
 	}
 	return 0
 }
@@ -299,7 +299,7 @@ const file_cardwatcher_entities_proto_rawDesc = "" +
 	"\x05Watch\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fexpantion_id\x18\x03 \x01(\x05R\vexpantionId\x12!\n" +
+	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\x12!\n" +
 	"\fblueprint_id\x18\x04 \x01(\x05R\vblueprintId\x124\n" +
 	"\tcondition\x18\x05 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x06 \x01(\bR\x04foil*\xa9\x01\n" +
