@@ -28,7 +28,12 @@ type mongoAdapter struct {
 func NewMongoAdapter(
 	host, port, database string,
 ) MongoAdapter {
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

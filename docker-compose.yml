@@ -10,10 +10,13 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       PORT: ${PORT}
-      MONGO_HOST: ${MONGO_HOST}
+      MONGO_HOST: mongo
       MONGO_PORT: ${MONGO_PORT}
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      CARDTRADER_ACCESS_TOKEN: ${CARDTRADER_ACCESS_TOKEN}
+      CARDTRADER_API_BASE_URL: ${CARDTRADER_API_BASE_URL}
     depends_on:
       mongo:
         condition: service_healthy

@@ -38,7 +38,7 @@ func main() {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
-	lis, err := net.Listen("tcp", fmt.Sprintf("server:%d", watcherConfig.Port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.Port))
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to listen")
 	}

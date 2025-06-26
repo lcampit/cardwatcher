@@ -7,6 +7,9 @@ go = "1.24"
 "go:gotest.tools/gotestsum" = "v1.12.2"
 protoc-gen-go = "latest"
 protoc-gen-go-grpc = "latest"
+"cargo:fblog" = "latest"
+"cargo:https://github.com/pamburus/hl.git" = "latest"
+"go:github.com/aurc/loggo" = "latest"
 
 [env]
 APP_ENV = "DEV"
