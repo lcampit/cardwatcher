@@ -3,6 +3,7 @@ package mongo
 import (
 	"card-watcher/internal/entities"
 	"context"
+	"errors"
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -23,6 +24,9 @@ func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *entities.Watch) (st
 
 func (a *mongoAdapter) DeleteWatchById(ctx context.Context, watchId string) error {
 	convertedId, err := bson.ObjectIDFromHex(watchId)
+	if err != nil && errors.Is(err, bson.ErrInvalidHex) {
+		return errors.New("invalid watch ID provided")
+	}
 	if err != nil {
 		return fmt.Errorf("error converting object id %s in delete watch by id: %w", watchId, err)
 	}

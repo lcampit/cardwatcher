@@ -13,6 +13,7 @@ type Service interface {
 	ListExpansions(ctx context.Context, name, code string) (models.ListExpansionsResponse, error)
 	ListBlueprints(ctx context.Context, expansionId int, name string) (models.ListBlueprintsResponse, error)
 	ListWatches(ctx context.Context) (models.ListWatchesResponse, error)
+	DeleteWatchByID(ctx context.Context, watchID string) error
 }
 
 type service struct {

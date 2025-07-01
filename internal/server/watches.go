@@ -30,3 +30,9 @@ func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.Li
 	}
 	return &response, nil
 }
+
+func (s *server) DeleteWatchById(ctx context.Context, in *models.DeleteWatchByIdRequest) (*emptypb.Empty, error) {
+	log.Info().Msg("Received a DeleteWatchById request")
+	log.Debug().Interface("request", in).Msg("")
+	return &emptypb.Empty{}, s.service.DeleteWatchByID(ctx, in.WatchId)
+}
