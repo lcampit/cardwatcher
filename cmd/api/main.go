@@ -4,11 +4,14 @@ import (
 	"card-watcher/internal/cardtrader"
 	"card-watcher/internal/models"
 	"card-watcher/internal/mongo"
+	"card-watcher/internal/ntfy"
 	"card-watcher/internal/server"
 	"card-watcher/internal/service"
 	"fmt"
 	"net"
+	"time"
 
+	"github.com/robfig/cron/v3"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"go-simpler.org/env"
@@ -24,6 +27,9 @@ type WatcherConfig struct {
 	MongoPort            string `env:"MONGO_PORT"`
 	MongoDatabase        string `env:"MONGO_DATABASE"`
 	CardtraderApiBaseUrl string `env:"CARDTRADER_API_BASE_URL"`
+	NtfyHost             string `env:"NTFY_HOST"`
+	NtfyPort             string `env:"NTFY_PORT"`
+	NotificationSchedule string `env:"NOTIFICATION_SCHEDULE"`
 }
 
 func main() {
@@ -43,15 +49,26 @@ func main() {
 		log.Fatal().Err(err).Msg("failed to listen")
 	}
 
+	ntfyAdapter := ntfy.NewNtfyAdapter("ntfy.sh", "")
 	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, watcherConfig.CardtraderApiBaseUrl)
 	mongoAdapter := mongo.NewMongoAdapter(watcherConfig.MongoHost, watcherConfig.MongoPort, watcherConfig.MongoDatabase)
-	service := service.NewService(cardtraderAdapter, mongoAdapter)
+	service := service.NewService(cardtraderAdapter, mongoAdapter, ntfyAdapter)
 	server := server.NewServer(service)
 
 	grpcServer := grpc.NewServer()
 	models.RegisterCardWatcherServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
+	loc, _ := time.LoadLocation("Europe/Rome")
+	c := cron.New(cron.WithLocation(loc))
+	_, err = c.AddFunc(watcherConfig.NotificationSchedule, service.WatchAndNotify)
+	if err != nil {
+		log.Fatal().Err(err).Msg("error when setting up notification cron job")
+	}
+	c.Start()
 	log.Info().Msgf("Server started on port %d", watcherConfig.Port)
 	grpcServer.Serve(lis)
+	log.Info().Msgf("Stopping server")
+	c.Stop()
+	log.Info().Msgf("Done")
 }

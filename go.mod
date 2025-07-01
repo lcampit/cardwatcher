@@ -5,12 +5,12 @@ go 1.24.0
 require (
 	github.com/carlmjohnson/requests v0.24.3
 	github.com/joho/godotenv v1.5.1
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.10.0
 	github.com/testcontainers/testcontainers-go v0.37.0
 	github.com/testcontainers/testcontainers-go/modules/mongodb v0.37.0
 	go-simpler.org/env v0.12.0
-	go.mongodb.org/mongo-driver v1.17.4
 	go.mongodb.org/mongo-driver/v2 v2.2.2
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.5

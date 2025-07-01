@@ -4,6 +4,7 @@ import (
 	"card-watcher/internal/cardtrader"
 	"card-watcher/internal/models"
 	"card-watcher/internal/mongo"
+	"card-watcher/internal/ntfy"
 	"context"
 	"crypto/sha256"
 )
@@ -14,20 +15,25 @@ type Service interface {
 	ListBlueprints(ctx context.Context, expansionId int, name string) (models.ListBlueprintsResponse, error)
 	ListWatches(ctx context.Context) (models.ListWatchesResponse, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
+
+	WatchAndNotify()
 }
 
 type service struct {
 	cardtraderAdapter cardtrader.CardtraderAdapter
 	mongoAdapter      mongo.MongoAdapter
+	ntfyAdapter       ntfy.NtfyAdapter
 }
 
 func NewService(
 	cardtraderAdapter cardtrader.CardtraderAdapter,
 	mongoAdapter mongo.MongoAdapter,
+	ntfyAdapter ntfy.NtfyAdapter,
 ) *service {
 	return &service{
 		cardtraderAdapter: cardtraderAdapter,
 		mongoAdapter:      mongoAdapter,
+		ntfyAdapter:       ntfyAdapter,
 	}
 }
 

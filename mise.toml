@@ -14,6 +14,7 @@ protoc-gen-go-grpc = "latest"
 [env]
 APP_ENV = "DEV"
 PORT = 3000
+NOTIFICATION_SCHEDULE = "* * * * *"
 
 [tasks.generate]
 description = "generate code from protobuf files"
