@@ -207,6 +207,7 @@ type Watch struct {
 	BlueprintId   int32                  `protobuf:"varint,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,6,opt,name=foil,proto3" json:"foil,omitempty"`
+	ExpansionName string                 `protobuf:"bytes,7,opt,name=expansion_name,json=expansionName,proto3" json:"expansion_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -283,6 +284,13 @@ func (x *Watch) GetFoil() bool {
 	return false
 }
 
+func (x *Watch) GetExpansionName() string {
+	if x != nil {
+		return x.ExpansionName
+	}
+	return ""
+}
+
 var File_cardwatcher_entities_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_entities_proto_rawDesc = "" +
@@ -295,14 +303,15 @@ const file_cardwatcher_entities_proto_rawDesc = "" +
 	"\tBlueprint\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\"\xc6\x01\n" +
+	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\"\xed\x01\n" +
 	"\x05Watch\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
 	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\x12!\n" +
 	"\fblueprint_id\x18\x04 \x01(\x05R\vblueprintId\x124\n" +
 	"\tcondition\x18\x05 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
-	"\x04foil\x18\x06 \x01(\bR\x04foil*\xa9\x01\n" +
+	"\x04foil\x18\x06 \x01(\bR\x04foil\x12%\n" +
+	"\x0eexpansion_name\x18\a \x01(\tR\rexpansionName*\xa9\x01\n" +
 	"\tCondition\x12\x19\n" +
 	"\x15CONDITION_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13CONDITION_NEAR_MINT\x10\x01\x12\x1d\n" +

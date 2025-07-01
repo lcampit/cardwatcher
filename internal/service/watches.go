@@ -32,15 +32,24 @@ func (s *service) SaveWatch(ctx context.Context, expansionId, blueprintId int, c
 	if err != nil {
 		return "", fmt.Errorf("error finding name for expansion %d and blueprint %d: %w", expansionId, blueprintId, err)
 	}
+	expansionName, err := s.cardtraderAdapter.GetExpansionNameByID(ctx, expansionId)
+	if err != nil {
+		return "", fmt.Errorf("error finding name for expansion %d: %w", expansionId, err)
+	}
 	newWatchId, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
-		Name:        blueprintName,
-		ExpansionId: expansionId,
-		BlueprintId: blueprintId,
-		Condition:   convertModelConditionToEntityCondition(condition),
-		Foil:        foil,
+		Name:          blueprintName,
+		ExpansionId:   expansionId,
+		ExpansionName: expansionName,
+		BlueprintId:   blueprintId,
+		Condition:     convertModelConditionToEntityCondition(condition),
+		Foil:          foil,
 	})
 	if err != nil {
 		return "", err
 	}
 	return newWatchId, nil
+}
+
+func (s *service) DeleteWatchByID(ctx context.Context, watchID string) error {
+	return s.mongoAdapter.DeleteWatchById(ctx, watchID)
 }

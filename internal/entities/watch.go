@@ -15,10 +15,11 @@ const (
 )
 
 type Watch struct {
-	WatchId     bson.ObjectID  `bson:"_id"`
-	Name        string         `bson:"name"`
-	ExpansionId int            `bson:"expansionId"`
-	BlueprintId int            `bson:"blueprintId"`
-	Condition   WatchCondition `bson:"condition"`
-	Foil        bool           `bson:"foil"`
+	WatchId       bson.ObjectID  `bson:"_id"`
+	Name          string         `bson:"name"`
+	ExpansionId   int            `bson:"expansionId"`
+	ExpansionName string         `bson:"expansionName"`
+	BlueprintId   int            `bson:"blueprintId"`
+	Condition     WatchCondition `bson:"condition"`
+	Foil          bool           `bson:"foil"`
 }
