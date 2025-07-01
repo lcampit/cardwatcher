@@ -8,8 +8,8 @@ import (
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type MongoAdapter interface {
@@ -29,7 +29,7 @@ func NewMongoAdapter(
 	host, port, database string,
 ) MongoAdapter {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
+	client, err := mongo.Connect(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
 	if err != nil {
 		log.Fatal(err)
 	}

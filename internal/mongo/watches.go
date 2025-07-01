@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
-	gomongo "go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 const WATCH_COLLECTION string = "watches"
@@ -65,7 +65,7 @@ func (a *mongoAdapter) GetWatchByWatchId(ctx context.Context, watchId string) (*
 	result := a.client.Database(a.database).Collection(WATCH_COLLECTION).
 		FindOne(ctx, filter)
 
-	if result.Err() == gomongo.ErrNoDocuments {
+	if result.Err() == mongo.ErrNoDocuments {
 		return nil, nil
 	}
 
