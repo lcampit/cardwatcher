@@ -17,13 +17,16 @@ services:
       MONGO_DATABASE: ${MONGO_DATABASE}
       CARDTRADER_ACCESS_TOKEN: ${CARDTRADER_ACCESS_TOKEN}
       CARDTRADER_API_BASE_URL: ${CARDTRADER_API_BASE_URL}
+      NTFY_HOST: ${NTFY_HOST}
+      NTFY_PORT: ${NTFY_PORT}
+      NOTIFICATION_SCHEDULE: ${NOTIFICATION_SCHEDULE}
     depends_on:
       mongo:
         condition: service_healthy
     networks:
       - watcher_network
   mongo:
-    image: mongo:latest
+    image: mongo:8
     restart: unless-stopped
     environment:
       MONGO_USERNAME: ${MONGO_USERNAME}
@@ -38,6 +41,31 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
+    networks:
+      - watcher_network
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    command:
+      - serve
+    environment:
+      - TZ=CEST
+    volumes:
+      - /var/cache/ntfy:/var/cache/ntfy
+      - /etc/ntfy:/etc/ntfy
+    ports:
+      - ${NTFY_PORT}:80
+    healthcheck: # optional: remember to adapt the host:port to your environment
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1",
+        ]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
     networks:
       - watcher_network
 
