@@ -1,6 +1,8 @@
 # Card Watcher
 
-Your own watcher for ordering cards of [Cardtrader](https://www.cardtrader.com)
+Your own watcher for ordering cards off [Cardtrader](https://www.cardtrader.com)
+
+This is the *server* component of the whole *CardWatcher* application.
 
 ## Getting Started
 
