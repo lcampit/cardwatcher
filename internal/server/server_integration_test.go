@@ -28,6 +28,7 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 
 	ntfyContainerRequest := testcontainers.ContainerRequest{
 		Image:        "binwiederhier/ntfy",
+		Cmd:          []string{"serve"},
 		ExposedPorts: []string{"80"},
 		WaitingFor:   wait.ForLog(".*Listening on.*").AsRegexp(),
 	}
