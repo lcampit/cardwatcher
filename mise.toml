@@ -10,6 +10,8 @@ protoc-gen-go-grpc = "latest"
 "cargo:fblog" = "latest"
 "cargo:https://github.com/pamburus/hl.git" = "latest"
 "go:github.com/aurc/loggo" = "latest"
+"go:github.com/felangga/chiko/cmd/chiko" = "latest"
+protoc = "latest"
 
 [env]
 APP_ENV = "DEV"
