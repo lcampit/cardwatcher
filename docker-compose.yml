@@ -6,10 +6,10 @@ services:
       target: prod
     restart: unless-stopped
     ports:
-      - ${PORT}:${PORT}
+      - ${SERVER_PORT}:${SERVER_PORT}
     environment:
       APP_ENV: ${APP_ENV}
-      PORT: ${PORT}
+      SERVER_PORT: ${SERVER_PORT}
       MONGO_HOST: mongo
       MONGO_PORT: ${MONGO_PORT}
       MONGO_USERNAME: ${MONGO_USERNAME}
@@ -17,7 +17,7 @@ services:
       MONGO_DATABASE: ${MONGO_DATABASE}
       CARDTRADER_ACCESS_TOKEN: ${CARDTRADER_ACCESS_TOKEN}
       CARDTRADER_API_BASE_URL: ${CARDTRADER_API_BASE_URL}
-      NTFY_HOST: ${NTFY_HOST}
+      NTFY_HOST: ntfy
       NTFY_PORT: ${NTFY_PORT}
       NOTIFICATION_SCHEDULE: ${NOTIFICATION_SCHEDULE}
     depends_on:

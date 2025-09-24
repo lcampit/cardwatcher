@@ -1,15 +1,16 @@
 package main
 
 import (
+	"fmt"
+	"net"
+	"time"
+
 	"card-watcher/internal/cardtrader"
 	"card-watcher/internal/models"
 	"card-watcher/internal/mongo"
 	"card-watcher/internal/ntfy"
 	"card-watcher/internal/server"
 	"card-watcher/internal/service"
-	"fmt"
-	"net"
-	"time"
 
 	"github.com/robfig/cron/v3"
 	"github.com/rs/zerolog"
@@ -21,7 +22,7 @@ import (
 
 type WatcherConfig struct {
 	AppMode              string `env:"APP_MODE"`
-	Port                 int    `env:"PORT"`
+	Port                 int    `env:"SERVER_PORT"`
 	AccessToken          string `env:"CARDTRADER_ACCESS_TOKEN"`
 	MongoHost            string `env:"MONGO_HOST"`
 	MongoPort            string `env:"MONGO_PORT"`
