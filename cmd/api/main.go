@@ -27,7 +27,7 @@ type WatcherConfig struct {
 	MongoHost            string `env:"MONGO_HOST"`
 	MongoPort            string `env:"MONGO_PORT"`
 	MongoDatabase        string `env:"MONGO_DATABASE"`
-	CardtraderApiBaseUrl string `env:"CARDTRADER_API_BASE_URL"`
+	CardtraderAPIBaseURL string `env:"CARDTRADER_API_BASE_URL"`
 	NtfyHost             string `env:"NTFY_HOST"`
 	NtfyPort             string `env:"NTFY_PORT"`
 	NotificationSchedule string `env:"NOTIFICATION_SCHEDULE"`
@@ -51,7 +51,7 @@ func main() {
 	}
 
 	ntfyAdapter := ntfy.NewNtfyAdapter("ntfy.sh", "")
-	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, watcherConfig.CardtraderApiBaseUrl)
+	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, watcherConfig.CardtraderAPIBaseURL)
 	mongoAdapter := mongo.NewMongoAdapter(watcherConfig.MongoHost, watcherConfig.MongoPort, watcherConfig.MongoDatabase)
 	service := service.NewService(cardtraderAdapter, mongoAdapter, ntfyAdapter)
 	server := server.NewServer(service)
