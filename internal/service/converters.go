@@ -3,8 +3,6 @@ package service
 import (
 	"card-watcher/internal/entities"
 	"card-watcher/internal/models"
-
-	"github.com/rs/zerolog/log"
 )
 
 func convertModelConditionToEntityCondition(modelCondition models.Condition) entities.WatchCondition {
@@ -23,7 +21,6 @@ func convertModelConditionToEntityCondition(modelCondition models.Condition) ent
 	default:
 		return entities.WATCH_CONDITION_NEAR_MINT
 	}
-	log.Debug().Msgf("received unknown model condition %s, resorting to default NEAR MINT", modelCondition)
 	return entities.WATCH_CONDITION_NEAR_MINT
 }
 
@@ -40,7 +37,6 @@ func convertEntityConditionToModelCondition(entityCondition entities.WatchCondit
 	case entities.WATCH_CONDITION_POOR:
 		return models.Condition_CONDITION_POOR
 	}
-	log.Debug().Msgf("received unknown entity condition %s, resorting to default NEAR MINT", entityCondition)
 	return models.Condition_CONDITION_NEAR_MINT
 }
 

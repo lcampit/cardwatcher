@@ -1,12 +1,12 @@
 package service
 
 import (
-	"card-watcher/internal/models"
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
 
-	"github.com/rs/zerolog/log"
+	"card-watcher/internal/models"
 )
 
 func (s *service) ListExpansions(ctx context.Context, name, code string) (models.ListExpansionsResponse, error) {
@@ -45,7 +45,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 			})
 		}
 	}
-	log.Debug().Msgf("returning %d filtered expansions", len(resultingExpanions))
+	s.logger.Debug("returning filtered expansions", slog.Int("expansionCount", len(resultingExpanions)))
 	return models.ListExpansionsResponse{
 		Expansions: resultingExpanions,
 	}, nil

@@ -1,12 +1,12 @@
 package service
 
 import (
-	"card-watcher/internal/entities"
-	"card-watcher/internal/models"
 	"context"
 	"fmt"
+	"log/slog"
 
-	"github.com/rs/zerolog/log"
+	"card-watcher/internal/entities"
+	"card-watcher/internal/models"
 )
 
 func (s *service) ListWatches(ctx context.Context) (models.ListWatchesResponse, error) {
@@ -21,35 +21,35 @@ func (s *service) ListWatches(ctx context.Context) (models.ListWatchesResponse, 
 		result = append(result, convertEntityWatchToModelWatch(entity))
 	}
 
-	log.Debug().Msgf("returning %d watches", len(result))
+	s.logger.Debug("returning watches", slog.Int("watchCount", len(result)))
 	return models.ListWatchesResponse{
 		Watches: result,
 	}, nil
 }
 
-func (s *service) SaveWatch(ctx context.Context, expansionId, blueprintId int, condition models.Condition, foil bool) (string, error) {
-	blueprintName, err := s.cardtraderAdapter.GetBlueprintNameByExpansionId(ctx, expansionId, blueprintId)
+func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID int, condition models.Condition, foil bool) (string, error) {
+	blueprintName, err := s.cardtraderAdapter.GetBlueprintNameByExpansionID(ctx, expansionID, blueprintID)
 	if err != nil {
-		return "", fmt.Errorf("error finding name for expansion %d and blueprint %d: %w", expansionId, blueprintId, err)
+		return "", fmt.Errorf("error finding name for expansion %d and blueprint %d: %w", expansionID, blueprintID, err)
 	}
-	expansionName, err := s.cardtraderAdapter.GetExpansionNameByID(ctx, expansionId)
+	expansionName, err := s.cardtraderAdapter.GetExpansionNameByID(ctx, expansionID)
 	if err != nil {
-		return "", fmt.Errorf("error finding name for expansion %d: %w", expansionId, err)
+		return "", fmt.Errorf("error finding name for expansion %d: %w", expansionID, err)
 	}
-	newWatchId, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
+	newWatchID, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
 		Name:          blueprintName,
-		ExpansionId:   expansionId,
+		ExpansionId:   expansionID,
 		ExpansionName: expansionName,
-		BlueprintId:   blueprintId,
+		BlueprintId:   blueprintID,
 		Condition:     convertModelConditionToEntityCondition(condition),
 		Foil:          foil,
 	})
 	if err != nil {
 		return "", err
 	}
-	return newWatchId, nil
+	return newWatchID, nil
 }
 
 func (s *service) DeleteWatchByID(ctx context.Context, watchID string) error {
-	return s.mongoAdapter.DeleteWatchById(ctx, watchID)
+	return s.mongoAdapter.DeleteWatchByID(ctx, watchID)
 }
