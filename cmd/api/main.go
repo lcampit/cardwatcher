@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net"
 	"time"
 
@@ -66,7 +67,10 @@ func main() {
 	}
 	c.Start()
 	log.Info().Msgf("Server started on port %d", watcherConfig.Port)
-	grpcServer.Serve(lis)
+	err = grpcServer.Serve(lis)
+	if err != nil {
+		logger.Error("error while listening", slog.Any("error", err))
+	}
 	log.Info().Msgf("Stopping server")
 	c.Stop()
 	log.Info().Msgf("Done")
