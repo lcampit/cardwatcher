@@ -1,17 +1,19 @@
 package server
 
 import (
-	"card-watcher/internal/models"
 	"context"
+	"log/slog"
 
-	"github.com/rs/zerolog/log"
+	"card-watcher/internal/models"
 )
 
 func (s *server) ListBlueprints(ctx context.Context, in *models.ListBlueprintsRequest) (*models.ListBlueprintsResponse, error) {
-	log.Info().Msgf("Received a ListExpansions request for expansion id '%d' and blueprint name '%s'", in.ExpansionId, in.Name)
+	s.logger.Info("Received a ListExpansions request",
+		slog.Int("expansionID", int(in.ExpansionId)),
+		slog.String("name", in.Name))
 	response, err := s.service.ListBlueprints(ctx, int(in.ExpansionId), in.Name)
 	if err != nil {
-		log.Error().Err(err).Msg("error in list expansions")
+		s.logger.Error("error in list expansions", slog.Any("error", err))
 		return nil, err
 	}
 	return &response, nil

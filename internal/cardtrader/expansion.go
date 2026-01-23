@@ -3,9 +3,9 @@ package cardtrader
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"github.com/carlmjohnson/requests"
-	"github.com/rs/zerolog/log"
 )
 
 type expansion struct {
@@ -17,19 +17,19 @@ type expansion struct {
 
 func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, error) {
 	var response []*expansion
-	endpoint := fmt.Sprintf("%s/%s", a.baseUrl, "expansions")
+	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "expansions")
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error in cardtrader expansions endpoint %w", err)
 	}
-	log.Debug().Msgf("received %d expansions", len(response))
+	a.logger.Debug("received expansions", slog.Int("expansionCount", len(response)))
 	return response, nil
 }
 
 func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionID int) (string, error) {
 	var response []*expansion
-	endpoint := fmt.Sprintf("%s/%s", a.baseUrl, "expansions")
+	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "expansions")
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
@@ -37,7 +37,7 @@ func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionI
 	}
 	for _, expansion := range response {
 		if expansion.ID == expansionID {
-			log.Debug().Msgf("found name for expansion id %d: %s", expansionID, expansion.Name)
+			a.logger.Debug("found name for expansion id", slog.Int("expansionID", expansionID), slog.String("expansionName", expansion.Name))
 			return expansion.Name, nil
 		}
 	}

@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net"
 	"time"
 
 	"card-watcher/internal/cardtrader"
+	"card-watcher/internal/logger"
 	"card-watcher/internal/models"
 	"card-watcher/internal/mongo"
 	"card-watcher/internal/ntfy"
@@ -13,8 +15,6 @@ import (
 	"card-watcher/internal/service"
 
 	"github.com/robfig/cron/v3"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -22,12 +22,13 @@ import (
 
 type WatcherConfig struct {
 	AppMode              string `env:"APP_MODE"`
+	LogLevel             string `env:"LOG_LEVEL"`
 	Port                 int    `env:"SERVER_PORT"`
 	AccessToken          string `env:"CARDTRADER_ACCESS_TOKEN"`
 	MongoHost            string `env:"MONGO_HOST"`
 	MongoPort            string `env:"MONGO_PORT"`
 	MongoDatabase        string `env:"MONGO_DATABASE"`
-	CardtraderApiBaseUrl string `env:"CARDTRADER_API_BASE_URL"`
+	CardtraderAPIBaseURL string `env:"CARDTRADER_API_BASE_URL"`
 	NtfyHost             string `env:"NTFY_HOST"`
 	NtfyPort             string `env:"NTFY_PORT"`
 	NotificationSchedule string `env:"NOTIFICATION_SCHEDULE"`
@@ -40,21 +41,18 @@ func main() {
 		return
 	}
 
-	zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	if watcherConfig.AppMode == "PROD" {
-		zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	}
+	logger := logger.NewLogger(watcherConfig.LogLevel)
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.Port))
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to listen")
+		logger.Error("failed to listen", slog.Any("error", err))
 	}
 
-	ntfyAdapter := ntfy.NewNtfyAdapter("ntfy.sh", "")
-	cardtraderAdapter := cardtrader.NewCardtraderAdapter(watcherConfig.AccessToken, watcherConfig.CardtraderApiBaseUrl)
-	mongoAdapter := mongo.NewMongoAdapter(watcherConfig.MongoHost, watcherConfig.MongoPort, watcherConfig.MongoDatabase)
-	service := service.NewService(cardtraderAdapter, mongoAdapter, ntfyAdapter)
-	server := server.NewServer(service)
+	ntfyAdapter := ntfy.NewNtfyAdapter(logger, "ntfy.sh", "")
+	cardtraderAdapter := cardtrader.NewCardtraderAdapter(logger, watcherConfig.AccessToken, watcherConfig.CardtraderAPIBaseURL)
+	mongoAdapter := mongo.NewMongoAdapter(logger, watcherConfig.MongoHost, watcherConfig.MongoPort, watcherConfig.MongoDatabase)
+	service := service.NewService(logger, cardtraderAdapter, mongoAdapter, ntfyAdapter)
+	server := server.NewServer(logger, service)
 
 	grpcServer := grpc.NewServer()
 	models.RegisterCardWatcherServer(grpcServer, server)
@@ -64,12 +62,15 @@ func main() {
 	c := cron.New(cron.WithLocation(loc))
 	_, err = c.AddFunc(watcherConfig.NotificationSchedule, service.WatchAndNotify)
 	if err != nil {
-		log.Fatal().Err(err).Msg("error when setting up notification cron job")
+		logger.Error("error when setting up notification cron job", slog.Any("error", err))
 	}
 	c.Start()
-	log.Info().Msgf("Server started on port %d", watcherConfig.Port)
-	grpcServer.Serve(lis)
-	log.Info().Msgf("Stopping server")
+	logger.Info("Server started", slog.Int("serverPort", watcherConfig.Port))
+	err = grpcServer.Serve(lis)
+	if err != nil {
+		logger.Error("error while listening", slog.Any("error", err))
+	}
+	logger.Info("Stopping server")
 	c.Stop()
-	log.Info().Msgf("Done")
+	logger.Info("Done")
 }

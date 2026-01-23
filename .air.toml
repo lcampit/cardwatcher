@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 
 [build]
 args_bin = []
-bin = "./main"
+bin = "./tmp/main"
 cmd = "mise run build"
 delay = 1000
 exclude_dir = ["assets", "tmp", "vendor", "testdata", "node_modules"]
@@ -39,7 +39,7 @@ main_only = false
 time = false
 
 [misc]
-clean_on_exit = false
+clean_on_exit = true
 
 [screen]
 clear_on_rebuild = false

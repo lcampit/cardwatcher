@@ -1,16 +1,17 @@
+// Package service implements all business logic
 package service
 
 import (
-	"card-watcher/internal/models"
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
 
-	"github.com/rs/zerolog/log"
+	"card-watcher/internal/models"
 )
 
-func (s *service) ListBlueprints(ctx context.Context, expansionId int, name string) (models.ListBlueprintsResponse, error) {
-	blueprints, err := s.cardtraderAdapter.GetBlueprints(ctx, expansionId)
+func (s *service) ListBlueprints(ctx context.Context, expansionID int, name string) (models.ListBlueprintsResponse, error) {
+	blueprints, err := s.cardtraderAdapter.GetBlueprints(ctx, expansionID)
 	if err != nil {
 		return models.ListBlueprintsResponse{}, fmt.Errorf("error getting blueprints from adapter: %w", err)
 	}
@@ -22,21 +23,21 @@ func (s *service) ListBlueprints(ctx context.Context, expansionId int, name stri
 			// filter via card name
 			if strings.Contains(strings.ToLower(blueprint.Name), normalizedName) {
 				resultingBlueprints = append(resultingBlueprints, &models.Blueprint{
-					Id:          int32(blueprint.Id),
+					Id:          int32(blueprint.ID),
 					Name:        blueprint.Name,
-					ExpansionId: int32(blueprint.ExpansionId),
+					ExpansionId: int32(blueprint.ExpansionID),
 				})
 			}
 		} else {
 			// no filter provided, return all cards from given expansion
 			resultingBlueprints = append(resultingBlueprints, &models.Blueprint{
-				Id:          int32(blueprint.Id),
+				Id:          int32(blueprint.ID),
 				Name:        blueprint.Name,
-				ExpansionId: int32(blueprint.ExpansionId),
+				ExpansionId: int32(blueprint.ExpansionID),
 			})
 		}
 	}
-	log.Debug().Msgf("returning %d filtered blueprints", len(resultingBlueprints))
+	s.logger.Debug("returning filtered blueprints", slog.Int("blueprintsCount", len(resultingBlueprints)))
 	return models.ListBlueprintsResponse{
 		Blueprints: resultingBlueprints,
 	}, nil

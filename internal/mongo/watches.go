@@ -1,46 +1,47 @@
 package mongo
 
 import (
-	"card-watcher/internal/entities"
 	"context"
 	"errors"
 	"fmt"
+
+	"card-watcher/internal/entities"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-const WATCH_COLLECTION string = "watches"
+const WatchCollection string = "watches"
 
 func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *entities.Watch) (string, error) {
-	watch.WatchId = bson.NewObjectID()
-	_, err := a.client.Database(a.database).Collection(WATCH_COLLECTION).
+	watch.WatchID = bson.NewObjectID()
+	_, err := a.client.Database(a.database).Collection(WatchCollection).
 		InsertOne(ctx, watch)
 	if err != nil {
-		return "", fmt.Errorf("error inserting watch with id %s: %w", watch.WatchId, err)
+		return "", fmt.Errorf("error inserting watch with id %s: %w", watch.WatchID, err)
 	}
-	return watch.WatchId.Hex(), nil
+	return watch.WatchID.Hex(), nil
 }
 
-func (a *mongoAdapter) DeleteWatchById(ctx context.Context, watchId string) error {
-	convertedId, err := bson.ObjectIDFromHex(watchId)
+func (a *mongoAdapter) DeleteWatchByID(ctx context.Context, watchID string) error {
+	convertedID, err := bson.ObjectIDFromHex(watchID)
 	if err != nil && errors.Is(err, bson.ErrInvalidHex) {
 		return errors.New("invalid watch ID provided")
 	}
 	if err != nil {
-		return fmt.Errorf("error converting object id %s in delete watch by id: %w", watchId, err)
+		return fmt.Errorf("error converting object id %s in delete watch by id: %w", watchID, err)
 	}
-	_, err = a.client.Database(a.database).Collection(WATCH_COLLECTION).
-		DeleteOne(ctx, bson.M{"_id": convertedId})
+	_, err = a.client.Database(a.database).Collection(WatchCollection).
+		DeleteOne(ctx, bson.M{"_id": convertedID})
 	if err != nil {
-		return fmt.Errorf("error deleting watch with id %s: %w", watchId, err)
+		return fmt.Errorf("error deleting watch with id %s: %w", watchID, err)
 	}
 	return nil
 }
 
 func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error) {
 	var watches []*entities.Watch
-	cursor, err := a.client.Database(a.database).Collection(WATCH_COLLECTION).
+	cursor, err := a.client.Database(a.database).Collection(WatchCollection).
 		Find(ctx, bson.M{})
 	if err != nil {
 		return nil, fmt.Errorf("error finding all watches: %w", err)
@@ -54,15 +55,15 @@ func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error
 	return watches, nil
 }
 
-func (a *mongoAdapter) GetWatchByWatchId(ctx context.Context, watchId string) (*entities.Watch, error) {
-	convertedId, err := bson.ObjectIDFromHex(watchId)
+func (a *mongoAdapter) GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error) {
+	convertedID, err := bson.ObjectIDFromHex(watchID)
 	if err != nil {
-		return nil, fmt.Errorf("error converting object id %s in get watch by id: %w", watchId, err)
+		return nil, fmt.Errorf("error converting object id %s in get watch by id: %w", watchID, err)
 	}
 
 	var watch entities.Watch
-	filter := bson.M{"_id": convertedId}
-	result := a.client.Database(a.database).Collection(WATCH_COLLECTION).
+	filter := bson.M{"_id": convertedID}
+	result := a.client.Database(a.database).Collection(WatchCollection).
 		FindOne(ctx, filter)
 
 	if result.Err() == mongo.ErrNoDocuments {
@@ -70,12 +71,12 @@ func (a *mongoAdapter) GetWatchByWatchId(ctx context.Context, watchId string) (*
 	}
 
 	if result.Err() != nil {
-		return nil, fmt.Errorf("error getting watch by id %s: %w", watchId, result.Err())
+		return nil, fmt.Errorf("error getting watch by id %s: %w", watchID, result.Err())
 	}
 
 	err = result.Decode(&watch)
 	if err != nil {
-		return nil, fmt.Errorf("error decoding watch with id %s from database: %w", watchId, err)
+		return nil, fmt.Errorf("error decoding watch with id %s from database: %w", watchID, err)
 	}
 
 	return &watch, nil

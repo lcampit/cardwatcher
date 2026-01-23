@@ -3,7 +3,9 @@ package mongo
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
+	"log/slog"
 	"testing"
 
 	"github.com/testcontainers/testcontainers-go"
@@ -49,14 +51,16 @@ func TestMain(m *testing.M) {
 }
 
 func TestNew(t *testing.T) {
-	srv := NewMongoAdapter(testHost, testPort, testDatabase)
+	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
+	srv := NewMongoAdapter(logger, testHost, testPort, testDatabase)
 	if srv == nil {
 		t.Fatal("New() returned nil")
 	}
 }
 
 func TestHealth(t *testing.T) {
-	srv := NewMongoAdapter(testHost, testPort, testDatabase)
+	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
+	srv := NewMongoAdapter(logger, testHost, testPort, testDatabase)
 
 	stats := srv.Health()
 

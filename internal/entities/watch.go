@@ -1,3 +1,5 @@
+// Package entities contains definition for
+// entities used in the application
 package entities
 
 import (
@@ -7,19 +9,19 @@ import (
 type WatchCondition string
 
 const (
-	WATCH_CONDITION_NEAR_MINT         WatchCondition = "Near Mint"
-	WATCH_CONDITION_SLIGHTLY_PLAYED   WatchCondition = "Slightly Played"
-	WATCH_CONDITION_MODERATELY_PLAYED WatchCondition = "Moderately Played"
-	WATCH_CONDITION_PLAYED            WatchCondition = "Played"
-	WATCH_CONDITION_POOR              WatchCondition = "Poor"
+	WatchConditionNM WatchCondition = "Near Mint"
+	WatchConditionSP WatchCondition = "Slightly Played"
+	WatchConditionMP WatchCondition = "Moderately Played"
+	WatchConditionPL WatchCondition = "Played"
+	WatchConditionPO WatchCondition = "Poor"
 )
 
 type Watch struct {
-	WatchId       bson.ObjectID  `bson:"_id"`
+	WatchID       bson.ObjectID  `bson:"_id"`
 	Name          string         `bson:"name"`
-	ExpansionId   int            `bson:"expansionId"`
+	ExpansionID   int            `bson:"expansionId"`
 	ExpansionName string         `bson:"expansionName"`
-	BlueprintId   int            `bson:"blueprintId"`
+	BlueprintID   int            `bson:"blueprintId"`
 	Condition     WatchCondition `bson:"condition"`
 	Foil          bool           `bson:"foil"`
 }

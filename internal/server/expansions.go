@@ -1,17 +1,19 @@
 package server
 
 import (
-	"card-watcher/internal/models"
 	"context"
+	"log/slog"
 
-	"github.com/rs/zerolog/log"
+	"card-watcher/internal/models"
 )
 
 func (s *server) ListExpansions(ctx context.Context, in *models.ListExpansionsRequest) (*models.ListExpansionsResponse, error) {
-	log.Info().Msgf("Received a ListExpansions request for name '%s' or code '%s'", in.Name, in.Code)
+	s.logger.Info("Received a ListExpansions request",
+		slog.String("name", in.Name),
+		slog.String("code", in.Code))
 	response, err := s.service.ListExpansions(ctx, in.Name, in.Code)
 	if err != nil {
-		log.Error().Err(err).Msg("error in list expansions")
+		s.logger.Error("error in list expansions", slog.Any("error", err))
 		return nil, err
 	}
 	return &response, nil
