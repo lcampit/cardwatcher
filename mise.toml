@@ -2,17 +2,16 @@
 docker-compose = "latest"
 go = "1.24"
 "go:github.com/air-verse/air" = "v1.62"
-"go:github.com/melkeydev/go-blueprint" = "0.10"
 "go:github.com/fullstorydev/grpcurl/cmd/grpcurl" = "1.9.2"
 "go:gotest.tools/gotestsum" = "v1.12.2"
 protoc-gen-go = "v1.36.6"
 protoc-gen-go-grpc = "latest"
-"cargo:fblog" = "latest"
 "cargo:https://github.com/pamburus/hl.git" = "latest"
 "go:github.com/aurc/loggo" = "latest"
-"go:github.com/felangga/chiko/cmd/chiko" = "latest"
 protoc = "32.1"
 gh = "2.80.0"
+"go:github.com/unkn0wn-root/resterm/cmd/resterm" = "v0.19.1"
+golangci-lint = "v2.8.0"
 
 [env]
 APP_ENV = "DEV"
@@ -61,3 +60,13 @@ alias = "c"
 description = "build and run the app watching for changes"
 run = "air | hl"
 alias = "w"
+
+[tasks.lint]
+description = "run golangci linters and fix issues if any"
+run = "golangci-lint run --fix"
+alias = "l"
+
+[tasks.format]
+description = "run golangci formatters"
+run = "golangci-lint fmt"
+alias = "f"
