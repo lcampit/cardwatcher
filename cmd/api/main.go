@@ -15,7 +15,6 @@ import (
 	"card-watcher/internal/service"
 
 	"github.com/robfig/cron/v3"
-	"github.com/rs/zerolog/log"
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -46,7 +45,7 @@ func main() {
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.Port))
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to listen")
+		logger.Error("failed to listen", slog.Any("error", err))
 	}
 
 	ntfyAdapter := ntfy.NewNtfyAdapter(logger, "ntfy.sh", "")
@@ -63,15 +62,15 @@ func main() {
 	c := cron.New(cron.WithLocation(loc))
 	_, err = c.AddFunc(watcherConfig.NotificationSchedule, service.WatchAndNotify)
 	if err != nil {
-		log.Fatal().Err(err).Msg("error when setting up notification cron job")
+		logger.Error("error when setting up notification cron job", slog.Any("error", err))
 	}
 	c.Start()
-	log.Info().Msgf("Server started on port %d", watcherConfig.Port)
+	logger.Info("Server started", slog.Int("serverPort", watcherConfig.Port))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		logger.Error("error while listening", slog.Any("error", err))
 	}
-	log.Info().Msgf("Stopping server")
+	logger.Info("Stopping server")
 	c.Stop()
-	log.Info().Msgf("Done")
+	logger.Info("Done")
 }
