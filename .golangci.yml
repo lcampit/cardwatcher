@@ -15,3 +15,14 @@ linters:
         - "level"
         - "msg"
         - "source"
+formatters:
+  enable:
+    - goimports
+    - gofumpt
+  settings:
+    gofumpt:
+      extra-rules: true
+      module-path: "card-watcher"
+    goimports:
+      local-prefixes:
+        - "card-watcher"
