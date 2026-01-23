@@ -1,38 +1,39 @@
 package server
 
 import (
-	"card-watcher/internal/models"
 	"context"
+	"log/slog"
 
-	"github.com/rs/zerolog/log"
+	"card-watcher/internal/models"
+
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*models.SaveWatchResponse, error) {
-	log.Info().Msg("Received a SaveWatch request")
-	log.Debug().Interface("request", in).Msg("")
-	watchId, err := s.service.SaveWatch(ctx, int(in.ExpansionId), int(in.BlueprintId), in.Condition, in.Foil)
+	s.logger.Info("Received a SaveWatch request")
+	s.logger.Debug("request received", slog.Any("request", in))
+	watchID, err := s.service.SaveWatch(ctx, int(in.ExpansionId), int(in.BlueprintId), in.Condition, in.Foil)
 	if err != nil {
-		log.Error().Err(err).Msg("error in save watch")
+		s.logger.Error("error in save watch", slog.Any("error", err))
 		return nil, err
 	}
 	return &models.SaveWatchResponse{
-		WatchId: watchId,
+		WatchId: watchID,
 	}, nil
 }
 
 func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.ListWatchesResponse, error) {
-	log.Info().Msg("Received a ListWatches request")
+	s.logger.Info("Received a ListWatches request")
 	response, err := s.service.ListWatches(ctx)
 	if err != nil {
-		log.Error().Err(err).Msg("error in list watches")
+		s.logger.Error("error in list watches", slog.Any("error", err))
 		return nil, err
 	}
 	return &response, nil
 }
 
 func (s *server) DeleteWatchById(ctx context.Context, in *models.DeleteWatchByIdRequest) (*emptypb.Empty, error) {
-	log.Info().Msg("Received a DeleteWatchById request")
-	log.Debug().Interface("request", in).Msg("")
+	s.logger.Info("Received a DeleteWatchById request")
+	s.logger.Debug("request received", slog.Any("request", in))
 	return &emptypb.Empty{}, s.service.DeleteWatchByID(ctx, in.WatchId)
 }

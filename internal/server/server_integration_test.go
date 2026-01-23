@@ -38,7 +38,7 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 		Started:          true,
 	})
 	if err != nil {
-		suite.mongoTestContainer.Terminate(suite.ctx)
+		_ = suite.mongoTestContainer.Terminate(suite.ctx)
 		suite.FailNowf("error starting up ntfy test container: %s", err.Error())
 	}
 	suite.ntfyTestContainer = ntfyContainer
@@ -48,8 +48,8 @@ func (suite *ServerIntegrationTestSuite) TestConnectToContainers() {
 }
 
 func (suite *ServerIntegrationTestSuite) TearDownSuite() {
-	suite.mongoTestContainer.Terminate(suite.ctx)
-	suite.ntfyTestContainer.Terminate(suite.ctx)
+	_ = suite.mongoTestContainer.Terminate(suite.ctx)
+	_ = suite.ntfyTestContainer.Terminate(suite.ctx)
 }
 
 func TestServerIntegrationTestSuite(t *testing.T) {
