@@ -5,7 +5,6 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"log"
 	"log/slog"
 	"time"
 
@@ -39,11 +38,11 @@ func NewMongoAdapter(
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
 	client, err := mongo.Connect(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("error connecting to mongo instance", slog.Any("error", err))
 	}
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("error reaching mongo instance", slog.Any("error", err))
 	}
 	return &mongoAdapter{
 		logger:        logger,
@@ -63,7 +62,7 @@ func (a *mongoAdapter) Health() map[string]string {
 
 	err := a.client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatalf("db down: %v", err)
+		a.logger.Error("error reaching mongo instance in healthcheck", slog.Any("error", err))
 	}
 
 	return map[string]string{
