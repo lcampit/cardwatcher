@@ -8,7 +8,7 @@ import (
 )
 
 func (s *server) ListExpansions(ctx context.Context, in *models.ListExpansionsRequest) (*models.ListExpansionsResponse, error) {
-	s.logger.Info("Received a ListExpansions request",
+	s.logger.Info("received a ListExpansions request",
 		slog.String("name", in.Name),
 		slog.String("code", in.Code))
 	response, err := s.service.ListExpansions(ctx, in.Name, in.Code)

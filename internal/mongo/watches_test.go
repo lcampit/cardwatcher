@@ -2,7 +2,6 @@ package mongo
 
 import (
 	"context"
-	"io"
 	"log/slog"
 	"testing"
 
@@ -14,7 +13,7 @@ import (
 
 func TestCRUDWatches(t *testing.T) {
 	ctx := context.Background()
-	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
+	logger := slog.New(slog.DiscardHandler)
 	mongoAdapter := NewMongoAdapter(logger, testHost, testPort, testDatabase)
 
 	watchID1 := bson.NewObjectID()

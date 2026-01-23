@@ -8,8 +8,8 @@ import (
 )
 
 func (s *server) ListBlueprints(ctx context.Context, in *models.ListBlueprintsRequest) (*models.ListBlueprintsResponse, error) {
-	s.logger.Info("Received a ListExpansions request",
-		slog.Int("expansionID", int(in.ExpansionId)),
+	s.logger.Info("received a ListExpansions request",
+		slog.Int("expansionId", int(in.ExpansionId)),
 		slog.String("name", in.Name))
 	response, err := s.service.ListBlueprints(ctx, int(in.ExpansionId), in.Name)
 	if err != nil {
