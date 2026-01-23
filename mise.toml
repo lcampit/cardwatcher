@@ -30,7 +30,7 @@ alias = "g"
 
 [tasks.build]
 description = "build the app"
-run = "go build -o main cmd/api/main.go"
+run = "go build -o tmp/main cmd/api/main.go"
 alias = "b"
 
 [tasks.run]
@@ -53,7 +53,7 @@ alias = "t"
 
 [tasks.clean]
 description = "cleans artifacts produced"
-run = "rm -f main"
+run = "rm -rf tmp"
 alias = "c"
 
 [tasks.watch]
