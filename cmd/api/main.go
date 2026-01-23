@@ -65,12 +65,12 @@ func main() {
 		logger.Error("error when setting up notification cron job", slog.Any("error", err))
 	}
 	c.Start()
-	logger.Info("Server started", slog.Int("serverPort", watcherConfig.Port))
+	logger.Info("server started", slog.Int("serverPort", watcherConfig.Port))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		logger.Error("error while listening", slog.Any("error", err))
 	}
-	logger.Info("Stopping server")
+	logger.Info("stopping server")
 	c.Stop()
-	logger.Info("Done")
+	logger.Info("done")
 }

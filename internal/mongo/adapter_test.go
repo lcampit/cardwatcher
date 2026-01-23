@@ -3,7 +3,6 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"io"
 	"log"
 	"log/slog"
 	"testing"
@@ -51,7 +50,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestNew(t *testing.T) {
-	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
+	logger := slog.New(slog.DiscardHandler)
 	srv := NewMongoAdapter(logger, testHost, testPort, testDatabase)
 	if srv == nil {
 		t.Fatal("New() returned nil")
@@ -59,7 +58,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestHealth(t *testing.T) {
-	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
+	logger := slog.New(slog.DiscardHandler)
 	srv := NewMongoAdapter(logger, testHost, testPort, testDatabase)
 
 	stats := srv.Health()

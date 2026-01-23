@@ -21,7 +21,7 @@ func (s *service) WatchAndNotify() {
 		blueprintPricing, err := s.cardtraderAdapter.GetCurrentPricing(ctx, watch)
 		if err != nil {
 			s.logger.Error("error getting current pricing",
-				slog.Int("blueprintID", watch.BlueprintID),
+				slog.Int("blueprintId", watch.BlueprintID),
 				slog.Any("error", err))
 			break
 		}
@@ -30,7 +30,7 @@ func (s *service) WatchAndNotify() {
 		if blueprintPricing == 0 {
 			msg = fmt.Sprintf("Looks like no one is selling %s today", watch.Name)
 			s.logger.Info("no products found for blueprint",
-				slog.Int("blueprintID", watch.BlueprintID),
+				slog.Int("blueprintId", watch.BlueprintID),
 				slog.String("blueprintName", watch.Name))
 		} else {
 			msg = fmt.Sprintf("%s price is %d today", watch.Name, blueprintPricing)

@@ -10,7 +10,7 @@ import (
 )
 
 func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*models.SaveWatchResponse, error) {
-	s.logger.Info("Received a SaveWatch request")
+	s.logger.Info("received a SaveWatch request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	watchID, err := s.service.SaveWatch(ctx, int(in.ExpansionId), int(in.BlueprintId), in.Condition, in.Foil)
 	if err != nil {
@@ -23,7 +23,7 @@ func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*m
 }
 
 func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.ListWatchesResponse, error) {
-	s.logger.Info("Received a ListWatches request")
+	s.logger.Info("received a ListWatches request")
 	response, err := s.service.ListWatches(ctx)
 	if err != nil {
 		s.logger.Error("error in list watches", slog.Any("error", err))
@@ -33,7 +33,7 @@ func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.Li
 }
 
 func (s *server) DeleteWatchById(ctx context.Context, in *models.DeleteWatchByIdRequest) (*emptypb.Empty, error) {
-	s.logger.Info("Received a DeleteWatchById request")
+	s.logger.Info("received a DeleteWatchById request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	return &emptypb.Empty{}, s.service.DeleteWatchByID(ctx, in.WatchId)
 }

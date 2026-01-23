@@ -37,7 +37,9 @@ func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionI
 	}
 	for _, expansion := range response {
 		if expansion.ID == expansionID {
-			a.logger.Debug("found name for expansion id", slog.Int("expansionID", expansionID), slog.String("expansionName", expansion.Name))
+			a.logger.Debug("found name for expansion id",
+				slog.Int("expansionId", expansionID),
+				slog.String("expansionName", expansion.Name))
 			return expansion.Name, nil
 		}
 	}
