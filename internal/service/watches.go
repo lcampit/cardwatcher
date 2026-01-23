@@ -38,9 +38,9 @@ func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID int, c
 	}
 	newWatchID, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
 		Name:          blueprintName,
-		ExpansionId:   expansionID,
+		ExpansionID:   expansionID,
 		ExpansionName: expansionName,
-		BlueprintId:   blueprintID,
+		BlueprintID:   blueprintID,
 		Condition:     convertModelConditionToEntityCondition(condition),
 		Foil:          foil,
 	})

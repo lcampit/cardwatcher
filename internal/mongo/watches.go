@@ -14,13 +14,13 @@ import (
 const WatchCollection string = "watches"
 
 func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *entities.Watch) (string, error) {
-	watch.WatchId = bson.NewObjectID()
+	watch.WatchID = bson.NewObjectID()
 	_, err := a.client.Database(a.database).Collection(WatchCollection).
 		InsertOne(ctx, watch)
 	if err != nil {
-		return "", fmt.Errorf("error inserting watch with id %s: %w", watch.WatchId, err)
+		return "", fmt.Errorf("error inserting watch with id %s: %w", watch.WatchID, err)
 	}
-	return watch.WatchId.Hex(), nil
+	return watch.WatchID.Hex(), nil
 }
 
 func (a *mongoAdapter) DeleteWatchByID(ctx context.Context, watchID string) error {

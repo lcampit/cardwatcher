@@ -22,25 +22,25 @@ func TestCRUDWatches(t *testing.T) {
 	watchID3 := bson.NewObjectID()
 
 	watch1 := &entities.Watch{
-		WatchId:     watchID1,
-		ExpansionId: 1,
-		BlueprintId: 1,
-		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
+		WatchID:     watchID1,
+		ExpansionID: 1,
+		BlueprintID: 1,
+		Condition:   entities.WatchConditionNM,
 		Foil:        false,
 	}
 	watch2 := &entities.Watch{
-		WatchId:     watchID2,
-		ExpansionId: 2,
-		BlueprintId: 2,
-		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
+		WatchID:     watchID2,
+		ExpansionID: 2,
+		BlueprintID: 2,
+		Condition:   entities.WatchConditionNM,
 		Foil:        false,
 	}
 
 	watch3 := &entities.Watch{
-		WatchId:     watchID3,
-		ExpansionId: 2,
-		BlueprintId: 3,
-		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
+		WatchID:     watchID3,
+		ExpansionID: 2,
+		BlueprintID: 3,
+		Condition:   entities.WatchConditionNM,
 		Foil:        false,
 	}
 
@@ -55,9 +55,9 @@ func TestCRUDWatches(t *testing.T) {
 	assert.Nil(t, err, "getting watch 1 failed")
 	assert.NotNil(t, watchFromDB1, "watcher 1 not found by get")
 
-	assert.Equal(t, watch1.WatchId, watchFromDB1.WatchId)
-	assert.Equal(t, watch1.ExpansionId, watchFromDB1.ExpansionId)
-	assert.Equal(t, watch1.BlueprintId, watchFromDB1.BlueprintId)
+	assert.Equal(t, watch1.WatchID, watchFromDB1.WatchID)
+	assert.Equal(t, watch1.ExpansionID, watchFromDB1.ExpansionID)
+	assert.Equal(t, watch1.BlueprintID, watchFromDB1.BlueprintID)
 	assert.Equal(t, watch1.Condition, watchFromDB1.Condition)
 	assert.Equal(t, watch1.Foil, watchFromDB1.Foil)
 
@@ -78,9 +78,9 @@ func TestCRUDWatches(t *testing.T) {
 	assert.Nil(t, err, "getting watch 3 failed")
 	assert.NotNil(t, watchFromDB3, "watcher 3 not found by get")
 
-	assert.Equal(t, watch3.WatchId, watchFromDB3.WatchId)
-	assert.Equal(t, watch3.ExpansionId, watchFromDB3.ExpansionId)
-	assert.Equal(t, watch3.BlueprintId, watchFromDB3.BlueprintId)
+	assert.Equal(t, watch3.WatchID, watchFromDB3.WatchID)
+	assert.Equal(t, watch3.ExpansionID, watchFromDB3.ExpansionID)
+	assert.Equal(t, watch3.BlueprintID, watchFromDB3.BlueprintID)
 	assert.Equal(t, watch3.Condition, watchFromDB3.Condition)
 	assert.Equal(t, watch3.Foil, watchFromDB3.Foil)
 

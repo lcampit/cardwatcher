@@ -9,32 +9,32 @@ func convertModelConditionToEntityCondition(modelCondition models.Condition) ent
 	switch modelCondition {
 	case models.Condition_CONDITION_UNSPECIFIED:
 	case models.Condition_CONDITION_NEAR_MINT:
-		return entities.WATCH_CONDITION_NEAR_MINT
+		return entities.WatchConditionNM
 	case models.Condition_CONDITION_SLIGHTLY_PLAYED:
-		return entities.WATCH_CONDITION_SLIGHTLY_PLAYED
+		return entities.WatchConditionSP
 	case models.Condition_CONDITION_MODERATELY_PLAYED:
-		return entities.WATCH_CONDITION_MODERATELY_PLAYED
+		return entities.WatchConditionMP
 	case models.Condition_CONDITION_PLAYED:
-		return entities.WATCH_CONDITION_PLAYED
+		return entities.WatchConditionPL
 	case models.Condition_CONDITION_POOR:
-		return entities.WATCH_CONDITION_POOR
+		return entities.WatchConditionPO
 	default:
-		return entities.WATCH_CONDITION_NEAR_MINT
+		return entities.WatchConditionNM
 	}
-	return entities.WATCH_CONDITION_NEAR_MINT
+	return entities.WatchConditionNM
 }
 
 func convertEntityConditionToModelCondition(entityCondition entities.WatchCondition) models.Condition {
 	switch entityCondition {
-	case entities.WATCH_CONDITION_NEAR_MINT:
+	case entities.WatchConditionNM:
 		return models.Condition_CONDITION_NEAR_MINT
-	case entities.WATCH_CONDITION_SLIGHTLY_PLAYED:
+	case entities.WatchConditionSP:
 		return models.Condition_CONDITION_SLIGHTLY_PLAYED
-	case entities.WATCH_CONDITION_MODERATELY_PLAYED:
+	case entities.WatchConditionMP:
 		return models.Condition_CONDITION_SLIGHTLY_PLAYED
-	case entities.WATCH_CONDITION_PLAYED:
+	case entities.WatchConditionPL:
 		return models.Condition_CONDITION_PLAYED
-	case entities.WATCH_CONDITION_POOR:
+	case entities.WatchConditionPO:
 		return models.Condition_CONDITION_POOR
 	}
 	return models.Condition_CONDITION_NEAR_MINT
@@ -42,11 +42,11 @@ func convertEntityConditionToModelCondition(entityCondition entities.WatchCondit
 
 func convertEntityWatchToModelWatch(entityWatch *entities.Watch) *models.Watch {
 	return &models.Watch{
-		WatchId:       entityWatch.WatchId.Hex(),
+		WatchId:       entityWatch.WatchID.Hex(),
 		Name:          entityWatch.Name,
-		ExpansionId:   int32(entityWatch.ExpansionId),
+		ExpansionId:   int32(entityWatch.ExpansionID),
 		ExpansionName: entityWatch.ExpansionName,
-		BlueprintId:   int32(entityWatch.BlueprintId),
+		BlueprintId:   int32(entityWatch.BlueprintID),
 		Condition:     convertEntityConditionToModelCondition(entityWatch.Condition),
 		Foil:          entityWatch.Foil,
 	}

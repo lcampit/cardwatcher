@@ -49,7 +49,7 @@ func (a *cardtraderAdapter) GetCurrentPricing(ctx context.Context, watch *entiti
 	response := map[string][]Product{}
 
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "marketplace", "products")
-	blueprintIDString := strconv.Itoa(watch.BlueprintId)
+	blueprintIDString := strconv.Itoa(watch.BlueprintID)
 	foilString := strconv.FormatBool(watch.Foil)
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		Param("language", "en").Param("blueprint_id", blueprintIDString).Param("foil", foilString).
