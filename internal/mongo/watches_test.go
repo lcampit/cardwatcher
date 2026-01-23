@@ -1,9 +1,12 @@
 package mongo
 
 import (
-	"card-watcher/internal/entities"
 	"context"
+	"io"
+	"log/slog"
 	"testing"
+
+	"card-watcher/internal/entities"
 
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -11,21 +14,22 @@ import (
 
 func TestCRUDWatches(t *testing.T) {
 	ctx := context.Background()
-	mongoAdapter := NewMongoAdapter(testHost, testPort, testDatabase)
+	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
+	mongoAdapter := NewMongoAdapter(logger, testHost, testPort, testDatabase)
 
-	watchId1 := bson.NewObjectID()
-	watchId2 := bson.NewObjectID()
-	watchId3 := bson.NewObjectID()
+	watchID1 := bson.NewObjectID()
+	watchID2 := bson.NewObjectID()
+	watchID3 := bson.NewObjectID()
 
 	watch1 := &entities.Watch{
-		WatchId:     watchId1,
+		WatchId:     watchID1,
 		ExpansionId: 1,
 		BlueprintId: 1,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
 		Foil:        false,
 	}
 	watch2 := &entities.Watch{
-		WatchId:     watchId2,
+		WatchId:     watchID2,
 		ExpansionId: 2,
 		BlueprintId: 2,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
@@ -33,49 +37,53 @@ func TestCRUDWatches(t *testing.T) {
 	}
 
 	watch3 := &entities.Watch{
-		WatchId:     watchId3,
+		WatchId:     watchID3,
 		ExpansionId: 2,
 		BlueprintId: 3,
 		Condition:   entities.WATCH_CONDITION_NEAR_MINT,
 		Foil:        false,
 	}
 
-	insertedWatchId1, err := mongoAdapter.SaveWatch(ctx, watch1)
+	insertedWatchID1, err := mongoAdapter.SaveWatch(ctx, watch1)
 	assert.Nil(t, err, "saving watch 1 failed")
-	insertedWatchId2, err := mongoAdapter.SaveWatch(ctx, watch2)
+	insertedWatchID2, err := mongoAdapter.SaveWatch(ctx, watch2)
 	assert.Nil(t, err, "saving watch 2 failed")
-	insertedWatchId3, err := mongoAdapter.SaveWatch(ctx, watch3)
+	insertedWatchID3, err := mongoAdapter.SaveWatch(ctx, watch3)
 	assert.Nil(t, err, "saving watch 3 failed")
 
-	watchFromDb1, err := mongoAdapter.GetWatchByWatchId(ctx, insertedWatchId1)
+	watchFromDB1, err := mongoAdapter.GetWatchByWatchID(ctx, insertedWatchID1)
 	assert.Nil(t, err, "getting watch 1 failed")
-	assert.NotNil(t, watchFromDb1, "watcher 1 not found by get")
+	assert.NotNil(t, watchFromDB1, "watcher 1 not found by get")
 
-	assert.Equal(t, watch1.WatchId, watchFromDb1.WatchId)
-	assert.Equal(t, watch1.ExpansionId, watchFromDb1.ExpansionId)
-	assert.Equal(t, watch1.BlueprintId, watchFromDb1.BlueprintId)
-	assert.Equal(t, watch1.Condition, watchFromDb1.Condition)
-	assert.Equal(t, watch1.Foil, watchFromDb1.Foil)
+	assert.Equal(t, watch1.WatchId, watchFromDB1.WatchId)
+	assert.Equal(t, watch1.ExpansionId, watchFromDB1.ExpansionId)
+	assert.Equal(t, watch1.BlueprintId, watchFromDB1.BlueprintId)
+	assert.Equal(t, watch1.Condition, watchFromDB1.Condition)
+	assert.Equal(t, watch1.Foil, watchFromDB1.Foil)
 
-	mongoAdapter.DeleteWatchById(ctx, insertedWatchId1)
-	mongoAdapter.DeleteWatchById(ctx, insertedWatchId2)
+	err = mongoAdapter.DeleteWatchByID(ctx, insertedWatchID1)
+	assert.Nil(t, err)
+	err = mongoAdapter.DeleteWatchByID(ctx, insertedWatchID2)
+	assert.Nil(t, err)
 
-	absentWatches, err := mongoAdapter.GetWatchByWatchId(ctx, insertedWatchId1)
+	absentWatches, err := mongoAdapter.GetWatchByWatchID(ctx, insertedWatchID1)
 	assert.Nil(t, absentWatches)
+	assert.Nil(t, err)
 
-	absentWatches, err = mongoAdapter.GetWatchByWatchId(ctx, insertedWatchId2)
+	absentWatches, err = mongoAdapter.GetWatchByWatchID(ctx, insertedWatchID2)
 	assert.Nil(t, absentWatches)
+	assert.Nil(t, err)
 
-	watchFromDb3, err := mongoAdapter.GetWatchByWatchId(ctx, insertedWatchId3)
+	watchFromDB3, err := mongoAdapter.GetWatchByWatchID(ctx, insertedWatchID3)
 	assert.Nil(t, err, "getting watch 3 failed")
-	assert.NotNil(t, watchFromDb3, "watcher 3 not found by get")
+	assert.NotNil(t, watchFromDB3, "watcher 3 not found by get")
 
-	assert.Equal(t, watch3.WatchId, watchFromDb3.WatchId)
-	assert.Equal(t, watch3.ExpansionId, watchFromDb3.ExpansionId)
-	assert.Equal(t, watch3.BlueprintId, watchFromDb3.BlueprintId)
-	assert.Equal(t, watch3.Condition, watchFromDb3.Condition)
-	assert.Equal(t, watch3.Foil, watchFromDb3.Foil)
+	assert.Equal(t, watch3.WatchId, watchFromDB3.WatchId)
+	assert.Equal(t, watch3.ExpansionId, watchFromDB3.ExpansionId)
+	assert.Equal(t, watch3.BlueprintId, watchFromDB3.BlueprintId)
+	assert.Equal(t, watch3.Condition, watchFromDB3.Condition)
+	assert.Equal(t, watch3.Foil, watchFromDB3.Foil)
 
-	err = mongoAdapter.DeleteWatchById(ctx, watchId3.Hex())
+	err = mongoAdapter.DeleteWatchByID(ctx, watchID3.Hex())
 	assert.Nil(t, err)
 }

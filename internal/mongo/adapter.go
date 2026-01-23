@@ -1,11 +1,15 @@
+// Package mongo exposes database related operations
+// using a single adapter
 package mongo
 
 import (
-	"card-watcher/internal/entities"
 	"context"
 	"fmt"
 	"log"
+	"log/slog"
 	"time"
+
+	"card-watcher/internal/entities"
 
 	_ "github.com/joho/godotenv/autoload"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -15,20 +19,24 @@ import (
 type MongoAdapter interface {
 	SaveWatch(ctx context.Context, watch *entities.Watch) (string, error)
 	GetWatches(ctx context.Context) ([]*entities.Watch, error)
-	GetWatchByWatchId(ctx context.Context, watchId string) (*entities.Watch, error)
-	DeleteWatchById(ctx context.Context, watchId string) error
+	GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error)
+	DeleteWatchByID(ctx context.Context, watchID string) error
+
 	Health() map[string]string
+	Close()
 }
 
 type mongoAdapter struct {
-	client   *mongo.Client
-	database string
+	logger        *slog.Logger
+	client        *mongo.Client
+	database      string
+	cancelContext context.CancelFunc
 }
 
 func NewMongoAdapter(
-	host, port, database string,
+	logger *slog.Logger, host, port, database string,
 ) MongoAdapter {
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
 	client, err := mongo.Connect(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
 	if err != nil {
 		log.Fatal(err)
@@ -38,16 +46,22 @@ func NewMongoAdapter(
 		log.Fatal(err)
 	}
 	return &mongoAdapter{
-		client:   client,
-		database: database,
+		logger:        logger,
+		client:        client,
+		database:      database,
+		cancelContext: cancelFunc,
 	}
 }
 
-func (s *mongoAdapter) Health() map[string]string {
+func (a *mongoAdapter) Close() {
+	a.cancelContext()
+}
+
+func (a *mongoAdapter) Health() map[string]string {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	err := s.client.Ping(ctx, nil)
+	err := a.client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatalf("db down: %v", err)
 	}
