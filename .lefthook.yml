@@ -1,0 +1,11 @@
+assert_lefthook_installed: true
+pre-commit:
+  commands:
+    lint:
+      run: mise run lint
+      stage_fixed: true
+      glob: "*.go"
+    format:
+      run: mise run format
+      stage_fixed: true
+      glob: "*.go"
