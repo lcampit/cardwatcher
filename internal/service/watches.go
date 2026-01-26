@@ -12,7 +12,7 @@ import (
 func (s *service) ListWatches(ctx context.Context) (*models.ListWatchesResponse, error) {
 	watches, err := s.mongoAdapter.GetWatches(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error getting watches from adapter: %w", err)
+		return nil, fmt.Errorf("getting watches from mongo adapter: %w", err)
 	}
 
 	var result []*models.Watch
@@ -30,11 +30,11 @@ func (s *service) ListWatches(ctx context.Context) (*models.ListWatchesResponse,
 func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID int, condition models.Condition, foil bool) (string, error) {
 	blueprintName, err := s.cardtraderAdapter.GetBlueprintNameByExpansionID(ctx, expansionID, blueprintID)
 	if err != nil {
-		return "", fmt.Errorf("error finding name for expansion %d and blueprint %d: %w", expansionID, blueprintID, err)
+		return "", fmt.Errorf("finding name for expansion %d and blueprint %d: %w", expansionID, blueprintID, err)
 	}
 	expansionName, err := s.cardtraderAdapter.GetExpansionNameByID(ctx, expansionID)
 	if err != nil {
-		return "", fmt.Errorf("error finding name for expansion %d: %w", expansionID, err)
+		return "", fmt.Errorf("finding name for expansion %d: %w", expansionID, err)
 	}
 	newWatchID, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
 		Name:          blueprintName,
