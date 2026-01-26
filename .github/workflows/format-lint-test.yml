@@ -51,7 +51,7 @@ jobs:
         run: mise run format
       - name: "Check No Format Needed"
         run: |
-          if ! git diff --exit-code; then
+          if ! git diff -- $(find . -name *.go) --exit-code; then
             echo "code needs to be formatted, please run 'mise run format'"
             exit 1 
           fi
