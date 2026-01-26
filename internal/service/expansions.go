@@ -12,7 +12,7 @@ import (
 func (s *service) ListExpansions(ctx context.Context, name, code string) (*models.ListExpansionsResponse, error) {
 	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error getting expansions from adapter: %w", err)
+		return nil, fmt.Errorf("getting expansions from cardtrader adapter: %w", err)
 	}
 	var resultingExpanions []*models.Expansion
 	normalizedName := strings.ToLower(name)
