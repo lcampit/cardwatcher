@@ -46,11 +46,10 @@ jobs:
           mise_toml: |
             [tools]
             go = "1.24"
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.8.0
-          args: fmt
-      - name: "No Format Needed"
+            golangci-lint = "v2.8.0"
+      - name: "Run formatters"
+        run: mise run format
+      - name: "Check No Format Needed"
         run: |
           if ! git diff --exit-code; then
             echo "code needs to be formatted, please run 'mise run format'"
