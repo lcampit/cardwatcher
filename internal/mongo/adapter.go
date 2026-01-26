@@ -32,22 +32,28 @@ type mongoAdapter struct {
 	cancelContext context.CancelFunc
 }
 
-func NewMongoAdapter(
-	logger *slog.Logger, host, port, database string,
-) MongoAdapter {
+type MongoAdapterConfig struct {
+	Logger   *slog.Logger
+	Host     string
+	Port     string
+	Database string
+}
+
+func NewMongoAdapter(config MongoAdapterConfig) MongoAdapter {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
-	client, err := mongo.Connect(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s", host, port)))
+	client, err := mongo.Connect(options.Client().
+		ApplyURI(fmt.Sprintf("mongodb://%s:%s", config.Host, config.Port)))
 	if err != nil {
-		logger.Error("error connecting to mongo instance", slog.Any("error", err))
+		config.Logger.Error("error connecting to mongo instance", slog.Any("error", err))
 	}
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		logger.Error("error reaching mongo instance", slog.Any("error", err))
+		config.Logger.Error("error reaching mongo instance", slog.Any("error", err))
 	}
 	return &mongoAdapter{
-		logger:        logger,
+		logger:        config.Logger,
 		client:        client,
-		database:      database,
+		database:      config.Database,
 		cancelContext: cancelFunc,
 	}
 }

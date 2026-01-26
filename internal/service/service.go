@@ -28,17 +28,19 @@ type service struct {
 	ntfyAdapter       ntfy.NtfyAdapter
 }
 
-func NewService(
-	logger *slog.Logger,
-	cardtraderAdapter cardtrader.CardtraderAdapter,
-	mongoAdapter mongo.MongoAdapter,
-	ntfyAdapter ntfy.NtfyAdapter,
-) *service {
+type ServiceConfig struct {
+	Logger            *slog.Logger
+	CardtraderAdapter cardtrader.CardtraderAdapter
+	MongoAdapter      mongo.MongoAdapter
+	NtfyAdapter       ntfy.NtfyAdapter
+}
+
+func NewService(config ServiceConfig) *service {
 	return &service{
-		logger:            logger,
-		cardtraderAdapter: cardtraderAdapter,
-		mongoAdapter:      mongoAdapter,
-		ntfyAdapter:       ntfyAdapter,
+		logger:            config.Logger,
+		cardtraderAdapter: config.CardtraderAdapter,
+		mongoAdapter:      config.MongoAdapter,
+		ntfyAdapter:       config.NtfyAdapter,
 	}
 }
 

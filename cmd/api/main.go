@@ -21,7 +21,6 @@ import (
 )
 
 type WatcherConfig struct {
-	AppMode              string `env:"APP_MODE"`
 	LogLevel             string `env:"LOG_LEVEL"`
 	Port                 int    `env:"SERVER_PORT"`
 	AccessToken          string `env:"CARDTRADER_ACCESS_TOKEN"`
@@ -48,11 +47,46 @@ func main() {
 		logger.Error("failed to listen", slog.Any("error", err))
 	}
 
-	ntfyAdapter := ntfy.NewNtfyAdapter(logger, "ntfy.sh", "")
-	cardtraderAdapter := cardtrader.NewCardtraderAdapter(logger, watcherConfig.AccessToken, watcherConfig.CardtraderAPIBaseURL)
-	mongoAdapter := mongo.NewMongoAdapter(logger, watcherConfig.MongoHost, watcherConfig.MongoPort, watcherConfig.MongoDatabase)
-	service := service.NewService(logger, cardtraderAdapter, mongoAdapter, ntfyAdapter)
-	server := server.NewServer(logger, service)
+	logger.Info("creating cardtrader adapter")
+	cardtraderAdapterConfig := cardtrader.CardtraderAdapterConfig{
+		Logger:      logger,
+		AccessToken: watcherConfig.AccessToken,
+		BaseURL:     watcherConfig.CardtraderAPIBaseURL,
+	}
+	cardtraderAdapter := cardtrader.NewCardtraderAdapter(cardtraderAdapterConfig)
+
+	logger.Info("creating ntfy adapter")
+	ntfyAdapterConfig := ntfy.NtfyAdapterConfig{
+		Logger: logger,
+		Host:   watcherConfig.NtfyHost,
+		Port:   watcherConfig.NtfyPort,
+	}
+	ntfyAdapter := ntfy.NewNtfyAdapter(ntfyAdapterConfig)
+
+	logger.Info("creating mongo adapter")
+	mongoAdapterConfig := mongo.MongoAdapterConfig{
+		Logger:   logger,
+		Host:     watcherConfig.MongoHost,
+		Port:     watcherConfig.MongoPort,
+		Database: watcherConfig.MongoDatabase,
+	}
+	mongoAdapter := mongo.NewMongoAdapter(mongoAdapterConfig)
+
+	logger.Info("creating service")
+	serviceConfig := service.ServiceConfig{
+		Logger:            logger,
+		CardtraderAdapter: cardtraderAdapter,
+		MongoAdapter:      mongoAdapter,
+		NtfyAdapter:       ntfyAdapter,
+	}
+	service := service.NewService(serviceConfig)
+
+	logger.Info("creating server")
+	serverConfig := server.ServerConfig{
+		Logger:  logger,
+		Service: service,
+	}
+	server := server.NewServer(serverConfig)
 
 	grpcServer := grpc.NewServer()
 	models.RegisterCardWatcherServer(grpcServer, server)

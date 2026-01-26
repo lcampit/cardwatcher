@@ -25,10 +25,16 @@ type cardtraderAdapter struct {
 	accessToken string
 }
 
-func NewCardtraderAdapter(logger *slog.Logger, accessToken, baseURL string) CardtraderAdapter {
+type CardtraderAdapterConfig struct {
+	Logger      *slog.Logger
+	AccessToken string
+	BaseURL     string
+}
+
+func NewCardtraderAdapter(config CardtraderAdapterConfig) CardtraderAdapter {
 	return &cardtraderAdapter{
-		logger:      logger,
-		baseURL:     baseURL,
-		accessToken: accessToken,
+		logger:      config.Logger,
+		baseURL:     config.BaseURL,
+		accessToken: config.AccessToken,
 	}
 }

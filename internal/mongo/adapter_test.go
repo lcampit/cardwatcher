@@ -51,7 +51,13 @@ func TestMain(m *testing.M) {
 
 func TestNew(t *testing.T) {
 	logger := slog.New(slog.DiscardHandler)
-	srv := NewMongoAdapter(logger, testHost, testPort, testDatabase)
+	config := MongoAdapterConfig{
+		logger,
+		testHost,
+		testPort,
+		testDatabase,
+	}
+	srv := NewMongoAdapter(config)
 	if srv == nil {
 		t.Fatal("New() returned nil")
 	}
@@ -59,7 +65,13 @@ func TestNew(t *testing.T) {
 
 func TestHealth(t *testing.T) {
 	logger := slog.New(slog.DiscardHandler)
-	srv := NewMongoAdapter(logger, testHost, testPort, testDatabase)
+	config := MongoAdapterConfig{
+		logger,
+		testHost,
+		testPort,
+		testDatabase,
+	}
+	srv := NewMongoAdapter(config)
 
 	stats := srv.Health()
 
