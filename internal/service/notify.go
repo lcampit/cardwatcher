@@ -12,7 +12,7 @@ func (s *service) WatchAndNotify() {
 	defer cancel()
 	watches, err := s.mongoAdapter.GetWatches(ctx)
 	if err != nil {
-		s.logger.Error("error getting watches", slog.Any("error", err))
+		s.logger.Error("getting watches", slog.Any("error", err))
 		return
 	}
 
@@ -22,8 +22,9 @@ func (s *service) WatchAndNotify() {
 		if err != nil {
 			s.logger.Error("error getting current pricing",
 				slog.Int("blueprintId", watch.BlueprintID),
+				slog.String("blueprintName", watch.Name),
 				slog.Any("error", err))
-			break
+			continue
 		}
 
 		var msg string
@@ -42,7 +43,7 @@ func (s *service) WatchAndNotify() {
 
 		err = s.ntfyAdapter.Notify(ctx, msg)
 		if err != nil {
-			s.logger.Error("error creting notification", slog.Any("error", err))
+			s.logger.Error("creting notification", slog.Any("error", err))
 		}
 	}
 }
