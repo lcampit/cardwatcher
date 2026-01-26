@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#MISE description="run golangci linters and fix issues if any"
+#MISE alias="l"
+
+golangci-lint run

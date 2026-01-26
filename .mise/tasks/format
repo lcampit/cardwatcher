@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#MISE description="run golangci formatters"
+#MISE alias="f"
+
+golangci-lint fmt
