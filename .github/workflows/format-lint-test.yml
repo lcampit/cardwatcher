@@ -1,17 +1,25 @@
-name: lint-and-test
+name: Format, Lint, Test
 on:
   pull_request:
     branches:
       - main
     paths:
       - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.golangci,yml'
+    workflow_dispatch:
+    
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
   pull-requests: read
 
 jobs:
-  golanci-lint:
+  lint:
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -26,6 +34,28 @@ jobs:
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.8.0
+  format:
+    name: format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: jdx/mise-action@v3
+        with:
+          install: true 
+          install_args: "-j 1"
+          mise_toml: |
+            [tools]
+            go = "1.24"
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.8.0
+          args: fmt
+      - name: "No Format Needed"
+        run: |
+          if ! git diff --exit-code; then
+            echo "code needs to be formatted, please run 'mise run format'"
+            exit 1 
+          fi
   test:
     name: test
     runs-on: ubuntu-latest
