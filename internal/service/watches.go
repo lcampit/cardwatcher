@@ -9,10 +9,10 @@ import (
 	"card-watcher/internal/models"
 )
 
-func (s *service) ListWatches(ctx context.Context) (models.ListWatchesResponse, error) {
+func (s *service) ListWatches(ctx context.Context) (*models.ListWatchesResponse, error) {
 	watches, err := s.mongoAdapter.GetWatches(ctx)
 	if err != nil {
-		return models.ListWatchesResponse{}, fmt.Errorf("error getting watches from adapter: %w", err)
+		return nil, fmt.Errorf("error getting watches from adapter: %w", err)
 	}
 
 	var result []*models.Watch
@@ -22,7 +22,7 @@ func (s *service) ListWatches(ctx context.Context) (models.ListWatchesResponse, 
 	}
 
 	s.logger.Debug("returning watches", slog.Int("watchCount", len(result)))
-	return models.ListWatchesResponse{
+	return &models.ListWatchesResponse{
 		Watches: result,
 	}, nil
 }

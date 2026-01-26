@@ -9,10 +9,10 @@ import (
 	"card-watcher/internal/models"
 )
 
-func (s *service) ListExpansions(ctx context.Context, name, code string) (models.ListExpansionsResponse, error) {
+func (s *service) ListExpansions(ctx context.Context, name, code string) (*models.ListExpansionsResponse, error) {
 	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
 	if err != nil {
-		return models.ListExpansionsResponse{}, fmt.Errorf("error getting expansions from adapter: %w", err)
+		return nil, fmt.Errorf("error getting expansions from adapter: %w", err)
 	}
 	var resultingExpanions []*models.Expansion
 	normalizedName := strings.ToLower(name)
@@ -46,7 +46,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 		}
 	}
 	s.logger.Debug("returning filtered expansions", slog.Int("expansionCount", len(resultingExpanions)))
-	return models.ListExpansionsResponse{
+	return &models.ListExpansionsResponse{
 		Expansions: resultingExpanions,
 	}, nil
 }

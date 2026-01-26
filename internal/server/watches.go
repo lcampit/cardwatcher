@@ -29,7 +29,7 @@ func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.Li
 		s.logger.Error("error in list watches", slog.Any("error", err))
 		return nil, err
 	}
-	return &response, nil
+	return response, nil
 }
 
 func (s *server) DeleteWatchById(ctx context.Context, in *models.DeleteWatchByIdRequest) (*emptypb.Empty, error) {
