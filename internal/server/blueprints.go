@@ -13,7 +13,7 @@ func (s *server) ListBlueprints(ctx context.Context, in *models.ListBlueprintsRe
 		slog.String("name", in.Name))
 	response, err := s.service.ListBlueprints(ctx, int(in.ExpansionId), in.Name)
 	if err != nil {
-		s.logger.Error("error in list expansions", slog.Any("error", err))
+		s.logger.Error("error in list blueprints", slog.Any("error", err))
 		return nil, err
 	}
 	return response, nil
