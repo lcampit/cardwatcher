@@ -31,7 +31,7 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID int) 
 		Param("expansion_id", expansionIDString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error in cardtrader blueprint endpoint for expansion id %d: %w", expansionID, err)
+		return nil, fmt.Errorf("cardtrader get blueprint request for expansion id %d: %w", expansionID, err)
 	}
 	a.logger.Debug("received blueprints for expansion id",
 		slog.Int("blueprintCount", len(response)),
@@ -47,7 +47,7 @@ func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, e
 		Param("expansion_id", expansionIDString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return "", fmt.Errorf("error in cardtrader blueprint endpoint for expansion id %d, blueprint id %d: %w", expansionID, blueprintID, err)
+		return "", fmt.Errorf("cardtrader get blueprint endpoint for expansion id %d, blueprint id %d: %w", expansionID, blueprintID, err)
 	}
 	a.logger.Debug("received blueprints for expansion id",
 		slog.Int("blueprintCount", len(response)),

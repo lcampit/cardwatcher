@@ -21,7 +21,7 @@ func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, er
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error in cardtrader expansions endpoint %w", err)
+		return nil, fmt.Errorf("cardtrader get expansions endpoint %w", err)
 	}
 	a.logger.Debug("received expansions", slog.Int("expansionCount", len(response)))
 	return response, nil
@@ -33,7 +33,7 @@ func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionI
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return "", fmt.Errorf("error in cardtrader expansions endpoint %w", err)
+		return "", fmt.Errorf("cardtrader get expansions endpoint for id %d: %w ", expansionID, err)
 	}
 	for _, expansion := range response {
 		if expansion.ID == expansionID {

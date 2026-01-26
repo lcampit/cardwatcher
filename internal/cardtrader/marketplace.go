@@ -55,7 +55,7 @@ func (a *cardtraderAdapter) GetCurrentPricing(ctx context.Context, watch *entiti
 		Param("language", "en").Param("blueprint_id", blueprintIDString).Param("foil", foilString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return 0, fmt.Errorf("error getting products from adapter: %w", err)
+		return 0, fmt.Errorf("cardtrader get products: %w", err)
 	}
 
 	if products, ok := response[blueprintIDString]; ok {
