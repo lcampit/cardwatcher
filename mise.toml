@@ -13,6 +13,7 @@ gh = "2.80.0"
 "go:github.com/unkn0wn-root/resterm/cmd/resterm" = "v0.19.1"
 golangci-lint = "v2.8.0"
 act = "0.2.84"
+lefthook = "v2.0.15"
 
 [env]
 APP_ENV = "DEV"
