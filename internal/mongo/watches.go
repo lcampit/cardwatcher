@@ -11,11 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-const WatchCollection string = "watches"
-
 func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *entities.Watch) (string, error) {
 	watch.WatchID = bson.NewObjectID()
-	_, err := a.client.Database(a.database).Collection(WatchCollection).
+	_, err := a.client.Database(a.database).Collection(a.watchCollection).
 		InsertOne(ctx, watch)
 	if err != nil {
 		return "", fmt.Errorf("error inserting watch with id %s: %w", watch.WatchID, err)
@@ -31,7 +29,7 @@ func (a *mongoAdapter) DeleteWatchByID(ctx context.Context, watchID string) erro
 	if err != nil {
 		return fmt.Errorf("error converting object id %s in delete watch by id: %w", watchID, err)
 	}
-	_, err = a.client.Database(a.database).Collection(WatchCollection).
+	_, err = a.client.Database(a.database).Collection(a.watchCollection).
 		DeleteOne(ctx, bson.M{"_id": convertedID})
 	if err != nil {
 		return fmt.Errorf("error deleting watch with id %s: %w", watchID, err)
@@ -41,7 +39,7 @@ func (a *mongoAdapter) DeleteWatchByID(ctx context.Context, watchID string) erro
 
 func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error) {
 	var watches []*entities.Watch
-	cursor, err := a.client.Database(a.database).Collection(WatchCollection).
+	cursor, err := a.client.Database(a.database).Collection(a.watchCollection).
 		Find(ctx, bson.M{})
 	if err != nil {
 		return nil, fmt.Errorf("error finding all watches: %w", err)
@@ -63,7 +61,7 @@ func (a *mongoAdapter) GetWatchByWatchID(ctx context.Context, watchID string) (*
 
 	var watch entities.Watch
 	filter := bson.M{"_id": convertedID}
-	result := a.client.Database(a.database).Collection(WatchCollection).
+	result := a.client.Database(a.database).Collection(a.watchCollection).
 		FindOne(ctx, filter)
 
 	if result.Err() == mongo.ErrNoDocuments {

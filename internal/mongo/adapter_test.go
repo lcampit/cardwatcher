@@ -56,6 +56,7 @@ func TestNew(t *testing.T) {
 		testHost,
 		testPort,
 		testDatabase,
+		"watch-test",
 	}
 	srv := NewMongoAdapter(config)
 	if srv == nil {
@@ -70,6 +71,7 @@ func TestHealth(t *testing.T) {
 		testHost,
 		testPort,
 		testDatabase,
+		"watch-test",
 	}
 	srv := NewMongoAdapter(config)
 

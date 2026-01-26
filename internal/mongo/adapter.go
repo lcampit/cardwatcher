@@ -26,17 +26,19 @@ type MongoAdapter interface {
 }
 
 type mongoAdapter struct {
-	logger        *slog.Logger
-	client        *mongo.Client
-	database      string
-	cancelContext context.CancelFunc
+	logger          *slog.Logger
+	client          *mongo.Client
+	database        string
+	watchCollection string
+	cancelContext   context.CancelFunc
 }
 
 type MongoAdapterConfig struct {
-	Logger   *slog.Logger
-	Host     string
-	Port     string
-	Database string
+	Logger              *slog.Logger
+	Host                string
+	Port                string
+	Database            string
+	WatchCollectionName string
 }
 
 func NewMongoAdapter(config MongoAdapterConfig) MongoAdapter {
@@ -51,10 +53,11 @@ func NewMongoAdapter(config MongoAdapterConfig) MongoAdapter {
 		config.Logger.Error("error reaching mongo instance", slog.Any("error", err))
 	}
 	return &mongoAdapter{
-		logger:        config.Logger,
-		client:        client,
-		database:      config.Database,
-		cancelContext: cancelFunc,
+		logger:          config.Logger,
+		client:          client,
+		database:        config.Database,
+		watchCollection: config.WatchCollectionName,
+		cancelContext:   cancelFunc,
 	}
 }
 
