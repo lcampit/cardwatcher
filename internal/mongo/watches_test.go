@@ -14,7 +14,13 @@ import (
 func TestCRUDWatches(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.DiscardHandler)
-	mongoAdapter := NewMongoAdapter(logger, testHost, testPort, testDatabase)
+	config := MongoAdapterConfig{
+		logger,
+		testHost,
+		testPort,
+		testDatabase,
+	}
+	mongoAdapter := NewMongoAdapter(config)
 
 	watchID1 := bson.NewObjectID()
 	watchID2 := bson.NewObjectID()

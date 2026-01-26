@@ -18,10 +18,16 @@ type ntfyAdapter struct {
 	ntfyPort string
 }
 
-func NewNtfyAdapter(logger *slog.Logger, host, port string) NtfyAdapter {
+type NtfyAdapterConfig struct {
+	Logger *slog.Logger
+	Host   string
+	Port   string
+}
+
+func NewNtfyAdapter(config NtfyAdapterConfig) NtfyAdapter {
 	return &ntfyAdapter{
-		logger:   logger,
-		ntfyHost: host,
-		ntfyPort: port,
+		logger:   config.Logger,
+		ntfyHost: config.Host,
+		ntfyPort: config.Port,
 	}
 }

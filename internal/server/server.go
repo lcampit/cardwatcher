@@ -18,13 +18,15 @@ type server struct {
 	service service.Service
 }
 
-func NewServer(
-	logger *slog.Logger,
-	service service.Service,
-) *server {
+type ServerConfig struct {
+	Logger  *slog.Logger
+	Service service.Service
+}
+
+func NewServer(config ServerConfig) *server {
 	server := &server{
-		logger:  logger,
-		service: service,
+		logger:  config.Logger,
+		service: config.Service,
 	}
 
 	return server
