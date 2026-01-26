@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#MISE description="generate code from protobuf files"
+#MISE alias="g"
+
+protoc -I=card-watcher-models --go_out ./ card-watcher-models/cardwatcher/* --go-grpc_out ./

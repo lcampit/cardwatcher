@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#MISE description="run tests"
+#MISE alias="t"
+
+gotestsum ./... -v
