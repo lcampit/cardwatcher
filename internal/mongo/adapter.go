@@ -10,7 +10,6 @@ import (
 
 	"card-watcher/internal/entities"
 
-	_ "github.com/joho/godotenv/autoload"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
