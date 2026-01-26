@@ -58,7 +58,7 @@ func TestNew(t *testing.T) {
 		testDatabase,
 		"watch-test",
 	}
-	srv := NewMongoAdapter(config)
+	srv, _ := NewMongoAdapter(config)
 	if srv == nil {
 		t.Fatal("New() returned nil")
 	}
@@ -73,7 +73,7 @@ func TestHealth(t *testing.T) {
 		testDatabase,
 		"watch-test",
 	}
-	srv := NewMongoAdapter(config)
+	srv, _ := NewMongoAdapter(config)
 
 	stats := srv.Health()
 

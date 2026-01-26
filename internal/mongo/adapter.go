@@ -21,7 +21,6 @@ type MongoAdapter interface {
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
 	Health() map[string]string
-	Close()
 }
 
 type mongoAdapter struct {
@@ -29,7 +28,6 @@ type mongoAdapter struct {
 	client          *mongo.Client
 	database        string
 	watchCollection string
-	cancelContext   context.CancelFunc
 }
 
 type MongoAdapterConfig struct {
@@ -40,28 +38,24 @@ type MongoAdapterConfig struct {
 	WatchCollectionName string
 }
 
-func NewMongoAdapter(config MongoAdapterConfig) MongoAdapter {
+func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelFunc()
 	client, err := mongo.Connect(options.Client().
 		ApplyURI(fmt.Sprintf("mongodb://%s:%s", config.Host, config.Port)))
 	if err != nil {
-		config.Logger.Error("error connecting to mongo instance", slog.Any("error", err))
+		return nil, fmt.Errorf("creating mongo client: %w", err)
 	}
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		config.Logger.Error("error reaching mongo instance", slog.Any("error", err))
+		return nil, fmt.Errorf("connecting to mongo client: %w", err)
 	}
 	return &mongoAdapter{
 		logger:          config.Logger,
 		client:          client,
 		database:        config.Database,
 		watchCollection: config.WatchCollectionName,
-		cancelContext:   cancelFunc,
-	}
-}
-
-func (a *mongoAdapter) Close() {
-	a.cancelContext()
+	}, nil
 }
 
 func (a *mongoAdapter) Health() map[string]string {

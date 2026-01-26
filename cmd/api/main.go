@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net"
+	"os"
 	"time"
 
 	"card-watcher/internal/cardtrader"
@@ -72,7 +73,11 @@ func main() {
 		Database:            watcherConfig.MongoDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
 	}
-	mongoAdapter := mongo.NewMongoAdapter(mongoAdapterConfig)
+	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
+	if err != nil {
+		logger.Error("error creating mongo adapter", slog.Any("error", err))
+		os.Exit(1)
+	}
 
 	logger.Info("creating service")
 	serviceConfig := service.ServiceConfig{

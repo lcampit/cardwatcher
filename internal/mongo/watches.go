@@ -16,7 +16,7 @@ func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *entities.Watch) (st
 	_, err := a.client.Database(a.database).Collection(a.watchCollection).
 		InsertOne(ctx, watch)
 	if err != nil {
-		return "", fmt.Errorf("error inserting watch with id %s: %w", watch.WatchID, err)
+		return "", fmt.Errorf("inserting watch with id %s: %w", watch.WatchID, err)
 	}
 	return watch.WatchID.Hex(), nil
 }
@@ -27,12 +27,12 @@ func (a *mongoAdapter) DeleteWatchByID(ctx context.Context, watchID string) erro
 		return errors.New("invalid watch ID provided")
 	}
 	if err != nil {
-		return fmt.Errorf("error converting object id %s in delete watch by id: %w", watchID, err)
+		return fmt.Errorf("converting object id %s in delete watch by id: %w", watchID, err)
 	}
 	_, err = a.client.Database(a.database).Collection(a.watchCollection).
 		DeleteOne(ctx, bson.M{"_id": convertedID})
 	if err != nil {
-		return fmt.Errorf("error deleting watch with id %s: %w", watchID, err)
+		return fmt.Errorf("deleting watch with id %s: %w", watchID, err)
 	}
 	return nil
 }
@@ -42,12 +42,12 @@ func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error
 	cursor, err := a.client.Database(a.database).Collection(a.watchCollection).
 		Find(ctx, bson.M{})
 	if err != nil {
-		return nil, fmt.Errorf("error finding all watches: %w", err)
+		return nil, fmt.Errorf("finding all watches: %w", err)
 	}
 
 	err = cursor.All(ctx, &watches)
 	if err != nil {
-		return nil, fmt.Errorf("error decoding all watches: %w", err)
+		return nil, fmt.Errorf("decoding all watches: %w", err)
 	}
 
 	return watches, nil
@@ -56,7 +56,7 @@ func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error
 func (a *mongoAdapter) GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error) {
 	convertedID, err := bson.ObjectIDFromHex(watchID)
 	if err != nil {
-		return nil, fmt.Errorf("error converting object id %s in get watch by id: %w", watchID, err)
+		return nil, fmt.Errorf("converting object id %s in get watch by id: %w", watchID, err)
 	}
 
 	var watch entities.Watch
@@ -69,12 +69,12 @@ func (a *mongoAdapter) GetWatchByWatchID(ctx context.Context, watchID string) (*
 	}
 
 	if result.Err() != nil {
-		return nil, fmt.Errorf("error getting watch by id %s: %w", watchID, result.Err())
+		return nil, fmt.Errorf("getting watch by id %s: %w", watchID, result.Err())
 	}
 
 	err = result.Decode(&watch)
 	if err != nil {
-		return nil, fmt.Errorf("error decoding watch with id %s from database: %w", watchID, err)
+		return nil, fmt.Errorf("decoding watch with id %s from database: %w", watchID, err)
 	}
 
 	return &watch, nil
