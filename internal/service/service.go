@@ -14,7 +14,7 @@ import (
 type Service interface {
 	SaveWatch(ctx context.Context, expansionID, blueprintID int, condition models.Condition, foil bool) (string, error)
 	ListExpansions(ctx context.Context, name, code string) (models.ListExpansionsResponse, error)
-	ListBlueprints(ctx context.Context, expansionID int, name string) (models.ListBlueprintsResponse, error)
+	ListBlueprints(ctx context.Context, expansionID int, name string) (*models.ListBlueprintsResponse, error)
 	ListWatches(ctx context.Context) (models.ListWatchesResponse, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 

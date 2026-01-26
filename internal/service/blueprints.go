@@ -10,10 +10,10 @@ import (
 	"card-watcher/internal/models"
 )
 
-func (s *service) ListBlueprints(ctx context.Context, expansionID int, name string) (models.ListBlueprintsResponse, error) {
+func (s *service) ListBlueprints(ctx context.Context, expansionID int, name string) (*models.ListBlueprintsResponse, error) {
 	blueprints, err := s.cardtraderAdapter.GetBlueprints(ctx, expansionID)
 	if err != nil {
-		return models.ListBlueprintsResponse{}, fmt.Errorf("error getting blueprints from adapter: %w", err)
+		return nil, fmt.Errorf("getting blueprints from cardtrader adapter: %w", err)
 	}
 
 	var resultingBlueprints []*models.Blueprint
@@ -38,7 +38,7 @@ func (s *service) ListBlueprints(ctx context.Context, expansionID int, name stri
 		}
 	}
 	s.logger.Debug("returning filtered blueprints", slog.Int("blueprintsCount", len(resultingBlueprints)))
-	return models.ListBlueprintsResponse{
+	return &models.ListBlueprintsResponse{
 		Blueprints: resultingBlueprints,
 	}, nil
 }

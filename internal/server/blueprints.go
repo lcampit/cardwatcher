@@ -16,5 +16,5 @@ func (s *server) ListBlueprints(ctx context.Context, in *models.ListBlueprintsRe
 		s.logger.Error("error in list expansions", slog.Any("error", err))
 		return nil, err
 	}
-	return &response, nil
+	return response, nil
 }
