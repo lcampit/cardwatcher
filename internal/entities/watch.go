@@ -19,9 +19,9 @@ const (
 type Watch struct {
 	WatchID       bson.ObjectID  `bson:"_id"`
 	Name          string         `bson:"name"`
-	ExpansionID   int            `bson:"expansionId"`
+	ExpansionID   uint64         `bson:"expansionId"`
 	ExpansionName string         `bson:"expansionName"`
-	BlueprintID   int            `bson:"blueprintId"`
+	BlueprintID   uint64         `bson:"blueprintId"`
 	Condition     WatchCondition `bson:"condition"`
 	Foil          bool           `bson:"foil"`
 }

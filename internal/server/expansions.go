@@ -16,5 +16,5 @@ func (s *server) ListExpansions(ctx context.Context, in *models.ListExpansionsRe
 		s.logger.Error("error in list expansions", slog.Any("error", err))
 		return nil, err
 	}
-	return &response, nil
+	return response, nil
 }

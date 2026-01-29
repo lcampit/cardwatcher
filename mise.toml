@@ -23,6 +23,7 @@ NTFY_PORT = 80
 MONGO_DATABASE = "cardwatcher"
 CARDTRADER_API_BASE_URL = "https://api.cardtrader.com/api/v2"
 NOTIFICATION_SCHEDULE = "* * * * *"
+MONGO_WATCH_COLLECTION_NAME = "watches"
 
 [settings]
 lockfile = true

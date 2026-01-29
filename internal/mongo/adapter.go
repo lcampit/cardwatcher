@@ -10,7 +10,6 @@ import (
 
 	"card-watcher/internal/entities"
 
-	_ "github.com/joho/godotenv/autoload"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -22,44 +21,41 @@ type MongoAdapter interface {
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
 	Health() map[string]string
-	Close()
 }
 
 type mongoAdapter struct {
-	logger        *slog.Logger
-	client        *mongo.Client
-	database      string
-	cancelContext context.CancelFunc
+	logger          *slog.Logger
+	client          *mongo.Client
+	database        string
+	watchCollection string
 }
 
 type MongoAdapterConfig struct {
-	Logger   *slog.Logger
-	Host     string
-	Port     string
-	Database string
+	Logger              *slog.Logger
+	Host                string
+	Port                string
+	Database            string
+	WatchCollectionName string
 }
 
-func NewMongoAdapter(config MongoAdapterConfig) MongoAdapter {
+func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelFunc()
 	client, err := mongo.Connect(options.Client().
 		ApplyURI(fmt.Sprintf("mongodb://%s:%s", config.Host, config.Port)))
 	if err != nil {
-		config.Logger.Error("error connecting to mongo instance", slog.Any("error", err))
+		return nil, fmt.Errorf("creating mongo client: %w", err)
 	}
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		config.Logger.Error("error reaching mongo instance", slog.Any("error", err))
+		return nil, fmt.Errorf("connecting to mongo client: %w", err)
 	}
 	return &mongoAdapter{
-		logger:        config.Logger,
-		client:        client,
-		database:      config.Database,
-		cancelContext: cancelFunc,
-	}
-}
-
-func (a *mongoAdapter) Close() {
-	a.cancelContext()
+		logger:          config.Logger,
+		client:          client,
+		database:        config.Database,
+		watchCollection: config.WatchCollectionName,
+	}, nil
 }
 
 func (a *mongoAdapter) Health() map[string]string {

@@ -9,10 +9,10 @@ import (
 	"card-watcher/internal/models"
 )
 
-func (s *service) ListExpansions(ctx context.Context, name, code string) (models.ListExpansionsResponse, error) {
+func (s *service) ListExpansions(ctx context.Context, name, code string) (*models.ListExpansionsResponse, error) {
 	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
 	if err != nil {
-		return models.ListExpansionsResponse{}, fmt.Errorf("error getting expansions from adapter: %w", err)
+		return nil, fmt.Errorf("getting expansions from cardtrader adapter: %w", err)
 	}
 	var resultingExpanions []*models.Expansion
 	normalizedName := strings.ToLower(name)
@@ -22,7 +22,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 		if name != "" {
 			if strings.Contains(strings.ToLower(expansion.Name), normalizedName) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
-					Id:   int32(expansion.ID),
+					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
 				})
@@ -31,7 +31,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 			// filter via code
 			if strings.Contains(expansion.Code, normalizedCode) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
-					Id:   int32(expansion.ID),
+					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
 				})
@@ -39,14 +39,14 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (models
 		} else {
 			// no filter provided, return all expansions
 			resultingExpanions = append(resultingExpanions, &models.Expansion{
-				Id:   int32(expansion.ID),
+				Id:   expansion.ID,
 				Code: expansion.Code,
 				Name: expansion.Name,
 			})
 		}
 	}
 	s.logger.Debug("returning filtered expansions", slog.Int("expansionCount", len(resultingExpanions)))
-	return models.ListExpansionsResponse{
+	return &models.ListExpansionsResponse{
 		Expansions: resultingExpanions,
 	}, nil
 }

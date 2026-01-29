@@ -81,7 +81,7 @@ func (Condition) EnumDescriptor() ([]byte, []int) {
 
 type Expansion struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -118,7 +118,7 @@ func (*Expansion) Descriptor() ([]byte, []int) {
 	return file_cardwatcher_entities_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Expansion) GetId() int32 {
+func (x *Expansion) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -141,9 +141,9 @@ func (x *Expansion) GetName() string {
 
 type Blueprint struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ExpansionId   int32                  `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	ExpansionId   uint64                 `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -178,7 +178,7 @@ func (*Blueprint) Descriptor() ([]byte, []int) {
 	return file_cardwatcher_entities_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Blueprint) GetId() int32 {
+func (x *Blueprint) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
@@ -192,7 +192,7 @@ func (x *Blueprint) GetName() string {
 	return ""
 }
 
-func (x *Blueprint) GetExpansionId() int32 {
+func (x *Blueprint) GetExpansionId() uint64 {
 	if x != nil {
 		return x.ExpansionId
 	}
@@ -203,8 +203,8 @@ type Watch struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	ExpansionId   int32                  `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
-	BlueprintId   int32                  `protobuf:"varint,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
+	ExpansionId   uint64                 `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	BlueprintId   uint64                 `protobuf:"varint,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,6,opt,name=foil,proto3" json:"foil,omitempty"`
 	ExpansionName string                 `protobuf:"bytes,7,opt,name=expansion_name,json=expansionName,proto3" json:"expansion_name,omitempty"`
@@ -256,14 +256,14 @@ func (x *Watch) GetName() string {
 	return ""
 }
 
-func (x *Watch) GetExpansionId() int32 {
+func (x *Watch) GetExpansionId() uint64 {
 	if x != nil {
 		return x.ExpansionId
 	}
 	return 0
 }
 
-func (x *Watch) GetBlueprintId() int32 {
+func (x *Watch) GetBlueprintId() uint64 {
 	if x != nil {
 		return x.BlueprintId
 	}
@@ -297,18 +297,18 @@ const file_cardwatcher_entities_proto_rawDesc = "" +
 	"\n" +
 	"\x1acardwatcher/entities.proto\x12\vcardwatcher\"C\n" +
 	"\tExpansion\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\"R\n" +
 	"\tBlueprint\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\"\xed\x01\n" +
+	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\"\xed\x01\n" +
 	"\x05Watch\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fexpansion_id\x18\x03 \x01(\x05R\vexpansionId\x12!\n" +
-	"\fblueprint_id\x18\x04 \x01(\x05R\vblueprintId\x124\n" +
+	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\x12!\n" +
+	"\fblueprint_id\x18\x04 \x01(\x04R\vblueprintId\x124\n" +
 	"\tcondition\x18\x05 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x06 \x01(\bR\x04foil\x12%\n" +
 	"\x0eexpansion_name\x18\a \x01(\tR\rexpansionName*\xa9\x01\n" +

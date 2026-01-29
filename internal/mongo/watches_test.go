@@ -19,8 +19,9 @@ func TestCRUDWatches(t *testing.T) {
 		testHost,
 		testPort,
 		testDatabase,
+		"watch-test",
 	}
-	mongoAdapter := NewMongoAdapter(config)
+	mongoAdapter, _ := NewMongoAdapter(config)
 
 	watchID1 := bson.NewObjectID()
 	watchID2 := bson.NewObjectID()

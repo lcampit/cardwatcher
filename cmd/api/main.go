@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net"
+	"os"
 	"time"
 
 	"card-watcher/internal/cardtrader"
@@ -21,16 +22,17 @@ import (
 )
 
 type WatcherConfig struct {
-	LogLevel             string `env:"LOG_LEVEL"`
-	Port                 int    `env:"SERVER_PORT"`
-	AccessToken          string `env:"CARDTRADER_ACCESS_TOKEN"`
-	MongoHost            string `env:"MONGO_HOST"`
-	MongoPort            string `env:"MONGO_PORT"`
-	MongoDatabase        string `env:"MONGO_DATABASE"`
-	CardtraderAPIBaseURL string `env:"CARDTRADER_API_BASE_URL"`
-	NtfyHost             string `env:"NTFY_HOST"`
-	NtfyPort             string `env:"NTFY_PORT"`
-	NotificationSchedule string `env:"NOTIFICATION_SCHEDULE"`
+	LogLevel                string `env:"LOG_LEVEL"`
+	Port                    int    `env:"SERVER_PORT"`
+	AccessToken             string `env:"CARDTRADER_ACCESS_TOKEN"`
+	MongoHost               string `env:"MONGO_HOST"`
+	MongoPort               string `env:"MONGO_PORT"`
+	MongoDatabase           string `env:"MONGO_DATABASE"`
+	MongoWatchCollectioName string `env:"MONGO_WATCH_COLLECTION_NAME"`
+	CardtraderAPIBaseURL    string `env:"CARDTRADER_API_BASE_URL"`
+	NtfyHost                string `env:"NTFY_HOST"`
+	NtfyPort                string `env:"NTFY_PORT"`
+	NotificationSchedule    string `env:"NOTIFICATION_SCHEDULE"`
 }
 
 func main() {
@@ -65,12 +67,17 @@ func main() {
 
 	logger.Info("creating mongo adapter")
 	mongoAdapterConfig := mongo.MongoAdapterConfig{
-		Logger:   logger,
-		Host:     watcherConfig.MongoHost,
-		Port:     watcherConfig.MongoPort,
-		Database: watcherConfig.MongoDatabase,
+		Logger:              logger,
+		Host:                watcherConfig.MongoHost,
+		Port:                watcherConfig.MongoPort,
+		Database:            watcherConfig.MongoDatabase,
+		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
 	}
-	mongoAdapter := mongo.NewMongoAdapter(mongoAdapterConfig)
+	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
+	if err != nil {
+		logger.Error("error creating mongo adapter", slog.Any("error", err))
+		os.Exit(1)
+	}
 
 	logger.Info("creating service")
 	serviceConfig := service.ServiceConfig{

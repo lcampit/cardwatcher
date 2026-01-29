@@ -2,6 +2,16 @@ version: "2"
 linters:
   enable:
     - sloglint
+    - staticcheck
+    - gosec
+    - prealloc
+    - goconst
+    - unconvert
+    - misspell
+    - unparam
+    - nakedret
+    - dupl
+
   settings:
     sloglint:
       no-global: "all"
@@ -15,6 +25,12 @@ linters:
         - "level"
         - "msg"
         - "source"
+    errcheck:
+      check-type-assertions: true
+
+    dupl:
+      threshold: 100
+
 formatters:
   enable:
     - goimports
