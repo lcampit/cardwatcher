@@ -12,7 +12,7 @@ import (
 func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*models.SaveWatchResponse, error) {
 	s.logger.Info("received a SaveWatch request")
 	s.logger.Debug("request received", slog.Any("request", in))
-	watchID, err := s.service.SaveWatch(ctx, int(in.ExpansionId), int(in.BlueprintId), in.Condition, in.Foil)
+	watchID, err := s.service.SaveWatch(ctx, in.ExpansionId, in.BlueprintId, in.Condition, in.Foil)
 	if err != nil {
 		s.logger.Error("error in save watch", slog.Any("error", err))
 		return nil, err
@@ -32,7 +32,7 @@ func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.Li
 	return response, nil
 }
 
-func (s *server) DeleteWatchById(ctx context.Context, in *models.DeleteWatchByIdRequest) (*emptypb.Empty, error) {
+func (s *server) DeleteWatchByID(ctx context.Context, in *models.DeleteWatchByIDRequest) (*emptypb.Empty, error) {
 	s.logger.Info("received a DeleteWatchById request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	return &emptypb.Empty{}, s.service.DeleteWatchByID(ctx, in.WatchId)

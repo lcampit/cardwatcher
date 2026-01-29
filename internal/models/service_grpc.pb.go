@@ -24,7 +24,7 @@ const (
 	CardWatcher_ListBlueprints_FullMethodName  = "/cardwatcher.CardWatcher/ListBlueprints"
 	CardWatcher_SaveWatch_FullMethodName       = "/cardwatcher.CardWatcher/SaveWatch"
 	CardWatcher_ListWatches_FullMethodName     = "/cardwatcher.CardWatcher/ListWatches"
-	CardWatcher_DeleteWatchById_FullMethodName = "/cardwatcher.CardWatcher/DeleteWatchById"
+	CardWatcher_DeleteWatchByID_FullMethodName = "/cardwatcher.CardWatcher/DeleteWatchByID"
 )
 
 // CardWatcherClient is the client API for CardWatcher service.
@@ -35,7 +35,7 @@ type CardWatcherClient interface {
 	ListBlueprints(ctx context.Context, in *ListBlueprintsRequest, opts ...grpc.CallOption) (*ListBlueprintsResponse, error)
 	SaveWatch(ctx context.Context, in *SaveWatchRequest, opts ...grpc.CallOption) (*SaveWatchResponse, error)
 	ListWatches(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListWatchesResponse, error)
-	DeleteWatchById(ctx context.Context, in *DeleteWatchByIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteWatchByID(ctx context.Context, in *DeleteWatchByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type cardWatcherClient struct {
@@ -86,10 +86,10 @@ func (c *cardWatcherClient) ListWatches(ctx context.Context, in *emptypb.Empty, 
 	return out, nil
 }
 
-func (c *cardWatcherClient) DeleteWatchById(ctx context.Context, in *DeleteWatchByIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *cardWatcherClient) DeleteWatchByID(ctx context.Context, in *DeleteWatchByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, CardWatcher_DeleteWatchById_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CardWatcher_DeleteWatchByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ type CardWatcherServer interface {
 	ListBlueprints(context.Context, *ListBlueprintsRequest) (*ListBlueprintsResponse, error)
 	SaveWatch(context.Context, *SaveWatchRequest) (*SaveWatchResponse, error)
 	ListWatches(context.Context, *emptypb.Empty) (*ListWatchesResponse, error)
-	DeleteWatchById(context.Context, *DeleteWatchByIdRequest) (*emptypb.Empty, error)
+	DeleteWatchByID(context.Context, *DeleteWatchByIDRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCardWatcherServer()
 }
 
@@ -127,8 +127,8 @@ func (UnimplementedCardWatcherServer) SaveWatch(context.Context, *SaveWatchReque
 func (UnimplementedCardWatcherServer) ListWatches(context.Context, *emptypb.Empty) (*ListWatchesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListWatches not implemented")
 }
-func (UnimplementedCardWatcherServer) DeleteWatchById(context.Context, *DeleteWatchByIdRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteWatchById not implemented")
+func (UnimplementedCardWatcherServer) DeleteWatchByID(context.Context, *DeleteWatchByIDRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWatchByID not implemented")
 }
 func (UnimplementedCardWatcherServer) mustEmbedUnimplementedCardWatcherServer() {}
 func (UnimplementedCardWatcherServer) testEmbeddedByValue()                     {}
@@ -223,20 +223,20 @@ func _CardWatcher_ListWatches_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CardWatcher_DeleteWatchById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteWatchByIdRequest)
+func _CardWatcher_DeleteWatchByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWatchByIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CardWatcherServer).DeleteWatchById(ctx, in)
+		return srv.(CardWatcherServer).DeleteWatchByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CardWatcher_DeleteWatchById_FullMethodName,
+		FullMethod: CardWatcher_DeleteWatchByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CardWatcherServer).DeleteWatchById(ctx, req.(*DeleteWatchByIdRequest))
+		return srv.(CardWatcherServer).DeleteWatchByID(ctx, req.(*DeleteWatchByIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -265,8 +265,8 @@ var CardWatcher_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _CardWatcher_ListWatches_Handler,
 		},
 		{
-			MethodName: "DeleteWatchById",
-			Handler:    _CardWatcher_DeleteWatchById_Handler,
+			MethodName: "DeleteWatchByID",
+			Handler:    _CardWatcher_DeleteWatchByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -12,11 +12,11 @@ import (
 )
 
 type CardtraderAdapter interface {
-	GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID int) (string, error)
-	GetExpansionNameByID(ctx context.Context, expansionID int) (string, error)
+	GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID uint64) (string, error)
+	GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error)
 	GetExpansions(ctx context.Context) ([]*expansion, error)
-	GetBlueprints(ctx context.Context, expansionID int) ([]*blueprint, error)
-	GetCurrentPricing(ctx context.Context, watch *entities.Watch) (int, error)
+	GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error)
+	GetCurrentPricingCents(ctx context.Context, watch *entities.Watch) (uint64, error)
 }
 
 type cardtraderAdapter struct {
