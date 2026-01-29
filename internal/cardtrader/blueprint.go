@@ -10,23 +10,23 @@ import (
 )
 
 type blueprint struct {
-	ID                 int                  `json:"id"`
+	ID                 uint64               `json:"id"`
 	Name               string               `json:"name"`
 	Version            string               `json:"version"`
-	GameID             int                  `json:"game_id"`
-	CategoryID         int                  `json:"category_id"`
-	ExpansionID        int                  `json:"expansion_id"`
+	GameID             uint64               `json:"game_id"`
+	CategoryID         uint64               `json:"category_id"`
+	ExpansionID        uint64               `json:"expansion_id"`
 	ImageURL           string               `json:"image_url"`
 	EditableProperties []EditableProperties `json:"editable_properties"`
 	ScryfallID         string               `json:"scryfall_id"`
-	CardMarketIDs      []int                `json:"card_market_ids"`
-	TcgPlayerID        int                  `json:"tcg_player_id"`
+	CardMarketIDs      []uint64             `json:"card_market_ids"`
+	TcgPlayerID        uint64               `json:"tcg_player_id"`
 }
 
-func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID int) ([]*blueprint, error) {
+func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error) {
 	var response []*blueprint
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "blueprints", "export")
-	expansionIDString := strconv.Itoa(expansionID)
+	expansionIDString := strconv.FormatUint(expansionID, 10)
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		Param("expansion_id", expansionIDString).
 		ToJSON(&response).Fetch(ctx)
@@ -35,14 +35,14 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID int) 
 	}
 	a.logger.Debug("received blueprints for expansion id",
 		slog.Int("blueprintCount", len(response)),
-		slog.Int("expansionID", expansionID))
+		slog.Uint64("expansionID", expansionID))
 	return response, nil
 }
 
-func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID int) (string, error) {
+func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID uint64) (string, error) {
 	var response []blueprint
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "blueprints", "export")
-	expansionIDString := strconv.Itoa(expansionID)
+	expansionIDString := strconv.FormatUint(expansionID, 10)
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		Param("expansion_id", expansionIDString).
 		ToJSON(&response).Fetch(ctx)
@@ -51,13 +51,13 @@ func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, e
 	}
 	a.logger.Debug("received blueprints for expansion id",
 		slog.Int("blueprintCount", len(response)),
-		slog.Int("expansionId", expansionID))
+		slog.Uint64("expansionId", expansionID))
 
 	for _, blueprint := range response {
 		if blueprint.ID == blueprintID {
 			a.logger.Debug("found blueprint name",
-				slog.Int("expansionId", expansionID),
-				slog.Int("blueprintId", blueprintID),
+				slog.Uint64("expansionId", expansionID),
+				slog.Uint64("blueprintId", blueprintID),
 				slog.String("blueprintName", blueprint.Name))
 			return blueprint.Name, nil
 		}

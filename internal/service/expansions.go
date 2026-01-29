@@ -22,7 +22,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (*model
 		if name != "" {
 			if strings.Contains(strings.ToLower(expansion.Name), normalizedName) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
-					Id:   int32(expansion.ID),
+					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
 				})
@@ -31,7 +31,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (*model
 			// filter via code
 			if strings.Contains(expansion.Code, normalizedCode) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
-					Id:   int32(expansion.ID),
+					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
 				})
@@ -39,7 +39,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (*model
 		} else {
 			// no filter provided, return all expansions
 			resultingExpanions = append(resultingExpanions, &models.Expansion{
-				Id:   int32(expansion.ID),
+				Id:   expansion.ID,
 				Code: expansion.Code,
 				Name: expansion.Name,
 			})

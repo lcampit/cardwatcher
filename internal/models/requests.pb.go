@@ -75,7 +75,7 @@ func (x *ListExpansionsRequest) GetCode() string {
 
 type ListBlueprintsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ExpansionId   int32                  `protobuf:"varint,1,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	ExpansionId   uint64                 `protobuf:"varint,1,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -111,7 +111,7 @@ func (*ListBlueprintsRequest) Descriptor() ([]byte, []int) {
 	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ListBlueprintsRequest) GetExpansionId() int32 {
+func (x *ListBlueprintsRequest) GetExpansionId() uint64 {
 	if x != nil {
 		return x.ExpansionId
 	}
@@ -127,8 +127,8 @@ func (x *ListBlueprintsRequest) GetName() string {
 
 type SaveWatchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ExpansionId   int32                  `protobuf:"varint,2,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
-	BlueprintId   int32                  `protobuf:"varint,3,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
+	ExpansionId   uint64                 `protobuf:"varint,2,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
+	BlueprintId   uint64                 `protobuf:"varint,3,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 	Condition     Condition              `protobuf:"varint,4,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,5,opt,name=foil,proto3" json:"foil,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -165,14 +165,14 @@ func (*SaveWatchRequest) Descriptor() ([]byte, []int) {
 	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *SaveWatchRequest) GetExpansionId() int32 {
+func (x *SaveWatchRequest) GetExpansionId() uint64 {
 	if x != nil {
 		return x.ExpansionId
 	}
 	return 0
 }
 
-func (x *SaveWatchRequest) GetBlueprintId() int32 {
+func (x *SaveWatchRequest) GetBlueprintId() uint64 {
 	if x != nil {
 		return x.BlueprintId
 	}
@@ -193,27 +193,27 @@ func (x *SaveWatchRequest) GetFoil() bool {
 	return false
 }
 
-type DeleteWatchByIdRequest struct {
+type DeleteWatchByIDRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteWatchByIdRequest) Reset() {
-	*x = DeleteWatchByIdRequest{}
+func (x *DeleteWatchByIDRequest) Reset() {
+	*x = DeleteWatchByIDRequest{}
 	mi := &file_cardwatcher_requests_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteWatchByIdRequest) String() string {
+func (x *DeleteWatchByIDRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteWatchByIdRequest) ProtoMessage() {}
+func (*DeleteWatchByIDRequest) ProtoMessage() {}
 
-func (x *DeleteWatchByIdRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteWatchByIDRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_cardwatcher_requests_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -225,12 +225,12 @@ func (x *DeleteWatchByIdRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteWatchByIdRequest.ProtoReflect.Descriptor instead.
-func (*DeleteWatchByIdRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteWatchByIDRequest.ProtoReflect.Descriptor instead.
+func (*DeleteWatchByIDRequest) Descriptor() ([]byte, []int) {
 	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *DeleteWatchByIdRequest) GetWatchId() string {
+func (x *DeleteWatchByIDRequest) GetWatchId() string {
 	if x != nil {
 		return x.WatchId
 	}
@@ -246,14 +246,14 @@ const file_cardwatcher_requests_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\"N\n" +
 	"\x15ListBlueprintsRequest\x12!\n" +
-	"\fexpansion_id\x18\x01 \x01(\x05R\vexpansionId\x12\x12\n" +
+	"\fexpansion_id\x18\x01 \x01(\x04R\vexpansionId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"\xa2\x01\n" +
 	"\x10SaveWatchRequest\x12!\n" +
-	"\fexpansion_id\x18\x02 \x01(\x05R\vexpansionId\x12!\n" +
-	"\fblueprint_id\x18\x03 \x01(\x05R\vblueprintId\x124\n" +
+	"\fexpansion_id\x18\x02 \x01(\x04R\vexpansionId\x12!\n" +
+	"\fblueprint_id\x18\x03 \x01(\x04R\vblueprintId\x124\n" +
 	"\tcondition\x18\x04 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x05 \x01(\bR\x04foil\"3\n" +
-	"\x16DeleteWatchByIdRequest\x12\x19\n" +
+	"\x16DeleteWatchByIDRequest\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\x11Z\x0finternal/modelsb\x06proto3"
 
 var (
@@ -273,7 +273,7 @@ var file_cardwatcher_requests_proto_goTypes = []any{
 	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.ListExpansionsRequest
 	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.ListBlueprintsRequest
 	(*SaveWatchRequest)(nil),       // 2: cardwatcher.SaveWatchRequest
-	(*DeleteWatchByIdRequest)(nil), // 3: cardwatcher.DeleteWatchByIdRequest
+	(*DeleteWatchByIDRequest)(nil), // 3: cardwatcher.DeleteWatchByIDRequest
 	(Condition)(0),                 // 4: cardwatcher.Condition
 }
 var file_cardwatcher_requests_proto_depIdxs = []int32{

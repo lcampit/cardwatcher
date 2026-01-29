@@ -9,8 +9,8 @@ import (
 )
 
 type expansion struct {
-	ID     int    `json:"id"`
-	GameID int    `json:"game_id"`
+	ID     uint64 `json:"id"`
+	GameID uint64 `json:"game_id"`
 	Code   string `json:"code"`
 	Name   string `json:"name"`
 }
@@ -27,7 +27,7 @@ func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, er
 	return response, nil
 }
 
-func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionID int) (string, error) {
+func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error) {
 	var response []*expansion
 	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "expansions")
 	err := requests.URL(endpoint).Bearer(a.accessToken).
@@ -38,7 +38,7 @@ func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionI
 	for _, expansion := range response {
 		if expansion.ID == expansionID {
 			a.logger.Debug("found name for expansion id",
-				slog.Int("expansionId", expansionID),
+				slog.Uint64("expansionId", expansionID),
 				slog.String("expansionName", expansion.Name))
 			return expansion.Name, nil
 		}

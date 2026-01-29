@@ -11,12 +11,12 @@ import (
 )
 
 type Product struct {
-	ID          int    `json:"id"`
-	BlueprintID int    `json:"blueprint_id"`
+	ID          uint64 `json:"id"`
+	BlueprintID uint64 `json:"blueprint_id"`
 	Name        string `json:"name_en"`
-	Quantity    int    `json:"quantity"`
+	Quantity    uint64 `json:"quantity"`
 	Price       struct {
-		Cents    int    `json:"cents"`
+		Cents    uint64 `json:"cents"`
 		Currency string `json:"currency"`
 	} `json:"price"`
 	Description string `json:"description"`
@@ -28,28 +28,28 @@ type Product struct {
 		Altered   bool                    `json:"altered"`
 	} `json:"properties_hash"`
 	Expansion struct {
-		ID   int    `json:"id"`
+		ID   uint64 `json:"id"`
 		Code string `json:"code"`
 		Name string `json:"name_en"`
 	} `json:"expansion"`
 	User struct {
-		ID                   int    `json:"id"`
+		ID                   uint64 `json:"id"`
 		Username             string `json:"username"`
 		SellsViaHub          bool   `json:"can_sell_via_hub"`
 		CountryCode          string `json:"country_code"`
 		UserType             string `json:"user_type"`
-		MaxSellableIn24Hours int    `json:"max_sellable_in24h_quantity"`
+		MaxSellableIn24Hours uint64 `json:"max_sellable_in24h_quantity"`
 	} `json:"user"`
-	Graded     bool `json:"graded"`
-	OnVacation bool `json:"on_vavation"`
-	BundleSize int  `json:"bundle_size"`
+	Graded     bool   `json:"graded"`
+	OnVacation bool   `json:"on_vavation"`
+	BundleSize uint64 `json:"bundle_size"`
 }
 
-func (a *cardtraderAdapter) GetCurrentPricing(ctx context.Context, watch *entities.Watch) (int, error) {
+func (a *cardtraderAdapter) GetCurrentPricingCents(ctx context.Context, watch *entities.Watch) (uint64, error) {
 	response := map[string][]Product{}
 
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "marketplace", "products")
-	blueprintIDString := strconv.Itoa(watch.BlueprintID)
+	blueprintIDString := strconv.FormatUint(watch.BlueprintID, 10)
 	foilString := strconv.FormatBool(watch.Foil)
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		Param("language", "en").Param("blueprint_id", blueprintIDString).Param("foil", foilString).
