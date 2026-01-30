@@ -10,6 +10,7 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       SERVER_PORT: ${SERVER_PORT}
+      SERVER_NOTIFICATION_SCHEDULE: ${SERVER_NOTIFICATION_SCHEDULE}
       MONGO_HOST: mongo
       MONGO_PORT: ${MONGO_PORT}
       MONGO_USERNAME: ${MONGO_USERNAME}
@@ -19,7 +20,6 @@ services:
       CARDTRADER_API_BASE_URL: ${CARDTRADER_API_BASE_URL}
       NTFY_HOST: ntfy
       NTFY_PORT: ${NTFY_PORT}
-      NOTIFICATION_SCHEDULE: ${NOTIFICATION_SCHEDULE}
     depends_on:
       mongo:
         condition: service_healthy
