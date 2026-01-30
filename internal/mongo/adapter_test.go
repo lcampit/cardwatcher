@@ -75,9 +75,8 @@ func TestHealth(t *testing.T) {
 	}
 	srv, _ := NewMongoAdapter(config)
 
-	stats := srv.Health()
-
-	if stats["message"] != "It's healthy" {
-		t.Fatalf("expected message to be 'It's healthy', got %s", stats["message"])
+	err := srv.Health()
+	if err != nil {
+		t.Fatalf("error in healthcheck: %v", err)
 	}
 }

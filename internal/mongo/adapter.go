@@ -20,7 +20,7 @@ type MongoAdapter interface {
 	GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
-	Health() map[string]string
+	Health() error
 }
 
 type mongoAdapter struct {
@@ -58,16 +58,9 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	}, nil
 }
 
-func (a *mongoAdapter) Health() map[string]string {
+func (a *mongoAdapter) Health() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	err := a.client.Ping(ctx, nil)
-	if err != nil {
-		a.logger.Error("error reaching mongo instance in healthcheck", slog.Any("error", err))
-	}
-
-	return map[string]string{
-		"message": "It's healthy",
-	}
+	return a.client.Ping(ctx, nil)
 }
