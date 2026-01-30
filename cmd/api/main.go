@@ -24,18 +24,18 @@ import (
 )
 
 type WatcherConfig struct {
-	LogLevel                        string `env:"LOG_LEVEL"`
-	Port                            int    `env:"SERVER_PORT"`
-	AccessToken                     string `env:"CARDTRADER_ACCESS_TOKEN"`
-	MongoHost                       string `env:"MONGO_HOST"`
-	MongoPort                       string `env:"MONGO_PORT"`
-	MongoDatabase                   string `env:"MONGO_DATABASE"`
-	MongoWatchCollectioName         string `env:"MONGO_WATCH_COLLECTION_NAME"`
-	CardtraderAPIBaseURL            string `env:"CARDTRADER_API_BASE_URL"`
-	NtfyHost                        string `env:"NTFY_HOST"`
-	NtfyPort                        string `env:"NTFY_PORT"`
-	NotificationSchedule            string `env:"NOTIFICATION_SCHEDULE"`
-	HeatlhCheckIntervalMilliseconds int    `env:"HEALTH_CHECK_INTERVAL_MILLISECONDS"`
+	LogLevel                              string `env:"LOG_LEVEL"`
+	ServerPort                            int    `env:"SERVER_PORT"`
+	ServerNotificationSchedule            string `env:"SERVER_NOTIFICATION_SCHEDULE"`
+	ServerHealthCheckIntervalMilliseconds int    `env:"SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS"`
+	MongoHost                             string `env:"MONGO_HOST"`
+	MongoPort                             string `env:"MONGO_PORT"`
+	MongoDatabase                         string `env:"MONGO_DATABASE"`
+	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
+	CardtraderAPIBaseURL                  string `env:"CARDTRADER_API_BASE_URL"`
+	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
+	NtfyHost                              string `env:"NTFY_HOST"`
+	NtfyPort                              string `env:"NTFY_PORT"`
 }
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 
 	logger := logger.NewLogger(watcherConfig.LogLevel)
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.Port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.ServerPort))
 	if err != nil {
 		logger.Error("failed to listen", slog.Any("error", err))
 	}
@@ -55,7 +55,7 @@ func main() {
 	logger.Info("creating cardtrader adapter")
 	cardtraderAdapterConfig := cardtrader.CardtraderAdapterConfig{
 		Logger:      logger,
-		AccessToken: watcherConfig.AccessToken,
+		AccessToken: watcherConfig.CardtraderAccessToken,
 		BaseURL:     watcherConfig.CardtraderAPIBaseURL,
 	}
 	cardtraderAdapter := cardtrader.NewCardtraderAdapter(cardtraderAdapterConfig)
@@ -114,18 +114,18 @@ func main() {
 			} else {
 				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_SERVING)
 			}
-			time.Sleep(time.Duration(watcherConfig.HeatlhCheckIntervalMilliseconds) * time.Millisecond)
+			time.Sleep(time.Duration(watcherConfig.ServerHealthCheckIntervalMilliseconds) * time.Millisecond)
 		}
 	}()
 
 	loc, _ := time.LoadLocation("Europe/Rome")
 	c := cron.New(cron.WithLocation(loc))
-	_, err = c.AddFunc(watcherConfig.NotificationSchedule, service.WatchAndNotify)
+	_, err = c.AddFunc(watcherConfig.ServerNotificationSchedule, service.WatchAndNotify)
 	if err != nil {
 		logger.Error("error when setting up notification cron job", slog.Any("error", err))
 	}
 	c.Start()
-	logger.Info("server started", slog.Int("serverPort", watcherConfig.Port))
+	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		logger.Error("error while listening", slog.Any("error", err))
