@@ -62,5 +62,6 @@ func (a *mongoAdapter) Health() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
+	a.logger.Info("checking health")
 	return a.client.Ping(ctx, nil)
 }

@@ -18,21 +18,24 @@ import (
 	"github.com/robfig/cron/v3"
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
 type WatcherConfig struct {
-	LogLevel                string `env:"LOG_LEVEL"`
-	Port                    int    `env:"SERVER_PORT"`
-	AccessToken             string `env:"CARDTRADER_ACCESS_TOKEN"`
-	MongoHost               string `env:"MONGO_HOST"`
-	MongoPort               string `env:"MONGO_PORT"`
-	MongoDatabase           string `env:"MONGO_DATABASE"`
-	MongoWatchCollectioName string `env:"MONGO_WATCH_COLLECTION_NAME"`
-	CardtraderAPIBaseURL    string `env:"CARDTRADER_API_BASE_URL"`
-	NtfyHost                string `env:"NTFY_HOST"`
-	NtfyPort                string `env:"NTFY_PORT"`
-	NotificationSchedule    string `env:"NOTIFICATION_SCHEDULE"`
+	LogLevel                        string `env:"LOG_LEVEL"`
+	Port                            int    `env:"SERVER_PORT"`
+	AccessToken                     string `env:"CARDTRADER_ACCESS_TOKEN"`
+	MongoHost                       string `env:"MONGO_HOST"`
+	MongoPort                       string `env:"MONGO_PORT"`
+	MongoDatabase                   string `env:"MONGO_DATABASE"`
+	MongoWatchCollectioName         string `env:"MONGO_WATCH_COLLECTION_NAME"`
+	CardtraderAPIBaseURL            string `env:"CARDTRADER_API_BASE_URL"`
+	NtfyHost                        string `env:"NTFY_HOST"`
+	NtfyPort                        string `env:"NTFY_PORT"`
+	NotificationSchedule            string `env:"NOTIFICATION_SCHEDULE"`
+	HeatlhCheckIntervalMilliseconds int    `env:"HEALTH_CHECK_INTERVAL_MILLISECONDS"`
 }
 
 func main() {
@@ -96,8 +99,24 @@ func main() {
 	server := server.NewServer(serverConfig)
 
 	grpcServer := grpc.NewServer()
+	healthcheck := health.NewServer()
+	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
 	models.RegisterCardWatcherServer(grpcServer, server)
 	reflection.Register(grpcServer)
+
+	// Periodically check adapters health
+	go func() {
+		for {
+			err := mongoAdapter.Health()
+			if err != nil {
+				logger.Error("error in mongo adapter health check", slog.Any("error", err))
+				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_NOT_SERVING)
+			} else {
+				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_SERVING)
+			}
+			time.Sleep(time.Duration(watcherConfig.HeatlhCheckIntervalMilliseconds) * time.Millisecond)
+		}
+	}()
 
 	loc, _ := time.LoadLocation("Europe/Rome")
 	c := cron.New(cron.WithLocation(loc))

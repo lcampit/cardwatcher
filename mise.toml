@@ -24,6 +24,7 @@ MONGO_DATABASE = "cardwatcher"
 CARDTRADER_API_BASE_URL = "https://api.cardtrader.com/api/v2"
 NOTIFICATION_SCHEDULE = "* * * * *"
 MONGO_WATCH_COLLECTION_NAME = "watches"
+HEALTH_CHECK_INTERVAL_MILLISECONDS = 1000
 
 [settings]
 lockfile = true
