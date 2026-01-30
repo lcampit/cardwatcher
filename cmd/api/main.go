@@ -28,6 +28,7 @@ type WatcherConfig struct {
 	ServerPort                            int    `env:"SERVER_PORT"`
 	ServerNotificationSchedule            string `env:"SERVER_NOTIFICATION_SCHEDULE"`
 	ServerHealthCheckIntervalMilliseconds int    `env:"SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS"`
+	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION"`
 	MongoHost                             string `env:"MONGO_HOST"`
 	MongoPort                             string `env:"MONGO_PORT"`
 	MongoDatabase                         string `env:"MONGO_DATABASE"`
@@ -102,7 +103,10 @@ func main() {
 	healthcheck := health.NewServer()
 	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
 	models.RegisterCardWatcherServer(grpcServer, server)
-	reflection.Register(grpcServer)
+
+	if watcherConfig.ServerEnableReflection {
+		reflection.Register(grpcServer)
+	}
 
 	// Periodically check adapters health
 	go func() {
