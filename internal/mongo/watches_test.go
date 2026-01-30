@@ -20,6 +20,7 @@ func TestCRUDWatches(t *testing.T) {
 		testPort,
 		testDatabase,
 		"watch-test",
+		5,
 	}
 	mongoAdapter, _ := NewMongoAdapter(config)
 

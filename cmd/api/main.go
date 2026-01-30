@@ -27,12 +27,13 @@ type WatcherConfig struct {
 	LogLevel                              string `env:"LOG_LEVEL"`
 	ServerPort                            int    `env:"SERVER_PORT"`
 	ServerNotificationSchedule            string `env:"SERVER_NOTIFICATION_SCHEDULE"`
-	ServerHealthCheckIntervalMilliseconds int    `env:"SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS"`
-	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION"`
+	ServerHealthCheckIntervalMilliseconds int    `env:"SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS" default:"1000"`
+	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION" default:"false"`
 	MongoHost                             string `env:"MONGO_HOST"`
 	MongoPort                             string `env:"MONGO_PORT"`
 	MongoDatabase                         string `env:"MONGO_DATABASE"`
 	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
+	MongoConnectionRetries                int    `env:"MONGO_CONNECTION_RETRIED" default:"5"`
 	CardtraderAPIBaseURL                  string `env:"CARDTRADER_API_BASE_URL"`
 	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
 	NtfyHost                              string `env:"NTFY_HOST"`
@@ -76,6 +77,7 @@ func main() {
 		Port:                watcherConfig.MongoPort,
 		Database:            watcherConfig.MongoDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
+		ConnectionRetries:   watcherConfig.MongoConnectionRetries,
 	}
 	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
 	if err != nil {

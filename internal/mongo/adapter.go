@@ -36,6 +36,7 @@ type MongoAdapterConfig struct {
 	Port                string
 	Database            string
 	WatchCollectionName string
+	ConnectionRetries   int
 }
 
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
@@ -46,7 +47,16 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating mongo client: %w", err)
 	}
-	err = client.Ping(ctx, nil)
+	for retry := range config.ConnectionRetries {
+		err = client.Ping(ctx, nil)
+		if err != nil {
+			config.Logger.Error("connecting to mongo client",
+				slog.Any("error", err),
+				slog.Int("retryCount", retry))
+			time.Sleep(1 * time.Second)
+		}
+	}
+	// all tries have failed, return error
 	if err != nil {
 		return nil, fmt.Errorf("connecting to mongo client: %w", err)
 	}
@@ -62,6 +72,6 @@ func (a *mongoAdapter) Health() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	a.logger.Info("checking health")
+	a.logger.Debug("checking health")
 	return a.client.Ping(ctx, nil)
 }
