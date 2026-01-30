@@ -20,7 +20,7 @@ type MongoAdapter interface {
 	GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
-	Health() map[string]string
+	Health() error
 }
 
 type mongoAdapter struct {
@@ -36,6 +36,7 @@ type MongoAdapterConfig struct {
 	Port                string
 	Database            string
 	WatchCollectionName string
+	ConnectionRetries   int
 }
 
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
@@ -46,7 +47,16 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating mongo client: %w", err)
 	}
-	err = client.Ping(ctx, nil)
+	for retry := range config.ConnectionRetries {
+		err = client.Ping(ctx, nil)
+		if err != nil {
+			config.Logger.Error("connecting to mongo client",
+				slog.Any("error", err),
+				slog.Int("retryCount", retry))
+			time.Sleep(1 * time.Second)
+		}
+	}
+	// all tries have failed, return error
 	if err != nil {
 		return nil, fmt.Errorf("connecting to mongo client: %w", err)
 	}
@@ -58,16 +68,10 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	}, nil
 }
 
-func (a *mongoAdapter) Health() map[string]string {
+func (a *mongoAdapter) Health() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
-	err := a.client.Ping(ctx, nil)
-	if err != nil {
-		a.logger.Error("error reaching mongo instance in healthcheck", slog.Any("error", err))
-	}
-
-	return map[string]string{
-		"message": "It's healthy",
-	}
+	a.logger.Debug("checking health")
+	return a.client.Ping(ctx, nil)
 }

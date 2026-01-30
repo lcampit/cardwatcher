@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#MISE description="invokes server health check"
+#MISE alias="h"
+
+grpcurl -plaintext localhost:3000 grpc.health.v1.Health/Check

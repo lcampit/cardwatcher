@@ -18,21 +18,26 @@ import (
 	"github.com/robfig/cron/v3"
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
 type WatcherConfig struct {
-	LogLevel                string `env:"LOG_LEVEL"`
-	Port                    int    `env:"SERVER_PORT"`
-	AccessToken             string `env:"CARDTRADER_ACCESS_TOKEN"`
-	MongoHost               string `env:"MONGO_HOST"`
-	MongoPort               string `env:"MONGO_PORT"`
-	MongoDatabase           string `env:"MONGO_DATABASE"`
-	MongoWatchCollectioName string `env:"MONGO_WATCH_COLLECTION_NAME"`
-	CardtraderAPIBaseURL    string `env:"CARDTRADER_API_BASE_URL"`
-	NtfyHost                string `env:"NTFY_HOST"`
-	NtfyPort                string `env:"NTFY_PORT"`
-	NotificationSchedule    string `env:"NOTIFICATION_SCHEDULE"`
+	LogLevel                              string `env:"LOG_LEVEL"`
+	ServerPort                            int    `env:"SERVER_PORT"`
+	ServerNotificationSchedule            string `env:"SERVER_NOTIFICATION_SCHEDULE"`
+	ServerHealthCheckIntervalMilliseconds int    `env:"SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS" default:"1000"`
+	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION" default:"false"`
+	MongoHost                             string `env:"MONGO_HOST"`
+	MongoPort                             string `env:"MONGO_PORT"`
+	MongoDatabase                         string `env:"MONGO_DATABASE"`
+	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
+	MongoConnectionRetries                int    `env:"MONGO_CONNECTION_RETRIED" default:"5"`
+	CardtraderAPIBaseURL                  string `env:"CARDTRADER_API_BASE_URL"`
+	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
+	NtfyHost                              string `env:"NTFY_HOST"`
+	NtfyPort                              string `env:"NTFY_PORT"`
 }
 
 func main() {
@@ -44,7 +49,7 @@ func main() {
 
 	logger := logger.NewLogger(watcherConfig.LogLevel)
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.Port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.ServerPort))
 	if err != nil {
 		logger.Error("failed to listen", slog.Any("error", err))
 	}
@@ -52,7 +57,7 @@ func main() {
 	logger.Info("creating cardtrader adapter")
 	cardtraderAdapterConfig := cardtrader.CardtraderAdapterConfig{
 		Logger:      logger,
-		AccessToken: watcherConfig.AccessToken,
+		AccessToken: watcherConfig.CardtraderAccessToken,
 		BaseURL:     watcherConfig.CardtraderAPIBaseURL,
 	}
 	cardtraderAdapter := cardtrader.NewCardtraderAdapter(cardtraderAdapterConfig)
@@ -72,6 +77,7 @@ func main() {
 		Port:                watcherConfig.MongoPort,
 		Database:            watcherConfig.MongoDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
+		ConnectionRetries:   watcherConfig.MongoConnectionRetries,
 	}
 	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
 	if err != nil {
@@ -96,17 +102,36 @@ func main() {
 	server := server.NewServer(serverConfig)
 
 	grpcServer := grpc.NewServer()
+	healthcheck := health.NewServer()
+	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
 	models.RegisterCardWatcherServer(grpcServer, server)
-	reflection.Register(grpcServer)
+
+	if watcherConfig.ServerEnableReflection {
+		reflection.Register(grpcServer)
+	}
+
+	// Periodically check adapters health
+	go func() {
+		for {
+			err := mongoAdapter.Health()
+			if err != nil {
+				logger.Error("error in mongo adapter health check", slog.Any("error", err))
+				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_NOT_SERVING)
+			} else {
+				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_SERVING)
+			}
+			time.Sleep(time.Duration(watcherConfig.ServerHealthCheckIntervalMilliseconds) * time.Millisecond)
+		}
+	}()
 
 	loc, _ := time.LoadLocation("Europe/Rome")
 	c := cron.New(cron.WithLocation(loc))
-	_, err = c.AddFunc(watcherConfig.NotificationSchedule, service.WatchAndNotify)
+	_, err = c.AddFunc(watcherConfig.ServerNotificationSchedule, service.WatchAndNotify)
 	if err != nil {
 		logger.Error("error when setting up notification cron job", slog.Any("error", err))
 	}
 	c.Start()
-	logger.Info("server started", slog.Int("serverPort", watcherConfig.Port))
+	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		logger.Error("error while listening", slog.Any("error", err))
