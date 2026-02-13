@@ -9,27 +9,47 @@ import (
 	"card-watcher/internal/models"
 )
 
-func (s *service) ListExpansions(ctx context.Context, name, code string) (*models.ListExpansionsResponse, error) {
+func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*models.ListExpansionsResponse, error) {
 	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("getting expansions from cardtrader adapter: %w", err)
 	}
 	var resultingExpanions []*models.Expansion
-	normalizedName := strings.ToLower(name)
-	normalizedCode := strings.ToLower(code)
+	var gameID uint64
+	normalizedExpanionName := strings.ToLower(expansionName)
+	normalizedExpansionCode := strings.ToLower(expansionCode)
+
+	if gameName != "" {
+		normalizedGameName := strings.ToLower(gameName)
+		gameIDFromMap, ok := s.gameIDMap.Load(normalizedGameName)
+		if !ok {
+			s.logger.Debug("filtering expansions for game name: game not found in map", slog.String("gameName", gameName))
+		}
+		gameID, ok = (gameIDFromMap).(uint64)
+		if !ok {
+			s.logger.Error("filtering expansions for game name: ID found in map is not an int",
+				slog.String("gameName", gameName),
+				slog.Any("gameIDFromMap", gameIDFromMap))
+		}
+	}
 	for _, expansion := range expansions {
-		// filter via name
-		if name != "" {
-			if strings.Contains(strings.ToLower(expansion.Name), normalizedName) {
+		if gameID != 0 && expansion.GameID != gameID {
+			// expansion is not of the right game, skip it
+			continue
+		}
+
+		if expansionName != "" {
+			// filter via name
+			if strings.Contains(strings.ToLower(expansion.Name), normalizedExpanionName) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
 					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
 				})
 			}
-		} else if code != "" {
+		} else if expansionCode != "" {
 			// filter via code
-			if strings.Contains(expansion.Code, normalizedCode) {
+			if strings.Contains(expansion.Code, normalizedExpansionCode) {
 				resultingExpanions = append(resultingExpanions, &models.Expansion{
 					Id:   expansion.ID,
 					Code: expansion.Code,
@@ -37,7 +57,7 @@ func (s *service) ListExpansions(ctx context.Context, name, code string) (*model
 				})
 			}
 		} else {
-			// no filter provided, return all expansions
+			// no filter provided, return all expansions of the given game, if any
 			resultingExpanions = append(resultingExpanions, &models.Expansion{
 				Id:   expansion.ID,
 				Code: expansion.Code,

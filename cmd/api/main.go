@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"net"
@@ -41,6 +42,9 @@ type WatcherConfig struct {
 }
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	var watcherConfig WatcherConfig
 	if err := env.Load(&watcherConfig, nil); err != nil {
 		fmt.Println(err)
@@ -92,7 +96,7 @@ func main() {
 		MongoAdapter:      mongoAdapter,
 		NtfyAdapter:       ntfyAdapter,
 	}
-	service := service.NewService(serviceConfig)
+	service := service.NewService(ctx, serviceConfig)
 
 	logger.Info("creating server")
 	serverConfig := server.ServerConfig{
