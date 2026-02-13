@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+#MISE description="starts supporting containers for local development"
+
+if command -v docker-compose &>/dev/null; then
+  docker-compose up -d mongo ntfy
+elif command -v docker compose &>/dev/null; then
+  docker compose up -d mongo ntfy
+else
+  echo "could not find docker-compose nor docker compose"
+fi
