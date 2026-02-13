@@ -16,7 +16,6 @@ import (
 	"card-watcher/internal/server"
 	"card-watcher/internal/service"
 
-	"github.com/robfig/cron/v3"
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -27,7 +26,8 @@ import (
 type WatcherConfig struct {
 	LogLevel                              string `env:"LOG_LEVEL"`
 	ServerPort                            int    `env:"SERVER_PORT"`
-	ServerNotificationSchedule            string `env:"SERVER_NOTIFICATION_SCHEDULE"`
+	NotificationSchedule                  string `env:"NOTIFICATION_SCHEDULE"`
+	UpdateMapsSchedule                    string `env:"UPDATE_MAPS_SCHEDULE"`
 	ServerHealthCheckIntervalMilliseconds int    `env:"SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS" default:"1000"`
 	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION" default:"false"`
 	MongoHost                             string `env:"MONGO_HOST"`
@@ -91,10 +91,12 @@ func main() {
 
 	logger.Info("creating service")
 	serviceConfig := service.ServiceConfig{
-		Logger:            logger,
-		CardtraderAdapter: cardtraderAdapter,
-		MongoAdapter:      mongoAdapter,
-		NtfyAdapter:       ntfyAdapter,
+		Logger:               logger,
+		CardtraderAdapter:    cardtraderAdapter,
+		MongoAdapter:         mongoAdapter,
+		NtfyAdapter:          ntfyAdapter,
+		NotificationSchedule: watcherConfig.NotificationSchedule,
+		UpdateMapsSchedule:   watcherConfig.UpdateMapsSchedule,
 	}
 	service := service.NewService(ctx, serviceConfig)
 
@@ -128,19 +130,12 @@ func main() {
 		}
 	}()
 
-	loc, _ := time.LoadLocation("Europe/Rome")
-	c := cron.New(cron.WithLocation(loc))
-	_, err = c.AddFunc(watcherConfig.ServerNotificationSchedule, service.WatchAndNotify)
-	if err != nil {
-		logger.Error("error when setting up notification cron job", slog.Any("error", err))
-	}
-	c.Start()
 	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
 	err = grpcServer.Serve(lis)
 	if err != nil {
 		logger.Error("error while listening", slog.Any("error", err))
 	}
 	logger.Info("stopping server")
-	c.Stop()
+	service.Close()
 	logger.Info("done")
 }

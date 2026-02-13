@@ -5,11 +5,14 @@ import (
 	"crypto/sha256"
 	"log/slog"
 	"sync"
+	"time"
 
 	"card-watcher/internal/cardtrader"
 	"card-watcher/internal/models"
 	"card-watcher/internal/mongo"
 	"card-watcher/internal/ntfy"
+
+	"github.com/robfig/cron/v3"
 )
 
 type Service interface {
@@ -19,7 +22,7 @@ type Service interface {
 	ListWatches(ctx context.Context) (*models.ListWatchesResponse, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
-	WatchAndNotify()
+	Close()
 }
 
 type service struct {
@@ -28,14 +31,17 @@ type service struct {
 	mongoAdapter      mongo.MongoAdapter
 	ntfyAdapter       ntfy.NtfyAdapter
 
+	cron      *cron.Cron
 	gameIDMap sync.Map
 }
 
 type ServiceConfig struct {
-	Logger            *slog.Logger
-	CardtraderAdapter cardtrader.CardtraderAdapter
-	MongoAdapter      mongo.MongoAdapter
-	NtfyAdapter       ntfy.NtfyAdapter
+	Logger               *slog.Logger
+	CardtraderAdapter    cardtrader.CardtraderAdapter
+	MongoAdapter         mongo.MongoAdapter
+	NtfyAdapter          ntfy.NtfyAdapter
+	NotificationSchedule string
+	UpdateMapsSchedule   string
 }
 
 func NewService(ctx context.Context, config ServiceConfig) *service {
@@ -46,8 +52,26 @@ func NewService(ctx context.Context, config ServiceConfig) *service {
 		ntfyAdapter:       config.NtfyAdapter,
 	}
 	service.gameIDMap = sync.Map{}
-	service.updateGamesMap(ctx)
+	service.updateGamesMap()
+
+	loc, _ := time.LoadLocation("Europe/Rome")
+	c := cron.New(cron.WithLocation(loc))
+	_, err := c.AddFunc(config.NotificationSchedule, service.watchAndNotify)
+	if err != nil {
+		service.logger.Error("setting up notification cron job", slog.Any("error", err))
+	}
+	_, err = c.AddFunc(config.UpdateMapsSchedule, service.updateGamesMap)
+	if err != nil {
+		service.logger.Error("setting up notification cron job", slog.Any("error", err))
+	}
+	c.Start()
+	service.cron = c
+
 	return service
+}
+
+func (s *service) Close() {
+	s.cron.Stop()
 }
 
 func HashAccessToken(accessToken string) string {
@@ -56,7 +80,9 @@ func HashAccessToken(accessToken string) string {
 	return string(h.Sum(nil))
 }
 
-func (s *service) updateGamesMap(ctx context.Context) {
+func (s *service) updateGamesMap() {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	games, err := s.cardtraderAdapter.GetGames(ctx)
 	if err != nil {
 		s.logger.Error("getting games from cardtrader adapter", slog.Any("error", err))
