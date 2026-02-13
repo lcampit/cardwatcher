@@ -12,6 +12,7 @@ import (
 )
 
 type CardtraderAdapter interface {
+	GetGames(ctx context.Context) ([]*game, error)
 	GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID uint64) (string, error)
 	GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error)
 	GetExpansions(ctx context.Context) ([]*expansion, error)
