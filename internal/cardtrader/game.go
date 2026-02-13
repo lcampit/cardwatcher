@@ -15,18 +15,22 @@ type game struct {
 	DisplayName string `json:"display_name"`
 }
 
+type gameResponse struct {
+	GameList []*game `json:"array"`
+}
+
 func (g *game) GetNormalizedName() string {
 	return strings.TrimSpace(strings.ToLower(g.Name))
 }
 
 func (a *cardtraderAdapter) GetGames(ctx context.Context) ([]*game, error) {
-	var response []*game
+	var response gameResponse
 	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "games")
 	err := requests.URL(endpoint).Bearer(a.accessToken).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get expansions endpoint %w", err)
 	}
-	a.logger.Debug("received games", slog.Int("gamesCount", len(response)))
-	return response, nil
+	a.logger.Debug("received games", slog.Int("gamesCount", len(response.GameList)))
+	return response.GameList, nil
 }
