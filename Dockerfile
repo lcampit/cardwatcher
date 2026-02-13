@@ -11,6 +11,7 @@ RUN go build -o main cmd/api/main.go
 
 FROM alpine:3.20.1 AS prod
 WORKDIR /app
+RUN apk update && apk --no-cache add tzdata ca-certificates
 COPY --from=build /app/main /app/main
 EXPOSE ${PORT}
 CMD ["./main"]
