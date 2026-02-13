@@ -2,4 +2,10 @@
 
 #MISE description="stops supporting containers"
 
-docker-compose down
+if command -v docker-compose &>/dev/null; then
+  docker-compose down
+elif command -v docker compose &>/dev/null; then
+  docker compose down
+else
+  echo "could not find docker-compose nor docker compose"
+fi
