@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+#MISE description="pulls the latest models version and builds them"
+#MISE alias="um"
+
+cd ./card-watcher-models || exit
+git checkout main
+git pull
+cd ..
+mise run generate
