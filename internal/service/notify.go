@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (s *service) WatchAndNotify() {
+func (s *service) watchAndNotify() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	watches, err := s.mongoAdapter.GetWatches(ctx)

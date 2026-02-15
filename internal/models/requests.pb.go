@@ -25,6 +25,7 @@ type ListExpansionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Game          string                 `protobuf:"bytes,3,opt,name=game,proto3" json:"game,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,6 +70,13 @@ func (x *ListExpansionsRequest) GetName() string {
 func (x *ListExpansionsRequest) GetCode() string {
 	if x != nil {
 		return x.Code
+	}
+	return ""
+}
+
+func (x *ListExpansionsRequest) GetGame() string {
+	if x != nil {
+		return x.Game
 	}
 	return ""
 }
@@ -241,10 +249,11 @@ var File_cardwatcher_requests_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_requests_proto_rawDesc = "" +
 	"\n" +
-	"\x1acardwatcher/requests.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"?\n" +
+	"\x1acardwatcher/requests.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"S\n" +
 	"\x15ListExpansionsRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\"N\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
+	"\x04game\x18\x03 \x01(\tR\x04game\"N\n" +
 	"\x15ListBlueprintsRequest\x12!\n" +
 	"\fexpansion_id\x18\x01 \x01(\x04R\vexpansionId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"\xa2\x01\n" +

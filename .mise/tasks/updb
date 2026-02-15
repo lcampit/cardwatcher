@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-#MISE description="starts database container"
-
-docker-compose up -d mongo
