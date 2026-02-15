@@ -8,13 +8,13 @@ import (
 	"os"
 	"time"
 
-	"card-watcher/internal/cardtrader"
-	"card-watcher/internal/logger"
-	"card-watcher/internal/models"
-	"card-watcher/internal/mongo"
-	"card-watcher/internal/ntfy"
-	"card-watcher/internal/server"
-	"card-watcher/internal/service"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	"github.com/lcampit/card-watcher-server/internal/server/cardtrader"
+	"github.com/lcampit/card-watcher-server/internal/server/logger"
+	"github.com/lcampit/card-watcher-server/internal/server/mongo"
+	"github.com/lcampit/card-watcher-server/internal/server/ntfy"
+	"github.com/lcampit/card-watcher-server/internal/server/server"
+	"github.com/lcampit/card-watcher-server/internal/server/service"
 
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
@@ -110,7 +110,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	healthcheck := health.NewServer()
 	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
-	models.RegisterCardWatcherServer(grpcServer, server)
+	api.RegisterCardWatcherServer(grpcServer, server)
 
 	if watcherConfig.ServerEnableReflection {
 		reflection.Register(grpcServer)

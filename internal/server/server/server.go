@@ -8,12 +8,12 @@ package server
 import (
 	"log/slog"
 
-	"card-watcher/internal/models"
-	"card-watcher/internal/service"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	"github.com/lcampit/card-watcher-server/internal/server/service"
 )
 
 type server struct {
-	models.UnimplementedCardWatcherServer
+	api.UnimplementedCardWatcherServer
 	logger  *slog.Logger
 	service service.Service
 }

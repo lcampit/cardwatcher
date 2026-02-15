@@ -8,7 +8,7 @@ import (
 	"context"
 	"log/slog"
 
-	"card-watcher/internal/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/entities"
 )
 
 type CardtraderAdapter interface {

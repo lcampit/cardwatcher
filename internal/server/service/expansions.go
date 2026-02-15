@@ -6,15 +6,15 @@ import (
 	"log/slog"
 	"strings"
 
-	"card-watcher/internal/models"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
 )
 
-func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*models.ListExpansionsResponse, error) {
+func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*api.ListExpansionsResponse, error) {
 	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("getting expansions from cardtrader adapter: %w", err)
 	}
-	var resultingExpanions []*models.Expansion
+	var resultingExpanions []*api.Expansion
 	var gameID uint64
 	normalizedExpanionName := strings.ToLower(expansionName)
 	normalizedExpansionCode := strings.ToLower(expansionCode)
@@ -41,7 +41,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		if expansionName != "" {
 			// filter via name
 			if strings.Contains(strings.ToLower(expansion.Name), normalizedExpanionName) {
-				resultingExpanions = append(resultingExpanions, &models.Expansion{
+				resultingExpanions = append(resultingExpanions, &api.Expansion{
 					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
@@ -50,7 +50,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		} else if expansionCode != "" {
 			// filter via code
 			if strings.Contains(expansion.Code, normalizedExpansionCode) {
-				resultingExpanions = append(resultingExpanions, &models.Expansion{
+				resultingExpanions = append(resultingExpanions, &api.Expansion{
 					Id:   expansion.ID,
 					Code: expansion.Code,
 					Name: expansion.Name,
@@ -58,7 +58,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 			}
 		} else {
 			// no filter provided, return all expansions of the given game, if any
-			resultingExpanions = append(resultingExpanions, &models.Expansion{
+			resultingExpanions = append(resultingExpanions, &api.Expansion{
 				Id:   expansion.ID,
 				Code: expansion.Code,
 				Name: expansion.Name,
@@ -66,7 +66,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		}
 	}
 	s.logger.Debug("returning filtered expansions", slog.Int("expansionCount", len(resultingExpanions)))
-	return &models.ListExpansionsResponse{
+	return &api.ListExpansionsResponse{
 		Expansions: resultingExpanions,
 	}, nil
 }

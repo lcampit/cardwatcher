@@ -1,22 +1,22 @@
 package service
 
 import (
-	"card-watcher/internal/entities"
-	"card-watcher/internal/models"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	"github.com/lcampit/card-watcher-server/internal/server/entities"
 )
 
-func convertModelConditionToEntityCondition(modelCondition models.Condition) entities.WatchCondition {
+func convertModelConditionToEntityCondition(modelCondition api.Condition) entities.WatchCondition {
 	switch modelCondition {
-	case models.Condition_CONDITION_UNSPECIFIED:
-	case models.Condition_CONDITION_NEAR_MINT:
+	case api.Condition_CONDITION_UNSPECIFIED:
+	case api.Condition_CONDITION_NEAR_MINT:
 		return entities.WatchConditionNM
-	case models.Condition_CONDITION_SLIGHTLY_PLAYED:
+	case api.Condition_CONDITION_SLIGHTLY_PLAYED:
 		return entities.WatchConditionSP
-	case models.Condition_CONDITION_MODERATELY_PLAYED:
+	case api.Condition_CONDITION_MODERATELY_PLAYED:
 		return entities.WatchConditionMP
-	case models.Condition_CONDITION_PLAYED:
+	case api.Condition_CONDITION_PLAYED:
 		return entities.WatchConditionPL
-	case models.Condition_CONDITION_POOR:
+	case api.Condition_CONDITION_POOR:
 		return entities.WatchConditionPO
 	default:
 		return entities.WatchConditionNM
@@ -24,24 +24,24 @@ func convertModelConditionToEntityCondition(modelCondition models.Condition) ent
 	return entities.WatchConditionNM
 }
 
-func convertEntityConditionToModelCondition(entityCondition entities.WatchCondition) models.Condition {
+func convertEntityConditionToModelCondition(entityCondition entities.WatchCondition) api.Condition {
 	switch entityCondition {
 	case entities.WatchConditionNM:
-		return models.Condition_CONDITION_NEAR_MINT
+		return api.Condition_CONDITION_NEAR_MINT
 	case entities.WatchConditionSP:
-		return models.Condition_CONDITION_SLIGHTLY_PLAYED
+		return api.Condition_CONDITION_SLIGHTLY_PLAYED
 	case entities.WatchConditionMP:
-		return models.Condition_CONDITION_SLIGHTLY_PLAYED
+		return api.Condition_CONDITION_SLIGHTLY_PLAYED
 	case entities.WatchConditionPL:
-		return models.Condition_CONDITION_PLAYED
+		return api.Condition_CONDITION_PLAYED
 	case entities.WatchConditionPO:
-		return models.Condition_CONDITION_POOR
+		return api.Condition_CONDITION_POOR
 	}
-	return models.Condition_CONDITION_NEAR_MINT
+	return api.Condition_CONDITION_NEAR_MINT
 }
 
-func convertEntityWatchToModelWatch(entityWatch *entities.Watch) *models.Watch {
-	return &models.Watch{
+func convertEntityWatchToModelWatch(entityWatch *entities.Watch) *api.Watch {
+	return &api.Watch{
 		WatchId:       entityWatch.WatchID.Hex(),
 		Name:          entityWatch.Name,
 		ExpansionId:   entityWatch.ExpansionID,

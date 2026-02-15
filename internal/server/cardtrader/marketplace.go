@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"card-watcher/internal/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/entities"
 
 	"github.com/carlmjohnson/requests"
 )

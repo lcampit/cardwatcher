@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"card-watcher/internal/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/entities"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"

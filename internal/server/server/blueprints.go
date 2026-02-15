@@ -4,10 +4,10 @@ import (
 	"context"
 	"log/slog"
 
-	"card-watcher/internal/models"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
 )
 
-func (s *server) ListBlueprints(ctx context.Context, in *models.ListBlueprintsRequest) (*models.ListBlueprintsResponse, error) {
+func (s *server) ListBlueprints(ctx context.Context, in *api.ListBlueprintsRequest) (*api.ListBlueprintsResponse, error) {
 	s.logger.Info("received a ListExpansions request",
 		slog.Uint64("expansionId", in.ExpansionId),
 		slog.String("name", in.Name))

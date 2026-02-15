@@ -7,19 +7,19 @@ import (
 	"sync"
 	"time"
 
-	"card-watcher/internal/cardtrader"
-	"card-watcher/internal/models"
-	"card-watcher/internal/mongo"
-	"card-watcher/internal/ntfy"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	"github.com/lcampit/card-watcher-server/internal/server/cardtrader"
+	"github.com/lcampit/card-watcher-server/internal/server/mongo"
+	"github.com/lcampit/card-watcher-server/internal/server/ntfy"
 
 	"github.com/robfig/cron/v3"
 )
 
 type Service interface {
-	SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition models.Condition, foil bool) (string, error)
-	ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*models.ListExpansionsResponse, error)
-	ListBlueprints(ctx context.Context, expansionID uint64, name string) (*models.ListBlueprintsResponse, error)
-	ListWatches(ctx context.Context) (*models.ListWatchesResponse, error)
+	SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition api.Condition, foil bool) (string, error)
+	ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*api.ListExpansionsResponse, error)
+	ListBlueprints(ctx context.Context, expansionID uint64, name string) (*api.ListBlueprintsResponse, error)
+	ListWatches(ctx context.Context) (*api.ListWatchesResponse, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
 	Close()

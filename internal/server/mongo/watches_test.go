@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"card-watcher/internal/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/entities"
 
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/v2/bson"

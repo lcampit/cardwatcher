@@ -4,12 +4,12 @@ import (
 	"context"
 	"log/slog"
 
-	"card-watcher/internal/models"
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*models.SaveWatchResponse, error) {
+func (s *server) SaveWatch(ctx context.Context, in *api.SaveWatchRequest) (*api.SaveWatchResponse, error) {
 	s.logger.Info("received a SaveWatch request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	watchID, err := s.service.SaveWatch(ctx, in.ExpansionId, in.BlueprintId, in.Condition, in.Foil)
@@ -17,12 +17,12 @@ func (s *server) SaveWatch(ctx context.Context, in *models.SaveWatchRequest) (*m
 		s.logger.Error("error in save watch", slog.Any("error", err))
 		return nil, err
 	}
-	return &models.SaveWatchResponse{
+	return &api.SaveWatchResponse{
 		WatchId: watchID,
 	}, nil
 }
 
-func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.ListWatchesResponse, error) {
+func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*api.ListWatchesResponse, error) {
 	s.logger.Info("received a ListWatches request")
 	response, err := s.service.ListWatches(ctx)
 	if err != nil {
@@ -32,7 +32,7 @@ func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*models.Li
 	return response, nil
 }
 
-func (s *server) DeleteWatchByID(ctx context.Context, in *models.DeleteWatchByIDRequest) (*emptypb.Empty, error) {
+func (s *server) DeleteWatchByID(ctx context.Context, in *api.DeleteWatchByIDRequest) (*emptypb.Empty, error) {
 	s.logger.Info("received a DeleteWatchById request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	return &emptypb.Empty{}, s.service.DeleteWatchByID(ctx, in.WatchId)
