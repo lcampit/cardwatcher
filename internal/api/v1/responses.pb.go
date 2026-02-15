@@ -4,7 +4,7 @@
 // 	protoc        v6.31.1
 // source: responses.proto
 
-package models
+package v1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -201,19 +201,19 @@ var File_responses_proto protoreflect.FileDescriptor
 
 const file_responses_proto_rawDesc = "" +
 	"\n" +
-	"\x0fresponses.proto\x12\vcardwatcher\x1a\x0eentities.proto\"P\n" +
-	"\x16ListExpansionsResponse\x126\n" +
+	"\x0fresponses.proto\x12\x0ecardwatcher.v1\x1a\x0eentities.proto\"S\n" +
+	"\x16ListExpansionsResponse\x129\n" +
 	"\n" +
-	"expansions\x18\x01 \x03(\v2\x16.cardwatcher.ExpansionR\n" +
-	"expansions\"P\n" +
-	"\x16ListBlueprintsResponse\x126\n" +
+	"expansions\x18\x01 \x03(\v2\x19.cardwatcher.v1.ExpansionR\n" +
+	"expansions\"S\n" +
+	"\x16ListBlueprintsResponse\x129\n" +
 	"\n" +
-	"blueprints\x18\x01 \x03(\v2\x16.cardwatcher.BlueprintR\n" +
+	"blueprints\x18\x01 \x03(\v2\x19.cardwatcher.v1.BlueprintR\n" +
 	"blueprints\".\n" +
 	"\x11SaveWatchResponse\x12\x19\n" +
-	"\bwatch_id\x18\x01 \x01(\tR\awatchId\"C\n" +
-	"\x13ListWatchesResponse\x12,\n" +
-	"\awatches\x18\x01 \x03(\v2\x12.cardwatcher.WatchR\awatchesB\x11Z\x0finternal/modelsb\x06proto3"
+	"\bwatch_id\x18\x01 \x01(\tR\awatchId\"F\n" +
+	"\x13ListWatchesResponse\x12/\n" +
+	"\awatches\x18\x01 \x03(\v2\x15.cardwatcher.v1.WatchR\awatchesB0Z.github.com/lcampit/cardwatcher/internal/api/v1b\x06proto3"
 
 var (
 	file_responses_proto_rawDescOnce sync.Once
@@ -229,18 +229,18 @@ func file_responses_proto_rawDescGZIP() []byte {
 
 var file_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_responses_proto_goTypes = []any{
-	(*ListExpansionsResponse)(nil), // 0: cardwatcher.ListExpansionsResponse
-	(*ListBlueprintsResponse)(nil), // 1: cardwatcher.ListBlueprintsResponse
-	(*SaveWatchResponse)(nil),      // 2: cardwatcher.SaveWatchResponse
-	(*ListWatchesResponse)(nil),    // 3: cardwatcher.ListWatchesResponse
-	(*Expansion)(nil),              // 4: cardwatcher.Expansion
-	(*Blueprint)(nil),              // 5: cardwatcher.Blueprint
-	(*Watch)(nil),                  // 6: cardwatcher.Watch
+	(*ListExpansionsResponse)(nil), // 0: cardwatcher.v1.ListExpansionsResponse
+	(*ListBlueprintsResponse)(nil), // 1: cardwatcher.v1.ListBlueprintsResponse
+	(*SaveWatchResponse)(nil),      // 2: cardwatcher.v1.SaveWatchResponse
+	(*ListWatchesResponse)(nil),    // 3: cardwatcher.v1.ListWatchesResponse
+	(*Expansion)(nil),              // 4: cardwatcher.v1.Expansion
+	(*Blueprint)(nil),              // 5: cardwatcher.v1.Blueprint
+	(*Watch)(nil),                  // 6: cardwatcher.v1.Watch
 }
 var file_responses_proto_depIdxs = []int32{
-	4, // 0: cardwatcher.ListExpansionsResponse.expansions:type_name -> cardwatcher.Expansion
-	5, // 1: cardwatcher.ListBlueprintsResponse.blueprints:type_name -> cardwatcher.Blueprint
-	6, // 2: cardwatcher.ListWatchesResponse.watches:type_name -> cardwatcher.Watch
+	4, // 0: cardwatcher.v1.ListExpansionsResponse.expansions:type_name -> cardwatcher.v1.Expansion
+	5, // 1: cardwatcher.v1.ListBlueprintsResponse.blueprints:type_name -> cardwatcher.v1.Blueprint
+	6, // 2: cardwatcher.v1.ListWatchesResponse.watches:type_name -> cardwatcher.v1.Watch
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

@@ -4,7 +4,7 @@
 // 	protoc        v6.31.1
 // source: entities.proto
 
-package models
+package v1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -205,7 +205,7 @@ type Watch struct {
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	ExpansionId   uint64                 `protobuf:"varint,3,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
 	BlueprintId   uint64                 `protobuf:"varint,4,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
-	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
+	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.v1.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,6,opt,name=foil,proto3" json:"foil,omitempty"`
 	ExpansionName string                 `protobuf:"bytes,7,opt,name=expansion_name,json=expansionName,proto3" json:"expansion_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -295,7 +295,7 @@ var File_entities_proto protoreflect.FileDescriptor
 
 const file_entities_proto_rawDesc = "" +
 	"\n" +
-	"\x0eentities.proto\x12\vcardwatcher\"C\n" +
+	"\x0eentities.proto\x12\x0ecardwatcher.v1\"C\n" +
 	"\tExpansion\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
@@ -303,13 +303,13 @@ const file_entities_proto_rawDesc = "" +
 	"\tBlueprint\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\"\xed\x01\n" +
+	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\"\xf0\x01\n" +
 	"\x05Watch\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
 	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\x12!\n" +
-	"\fblueprint_id\x18\x04 \x01(\x04R\vblueprintId\x124\n" +
-	"\tcondition\x18\x05 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
+	"\fblueprint_id\x18\x04 \x01(\x04R\vblueprintId\x127\n" +
+	"\tcondition\x18\x05 \x01(\x0e2\x19.cardwatcher.v1.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x06 \x01(\bR\x04foil\x12%\n" +
 	"\x0eexpansion_name\x18\a \x01(\tR\rexpansionName*\xa9\x01\n" +
 	"\tCondition\x12\x19\n" +
@@ -318,7 +318,7 @@ const file_entities_proto_rawDesc = "" +
 	"\x19CONDITION_SLIGHTLY_PLAYED\x10\x02\x12\x1f\n" +
 	"\x1bCONDITION_MODERATELY_PLAYED\x10\x03\x12\x14\n" +
 	"\x10CONDITION_PLAYED\x10\x04\x12\x12\n" +
-	"\x0eCONDITION_POOR\x10\x05B\x11Z\x0finternal/modelsb\x06proto3"
+	"\x0eCONDITION_POOR\x10\x05B0Z.github.com/lcampit/cardwatcher/internal/api/v1b\x06proto3"
 
 var (
 	file_entities_proto_rawDescOnce sync.Once
@@ -335,13 +335,13 @@ func file_entities_proto_rawDescGZIP() []byte {
 var file_entities_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_entities_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_entities_proto_goTypes = []any{
-	(Condition)(0),    // 0: cardwatcher.Condition
-	(*Expansion)(nil), // 1: cardwatcher.Expansion
-	(*Blueprint)(nil), // 2: cardwatcher.Blueprint
-	(*Watch)(nil),     // 3: cardwatcher.Watch
+	(Condition)(0),    // 0: cardwatcher.v1.Condition
+	(*Expansion)(nil), // 1: cardwatcher.v1.Expansion
+	(*Blueprint)(nil), // 2: cardwatcher.v1.Blueprint
+	(*Watch)(nil),     // 3: cardwatcher.v1.Watch
 }
 var file_entities_proto_depIdxs = []int32{
-	0, // 0: cardwatcher.Watch.condition:type_name -> cardwatcher.Condition
+	0, // 0: cardwatcher.v1.Watch.condition:type_name -> cardwatcher.v1.Condition
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

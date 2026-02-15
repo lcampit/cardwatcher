@@ -4,7 +4,7 @@
 // 	protoc        v6.31.1
 // source: requests.proto
 
-package models
+package v1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -137,7 +137,7 @@ type SaveWatchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ExpansionId   uint64                 `protobuf:"varint,2,opt,name=expansion_id,json=expansionId,proto3" json:"expansion_id,omitempty"`
 	BlueprintId   uint64                 `protobuf:"varint,3,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
-	Condition     Condition              `protobuf:"varint,4,opt,name=condition,proto3,enum=cardwatcher.Condition" json:"condition,omitempty"`
+	Condition     Condition              `protobuf:"varint,4,opt,name=condition,proto3,enum=cardwatcher.v1.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,5,opt,name=foil,proto3" json:"foil,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -249,21 +249,21 @@ var File_requests_proto protoreflect.FileDescriptor
 
 const file_requests_proto_rawDesc = "" +
 	"\n" +
-	"\x0erequests.proto\x12\vcardwatcher\x1a\x0eentities.proto\"S\n" +
+	"\x0erequests.proto\x12\x0ecardwatcher.v1\x1a\x0eentities.proto\"S\n" +
 	"\x15ListExpansionsRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
 	"\x04game\x18\x03 \x01(\tR\x04game\"N\n" +
 	"\x15ListBlueprintsRequest\x12!\n" +
 	"\fexpansion_id\x18\x01 \x01(\x04R\vexpansionId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xa2\x01\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xa5\x01\n" +
 	"\x10SaveWatchRequest\x12!\n" +
 	"\fexpansion_id\x18\x02 \x01(\x04R\vexpansionId\x12!\n" +
-	"\fblueprint_id\x18\x03 \x01(\x04R\vblueprintId\x124\n" +
-	"\tcondition\x18\x04 \x01(\x0e2\x16.cardwatcher.ConditionR\tcondition\x12\x12\n" +
+	"\fblueprint_id\x18\x03 \x01(\x04R\vblueprintId\x127\n" +
+	"\tcondition\x18\x04 \x01(\x0e2\x19.cardwatcher.v1.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x05 \x01(\bR\x04foil\"3\n" +
 	"\x16DeleteWatchByIDRequest\x12\x19\n" +
-	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\x11Z\x0finternal/modelsb\x06proto3"
+	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB0Z.github.com/lcampit/cardwatcher/internal/api/v1b\x06proto3"
 
 var (
 	file_requests_proto_rawDescOnce sync.Once
@@ -279,14 +279,14 @@ func file_requests_proto_rawDescGZIP() []byte {
 
 var file_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_requests_proto_goTypes = []any{
-	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.ListExpansionsRequest
-	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.ListBlueprintsRequest
-	(*SaveWatchRequest)(nil),       // 2: cardwatcher.SaveWatchRequest
-	(*DeleteWatchByIDRequest)(nil), // 3: cardwatcher.DeleteWatchByIDRequest
-	(Condition)(0),                 // 4: cardwatcher.Condition
+	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.v1.ListExpansionsRequest
+	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.v1.ListBlueprintsRequest
+	(*SaveWatchRequest)(nil),       // 2: cardwatcher.v1.SaveWatchRequest
+	(*DeleteWatchByIDRequest)(nil), // 3: cardwatcher.v1.DeleteWatchByIDRequest
+	(Condition)(0),                 // 4: cardwatcher.v1.Condition
 }
 var file_requests_proto_depIdxs = []int32{
-	4, // 0: cardwatcher.SaveWatchRequest.condition:type_name -> cardwatcher.Condition
+	4, // 0: cardwatcher.v1.SaveWatchRequest.condition:type_name -> cardwatcher.v1.Condition
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

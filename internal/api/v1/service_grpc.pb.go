@@ -4,7 +4,7 @@
 // - protoc             v6.31.1
 // source: service.proto
 
-package models
+package v1
 
 import (
 	context "context"
@@ -20,11 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CardWatcher_ListExpansions_FullMethodName  = "/cardwatcher.CardWatcher/ListExpansions"
-	CardWatcher_ListBlueprints_FullMethodName  = "/cardwatcher.CardWatcher/ListBlueprints"
-	CardWatcher_SaveWatch_FullMethodName       = "/cardwatcher.CardWatcher/SaveWatch"
-	CardWatcher_ListWatches_FullMethodName     = "/cardwatcher.CardWatcher/ListWatches"
-	CardWatcher_DeleteWatchByID_FullMethodName = "/cardwatcher.CardWatcher/DeleteWatchByID"
+	CardWatcher_ListExpansions_FullMethodName  = "/cardwatcher.v1.CardWatcher/ListExpansions"
+	CardWatcher_ListBlueprints_FullMethodName  = "/cardwatcher.v1.CardWatcher/ListBlueprints"
+	CardWatcher_SaveWatch_FullMethodName       = "/cardwatcher.v1.CardWatcher/SaveWatch"
+	CardWatcher_ListWatches_FullMethodName     = "/cardwatcher.v1.CardWatcher/ListWatches"
+	CardWatcher_DeleteWatchByID_FullMethodName = "/cardwatcher.v1.CardWatcher/DeleteWatchByID"
 )
 
 // CardWatcherClient is the client API for CardWatcher service.
@@ -245,7 +245,7 @@ func _CardWatcher_DeleteWatchByID_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CardWatcher_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "cardwatcher.CardWatcher",
+	ServiceName: "cardwatcher.v1.CardWatcher",
 	HandlerType: (*CardWatcherServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

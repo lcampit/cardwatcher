@@ -1,9 +1,9 @@
 syntax = "proto3";
-package cardwatcher;
+package cardwatcher.v1;
 
 import "entities.proto";
 
-option go_package = "internal/models";
+option go_package = "github.com/lcampit/cardwatcher/internal/api/v1";
 
 message ListExpansionsRequest {
   string name = 1;

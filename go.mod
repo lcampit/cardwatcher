@@ -1,4 +1,4 @@
-module card-watcher
+module github.com/lcampit/card-watcher-server
 
 go 1.24.0
 
