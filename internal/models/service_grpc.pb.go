@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.31.1
-// source: cardwatcher/service.proto
+// source: service.proto
 
 package models
 
@@ -270,5 +270,5 @@ var CardWatcher_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "cardwatcher/service.proto",
+	Metadata: "service.proto",
 }

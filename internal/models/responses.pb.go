@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.1
-// source: cardwatcher/responses.proto
+// source: responses.proto
 
 package models
 
@@ -30,7 +30,7 @@ type ListExpansionsResponse struct {
 
 func (x *ListExpansionsResponse) Reset() {
 	*x = ListExpansionsResponse{}
-	mi := &file_cardwatcher_responses_proto_msgTypes[0]
+	mi := &file_responses_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *ListExpansionsResponse) String() string {
 func (*ListExpansionsResponse) ProtoMessage() {}
 
 func (x *ListExpansionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_responses_proto_msgTypes[0]
+	mi := &file_responses_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *ListExpansionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListExpansionsResponse.ProtoReflect.Descriptor instead.
 func (*ListExpansionsResponse) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{0}
+	return file_responses_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ListExpansionsResponse) GetExpansions() []*Expansion {
@@ -74,7 +74,7 @@ type ListBlueprintsResponse struct {
 
 func (x *ListBlueprintsResponse) Reset() {
 	*x = ListBlueprintsResponse{}
-	mi := &file_cardwatcher_responses_proto_msgTypes[1]
+	mi := &file_responses_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +86,7 @@ func (x *ListBlueprintsResponse) String() string {
 func (*ListBlueprintsResponse) ProtoMessage() {}
 
 func (x *ListBlueprintsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_responses_proto_msgTypes[1]
+	mi := &file_responses_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +99,7 @@ func (x *ListBlueprintsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBlueprintsResponse.ProtoReflect.Descriptor instead.
 func (*ListBlueprintsResponse) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{1}
+	return file_responses_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ListBlueprintsResponse) GetBlueprints() []*Blueprint {
@@ -118,7 +118,7 @@ type SaveWatchResponse struct {
 
 func (x *SaveWatchResponse) Reset() {
 	*x = SaveWatchResponse{}
-	mi := &file_cardwatcher_responses_proto_msgTypes[2]
+	mi := &file_responses_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -130,7 +130,7 @@ func (x *SaveWatchResponse) String() string {
 func (*SaveWatchResponse) ProtoMessage() {}
 
 func (x *SaveWatchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_responses_proto_msgTypes[2]
+	mi := &file_responses_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -143,7 +143,7 @@ func (x *SaveWatchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SaveWatchResponse.ProtoReflect.Descriptor instead.
 func (*SaveWatchResponse) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{2}
+	return file_responses_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SaveWatchResponse) GetWatchId() string {
@@ -162,7 +162,7 @@ type ListWatchesResponse struct {
 
 func (x *ListWatchesResponse) Reset() {
 	*x = ListWatchesResponse{}
-	mi := &file_cardwatcher_responses_proto_msgTypes[3]
+	mi := &file_responses_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -174,7 +174,7 @@ func (x *ListWatchesResponse) String() string {
 func (*ListWatchesResponse) ProtoMessage() {}
 
 func (x *ListWatchesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_responses_proto_msgTypes[3]
+	mi := &file_responses_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -187,7 +187,7 @@ func (x *ListWatchesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWatchesResponse.ProtoReflect.Descriptor instead.
 func (*ListWatchesResponse) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_responses_proto_rawDescGZIP(), []int{3}
+	return file_responses_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListWatchesResponse) GetWatches() []*Watch {
@@ -197,11 +197,11 @@ func (x *ListWatchesResponse) GetWatches() []*Watch {
 	return nil
 }
 
-var File_cardwatcher_responses_proto protoreflect.FileDescriptor
+var File_responses_proto protoreflect.FileDescriptor
 
-const file_cardwatcher_responses_proto_rawDesc = "" +
+const file_responses_proto_rawDesc = "" +
 	"\n" +
-	"\x1bcardwatcher/responses.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"P\n" +
+	"\x0fresponses.proto\x12\vcardwatcher\x1a\x0eentities.proto\"P\n" +
 	"\x16ListExpansionsResponse\x126\n" +
 	"\n" +
 	"expansions\x18\x01 \x03(\v2\x16.cardwatcher.ExpansionR\n" +
@@ -216,19 +216,19 @@ const file_cardwatcher_responses_proto_rawDesc = "" +
 	"\awatches\x18\x01 \x03(\v2\x12.cardwatcher.WatchR\awatchesB\x11Z\x0finternal/modelsb\x06proto3"
 
 var (
-	file_cardwatcher_responses_proto_rawDescOnce sync.Once
-	file_cardwatcher_responses_proto_rawDescData []byte
+	file_responses_proto_rawDescOnce sync.Once
+	file_responses_proto_rawDescData []byte
 )
 
-func file_cardwatcher_responses_proto_rawDescGZIP() []byte {
-	file_cardwatcher_responses_proto_rawDescOnce.Do(func() {
-		file_cardwatcher_responses_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_cardwatcher_responses_proto_rawDesc), len(file_cardwatcher_responses_proto_rawDesc)))
+func file_responses_proto_rawDescGZIP() []byte {
+	file_responses_proto_rawDescOnce.Do(func() {
+		file_responses_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_responses_proto_rawDesc), len(file_responses_proto_rawDesc)))
 	})
-	return file_cardwatcher_responses_proto_rawDescData
+	return file_responses_proto_rawDescData
 }
 
-var file_cardwatcher_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_cardwatcher_responses_proto_goTypes = []any{
+var file_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_responses_proto_goTypes = []any{
 	(*ListExpansionsResponse)(nil), // 0: cardwatcher.ListExpansionsResponse
 	(*ListBlueprintsResponse)(nil), // 1: cardwatcher.ListBlueprintsResponse
 	(*SaveWatchResponse)(nil),      // 2: cardwatcher.SaveWatchResponse
@@ -237,7 +237,7 @@ var file_cardwatcher_responses_proto_goTypes = []any{
 	(*Blueprint)(nil),              // 5: cardwatcher.Blueprint
 	(*Watch)(nil),                  // 6: cardwatcher.Watch
 }
-var file_cardwatcher_responses_proto_depIdxs = []int32{
+var file_responses_proto_depIdxs = []int32{
 	4, // 0: cardwatcher.ListExpansionsResponse.expansions:type_name -> cardwatcher.Expansion
 	5, // 1: cardwatcher.ListBlueprintsResponse.blueprints:type_name -> cardwatcher.Blueprint
 	6, // 2: cardwatcher.ListWatchesResponse.watches:type_name -> cardwatcher.Watch
@@ -248,27 +248,27 @@ var file_cardwatcher_responses_proto_depIdxs = []int32{
 	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_cardwatcher_responses_proto_init() }
-func file_cardwatcher_responses_proto_init() {
-	if File_cardwatcher_responses_proto != nil {
+func init() { file_responses_proto_init() }
+func file_responses_proto_init() {
+	if File_responses_proto != nil {
 		return
 	}
-	file_cardwatcher_entities_proto_init()
+	file_entities_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_responses_proto_rawDesc), len(file_cardwatcher_responses_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_responses_proto_rawDesc), len(file_responses_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_cardwatcher_responses_proto_goTypes,
-		DependencyIndexes: file_cardwatcher_responses_proto_depIdxs,
-		MessageInfos:      file_cardwatcher_responses_proto_msgTypes,
+		GoTypes:           file_responses_proto_goTypes,
+		DependencyIndexes: file_responses_proto_depIdxs,
+		MessageInfos:      file_responses_proto_msgTypes,
 	}.Build()
-	File_cardwatcher_responses_proto = out.File
-	file_cardwatcher_responses_proto_goTypes = nil
-	file_cardwatcher_responses_proto_depIdxs = nil
+	File_responses_proto = out.File
+	file_responses_proto_goTypes = nil
+	file_responses_proto_depIdxs = nil
 }

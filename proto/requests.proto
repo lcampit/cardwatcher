@@ -1,0 +1,28 @@
+syntax = "proto3";
+package cardwatcher;
+
+import "entities.proto";
+
+option go_package = "internal/models";
+
+message ListExpansionsRequest {
+  string name = 1;
+  string code = 2;
+  string game = 3;
+}
+
+message ListBlueprintsRequest {
+  uint64 expansion_id = 1;
+  string name = 2;
+}
+
+message SaveWatchRequest {
+  uint64 expansion_id = 2;
+  uint64 blueprint_id = 3;
+  Condition condition = 4;
+  bool foil = 5;
+}
+
+message DeleteWatchByIDRequest {
+  string watch_id = 1;
+}

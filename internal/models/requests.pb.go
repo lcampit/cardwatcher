@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.31.1
-// source: cardwatcher/requests.proto
+// source: requests.proto
 
 package models
 
@@ -32,7 +32,7 @@ type ListExpansionsRequest struct {
 
 func (x *ListExpansionsRequest) Reset() {
 	*x = ListExpansionsRequest{}
-	mi := &file_cardwatcher_requests_proto_msgTypes[0]
+	mi := &file_requests_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *ListExpansionsRequest) String() string {
 func (*ListExpansionsRequest) ProtoMessage() {}
 
 func (x *ListExpansionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_requests_proto_msgTypes[0]
+	mi := &file_requests_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *ListExpansionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListExpansionsRequest.ProtoReflect.Descriptor instead.
 func (*ListExpansionsRequest) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{0}
+	return file_requests_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ListExpansionsRequest) GetName() string {
@@ -91,7 +91,7 @@ type ListBlueprintsRequest struct {
 
 func (x *ListBlueprintsRequest) Reset() {
 	*x = ListBlueprintsRequest{}
-	mi := &file_cardwatcher_requests_proto_msgTypes[1]
+	mi := &file_requests_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -103,7 +103,7 @@ func (x *ListBlueprintsRequest) String() string {
 func (*ListBlueprintsRequest) ProtoMessage() {}
 
 func (x *ListBlueprintsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_requests_proto_msgTypes[1]
+	mi := &file_requests_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,7 +116,7 @@ func (x *ListBlueprintsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBlueprintsRequest.ProtoReflect.Descriptor instead.
 func (*ListBlueprintsRequest) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{1}
+	return file_requests_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ListBlueprintsRequest) GetExpansionId() uint64 {
@@ -145,7 +145,7 @@ type SaveWatchRequest struct {
 
 func (x *SaveWatchRequest) Reset() {
 	*x = SaveWatchRequest{}
-	mi := &file_cardwatcher_requests_proto_msgTypes[2]
+	mi := &file_requests_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -157,7 +157,7 @@ func (x *SaveWatchRequest) String() string {
 func (*SaveWatchRequest) ProtoMessage() {}
 
 func (x *SaveWatchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_requests_proto_msgTypes[2]
+	mi := &file_requests_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +170,7 @@ func (x *SaveWatchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SaveWatchRequest.ProtoReflect.Descriptor instead.
 func (*SaveWatchRequest) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{2}
+	return file_requests_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SaveWatchRequest) GetExpansionId() uint64 {
@@ -210,7 +210,7 @@ type DeleteWatchByIDRequest struct {
 
 func (x *DeleteWatchByIDRequest) Reset() {
 	*x = DeleteWatchByIDRequest{}
-	mi := &file_cardwatcher_requests_proto_msgTypes[3]
+	mi := &file_requests_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -222,7 +222,7 @@ func (x *DeleteWatchByIDRequest) String() string {
 func (*DeleteWatchByIDRequest) ProtoMessage() {}
 
 func (x *DeleteWatchByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_requests_proto_msgTypes[3]
+	mi := &file_requests_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -235,7 +235,7 @@ func (x *DeleteWatchByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteWatchByIDRequest.ProtoReflect.Descriptor instead.
 func (*DeleteWatchByIDRequest) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_requests_proto_rawDescGZIP(), []int{3}
+	return file_requests_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *DeleteWatchByIDRequest) GetWatchId() string {
@@ -245,11 +245,11 @@ func (x *DeleteWatchByIDRequest) GetWatchId() string {
 	return ""
 }
 
-var File_cardwatcher_requests_proto protoreflect.FileDescriptor
+var File_requests_proto protoreflect.FileDescriptor
 
-const file_cardwatcher_requests_proto_rawDesc = "" +
+const file_requests_proto_rawDesc = "" +
 	"\n" +
-	"\x1acardwatcher/requests.proto\x12\vcardwatcher\x1a\x1acardwatcher/entities.proto\"S\n" +
+	"\x0erequests.proto\x12\vcardwatcher\x1a\x0eentities.proto\"S\n" +
 	"\x15ListExpansionsRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x12\n" +
@@ -266,26 +266,26 @@ const file_cardwatcher_requests_proto_rawDesc = "" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\x11Z\x0finternal/modelsb\x06proto3"
 
 var (
-	file_cardwatcher_requests_proto_rawDescOnce sync.Once
-	file_cardwatcher_requests_proto_rawDescData []byte
+	file_requests_proto_rawDescOnce sync.Once
+	file_requests_proto_rawDescData []byte
 )
 
-func file_cardwatcher_requests_proto_rawDescGZIP() []byte {
-	file_cardwatcher_requests_proto_rawDescOnce.Do(func() {
-		file_cardwatcher_requests_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_cardwatcher_requests_proto_rawDesc), len(file_cardwatcher_requests_proto_rawDesc)))
+func file_requests_proto_rawDescGZIP() []byte {
+	file_requests_proto_rawDescOnce.Do(func() {
+		file_requests_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_requests_proto_rawDesc), len(file_requests_proto_rawDesc)))
 	})
-	return file_cardwatcher_requests_proto_rawDescData
+	return file_requests_proto_rawDescData
 }
 
-var file_cardwatcher_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_cardwatcher_requests_proto_goTypes = []any{
+var file_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_requests_proto_goTypes = []any{
 	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.ListExpansionsRequest
 	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.ListBlueprintsRequest
 	(*SaveWatchRequest)(nil),       // 2: cardwatcher.SaveWatchRequest
 	(*DeleteWatchByIDRequest)(nil), // 3: cardwatcher.DeleteWatchByIDRequest
 	(Condition)(0),                 // 4: cardwatcher.Condition
 }
-var file_cardwatcher_requests_proto_depIdxs = []int32{
+var file_requests_proto_depIdxs = []int32{
 	4, // 0: cardwatcher.SaveWatchRequest.condition:type_name -> cardwatcher.Condition
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
@@ -294,27 +294,27 @@ var file_cardwatcher_requests_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_cardwatcher_requests_proto_init() }
-func file_cardwatcher_requests_proto_init() {
-	if File_cardwatcher_requests_proto != nil {
+func init() { file_requests_proto_init() }
+func file_requests_proto_init() {
+	if File_requests_proto != nil {
 		return
 	}
-	file_cardwatcher_entities_proto_init()
+	file_entities_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_requests_proto_rawDesc), len(file_cardwatcher_requests_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_requests_proto_rawDesc), len(file_requests_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_cardwatcher_requests_proto_goTypes,
-		DependencyIndexes: file_cardwatcher_requests_proto_depIdxs,
-		MessageInfos:      file_cardwatcher_requests_proto_msgTypes,
+		GoTypes:           file_requests_proto_goTypes,
+		DependencyIndexes: file_requests_proto_depIdxs,
+		MessageInfos:      file_requests_proto_msgTypes,
 	}.Build()
-	File_cardwatcher_requests_proto = out.File
-	file_cardwatcher_requests_proto_goTypes = nil
-	file_cardwatcher_requests_proto_depIdxs = nil
+	File_requests_proto = out.File
+	file_requests_proto_goTypes = nil
+	file_requests_proto_depIdxs = nil
 }
