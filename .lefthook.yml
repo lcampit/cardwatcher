@@ -2,10 +2,10 @@ assert_lefthook_installed: true
 pre-commit:
   commands:
     lint:
-      run: mise run lint
+      run: git diff --cached > /tmp/stage.patch; golangci-lint run --new-from-patch=/tmp/stage.patch; rm /tmp/stage.patch
       stage_fixed: true
       glob: "*.go"
     format:
-      run: mise run format
+      run: git diff --cached > /tmp/stage.patch; golangci-lint fmt --new-from-patch=/tmp/stage.patch; rm /tmp/stage.patch
       stage_fixed: true
       glob: "*.go"
