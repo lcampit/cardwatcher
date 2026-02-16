@@ -32,6 +32,8 @@ type WatcherConfig struct {
 	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION" default:"false"`
 	MongoHost                             string `env:"MONGO_HOST"`
 	MongoPort                             string `env:"MONGO_PORT"`
+	MongoUsername                         string `env:"MONGO_USERNAME"`
+	MongoPassword                         string `env:"MONGO_PASSWORD"`
 	MongoDatabase                         string `env:"MONGO_DATABASE"`
 	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
 	MongoConnectionRetries                int    `env:"MONGO_CONNECTION_RETRIED" default:"5"`
@@ -79,6 +81,8 @@ func main() {
 		Logger:              logger,
 		Host:                watcherConfig.MongoHost,
 		Port:                watcherConfig.MongoPort,
+		Username:            watcherConfig.MongoUsername,
+		Password:            watcherConfig.MongoPassword,
 		Database:            watcherConfig.MongoDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
 		ConnectionRetries:   watcherConfig.MongoConnectionRetries,

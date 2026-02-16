@@ -34,6 +34,8 @@ type MongoAdapterConfig struct {
 	Logger              *slog.Logger
 	Host                string
 	Port                string
+	Username            string
+	Password            string
 	Database            string
 	WatchCollectionName string
 	ConnectionRetries   int
@@ -42,8 +44,9 @@ type MongoAdapterConfig struct {
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelFunc()
-	client, err := mongo.Connect(options.Client().
-		ApplyURI(fmt.Sprintf("mongodb://%s:%s", config.Host, config.Port)))
+
+	uri := buildMongoURI(config)
+	client, err := mongo.Connect(options.Client().ApplyURI(uri))
 	if err != nil {
 		return nil, fmt.Errorf("creating mongo client: %w", err)
 	}
@@ -73,4 +76,17 @@ func (a *mongoAdapter) Health() error {
 	defer cancel()
 
 	return a.client.Ping(ctx, nil)
+}
+
+func buildMongoURI(config MongoAdapterConfig) string {
+	if config.Username != "" && config.Password != "" {
+		return fmt.Sprintf("mongodb://%s:%s@%s:%s/%s?authSource=admin",
+			config.Username,
+			config.Password,
+			config.Host,
+			config.Port,
+			config.Database,
+		)
+	}
+	return fmt.Sprintf("mongodb://%s:%s", config.Host, config.Port)
 }
