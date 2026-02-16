@@ -89,8 +89,8 @@ var deleteWatchCmd = &cobra.Command{
 func init() {
 	saveWatchCmd.Flags().BoolVarP(&isFoil, "foil", "f", false, "whether to look for foil cards or not")
 	saveWatchCmd.Flags().BoolVar(&nearMint, "nm", false, "whether to look for near mint condition cards")
-	saveWatchCmd.Flags().BoolVar(&slightlyPlayed, "sp", false, "whether to look for slighlty condition played cards")
-	saveWatchCmd.Flags().BoolVar(&moderatelyPlayed, "mp", false, "whether to look for moderately condition played cards")
+	saveWatchCmd.Flags().BoolVar(&slightlyPlayed, "sp", false, "whether to look for slightly played condition cards")
+	saveWatchCmd.Flags().BoolVar(&moderatelyPlayed, "mp", false, "whether to look for moderately played condition cards")
 	saveWatchCmd.Flags().BoolVar(&played, "pl", false, "whether to look for played condition cards")
 	saveWatchCmd.Flags().BoolVar(&poor, "po", false, "whether to look for poor condition cards")
 	saveCmd.AddCommand(saveWatchCmd)

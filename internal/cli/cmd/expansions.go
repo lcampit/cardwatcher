@@ -12,6 +12,7 @@ import (
 )
 
 var (
+	gameName      string
 	expansionName string
 	expansionCode string
 )
@@ -28,11 +29,12 @@ var getExpansionsCmd = &cobra.Command{
 		}
 		defer client.Close()
 
-		return client.GetExpansions(expansionName, expansionCode)
+		return client.GetExpansions(gameName, expansionName, expansionCode)
 	},
 }
 
 func init() {
+	getExpansionsCmd.Flags().StringVarP(&gameName, "game", "g", "", "game name expansions belong to")
 	getExpansionsCmd.Flags().StringVarP(&expansionName, "name", "n", "", "expansion name to get info about")
 	getExpansionsCmd.Flags().StringVarP(&expansionCode, "code", "c", "", "expansion code to get info about")
 	getCmd.AddCommand(getExpansionsCmd)

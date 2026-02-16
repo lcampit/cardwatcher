@@ -9,10 +9,11 @@ import (
 	"github.com/lcampit/card-watcher-server/internal/cli/printer"
 )
 
-func (c *client) GetExpansions(expansionName, expansionCode string) error {
+func (c *client) GetExpansions(gameName, expansionName, expansionCode string) error {
 	request := api.ListExpansionsRequest{
 		Name: expansionName,
 		Code: expansionCode,
+		Game: gameName,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
