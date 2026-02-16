@@ -1,0 +1,22 @@
+syntax = "proto3";
+package cardwatcher.v1;
+
+import "entities.proto";
+
+option go_package = "github.com/lcampit/cardwatcher/internal/api/v1";
+
+message ListExpansionsResponse {
+  repeated Expansion expansions = 1;
+}
+
+message ListBlueprintsResponse {
+  repeated Blueprint blueprints = 1;
+}
+
+message SaveWatchResponse {
+  string watch_id = 1;
+}
+
+message ListWatchesResponse {
+  repeated Watch watches = 1;
+}

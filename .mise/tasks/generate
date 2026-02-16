@@ -3,4 +3,10 @@
 #MISE description="generate code from protobuf files"
 #MISE alias="g"
 
-protoc -I=card-watcher-models --go_out ./ card-watcher-models/cardwatcher/* --go-grpc_out ./
+protoc \
+  --proto_path=proto \
+  --go_out=internal/api/v1 \
+  --go_opt=paths=source_relative \
+  --go-grpc_out=internal/api/v1 \
+  --go-grpc_opt=paths=source_relative \
+  proto/*.proto

@@ -1,0 +1,35 @@
+syntax = "proto3";
+package cardwatcher.v1;
+
+option go_package = "github.com/lcampit/cardwatcher/internal/api/v1";
+
+enum Condition {
+  CONDITION_UNSPECIFIED = 0;
+  CONDITION_NEAR_MINT = 1;
+  CONDITION_SLIGHTLY_PLAYED = 2;
+  CONDITION_MODERATELY_PLAYED = 3;
+  CONDITION_PLAYED = 4;
+  CONDITION_POOR = 5;
+}
+
+message Expansion {
+  uint64 id = 1;
+  string code = 2;
+  string name = 3;
+}
+
+message Blueprint {
+  uint64 id = 1;
+  string name = 2;
+  uint64 expansion_id = 3;
+}
+
+message Watch {
+  string watch_id = 1;
+  string name = 2;
+  uint64 expansion_id = 3;
+  uint64 blueprint_id = 4;
+  Condition condition = 5;
+  bool foil = 6;
+  string expansion_name = 7;
+}

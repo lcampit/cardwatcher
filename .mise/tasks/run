@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-#MISE description="run the server app"
-#MISE alias="r"
-
-go run cmd/api/main.go
