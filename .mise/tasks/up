@@ -3,9 +3,9 @@
 #MISE description="starts supporting containers for local development"
 
 if command -v docker-compose &>/dev/null; then
-  docker-compose up -d mongo ntfy
+  docker-compose up -d mongo ntfy mongo-init-rs
 elif command -v docker compose &>/dev/null; then
-  docker compose up -d mongo ntfy
+  docker compose up -d mongo ntfy mongo-init-rs
 else
   echo "could not find docker-compose nor docker compose"
 fi
