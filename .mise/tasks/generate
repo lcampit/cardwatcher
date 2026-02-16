@@ -3,8 +3,6 @@
 #MISE description="generate code from protobuf files"
 #MISE alias="g"
 
-# protoc -I=proto --go_out ./ proto/* --go-grpc_out ./
-
 protoc \
   --proto_path=proto \
   --go_out=internal/api/v1 \

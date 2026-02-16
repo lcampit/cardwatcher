@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-#MISE description="build the server app"
-#MISE alias="b"
-
-go build -o tmp/main cmd/api/main.go
