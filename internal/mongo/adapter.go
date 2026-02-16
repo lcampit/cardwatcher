@@ -6,6 +6,7 @@ import (
     "context"
     "fmt"
     "log/slog"
+    "net/url"
     "time"
 
     "card-watcher/internal/entities"
@@ -80,14 +81,18 @@ func (a *mongoAdapter) Health() error {
 
 func buildMongoURI(config MongoAdapterConfig) string {
     if config.Username != "" && config.Password != "" {
-        // Don't include database in URI path - authenticate first, then select database
+        // Build URI properly with URL-encoded credentials to handle special characters
+        // Don't include database in path - authenticate first, then select database
         // Root user exists in admin database, so we use authSource=admin
-        return fmt.Sprintf("mongodb://%s:%s@%s:%s/?authSource=admin",
-            config.Username,
-            config.Password,
-            config.Host,
-            config.Port,
-        )
+        u := &url.URL{
+            Scheme: "mongodb",
+            User:   url.UserPassword(config.Username, config.Password),
+            Host:   fmt.Sprintf("%s:%s", config.Host, config.Port),
+        }
+        q := u.Query()
+        q.Set("authSource", "admin")
+        u.RawQuery = q.Encode()
+        return u.String()
     }
     return fmt.Sprintf("mongodb://%s:%s", config.Host, config.Port)
 }
