@@ -1,4 +1,4 @@
-package server
+package handler
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *server) SaveWatch(ctx context.Context, in *api.SaveWatchRequest) (*api.SaveWatchResponse, error) {
+func (s *handler) SaveWatch(ctx context.Context, in *api.SaveWatchRequest) (*api.SaveWatchResponse, error) {
 	s.logger.Info("received a SaveWatch request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	watchID, err := s.service.SaveWatch(ctx, in.ExpansionId, in.BlueprintId, in.Condition, in.Foil)
@@ -22,7 +22,7 @@ func (s *server) SaveWatch(ctx context.Context, in *api.SaveWatchRequest) (*api.
 	}, nil
 }
 
-func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*api.ListWatchesResponse, error) {
+func (s *handler) ListWatches(ctx context.Context, in *emptypb.Empty) (*api.ListWatchesResponse, error) {
 	s.logger.Info("received a ListWatches request")
 	response, err := s.service.ListWatches(ctx)
 	if err != nil {
@@ -32,7 +32,7 @@ func (s *server) ListWatches(ctx context.Context, in *emptypb.Empty) (*api.ListW
 	return response, nil
 }
 
-func (s *server) DeleteWatchByID(ctx context.Context, in *api.DeleteWatchByIDRequest) (*emptypb.Empty, error) {
+func (s *handler) DeleteWatchByID(ctx context.Context, in *api.DeleteWatchByIDRequest) (*emptypb.Empty, error) {
 	s.logger.Info("received a DeleteWatchById request")
 	s.logger.Debug("request received", slog.Any("request", in))
 	return &emptypb.Empty{}, s.service.DeleteWatchByID(ctx, in.WatchId)

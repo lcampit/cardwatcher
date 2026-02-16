@@ -1,9 +1,9 @@
-// Package server implements gRPC endpoints using generated
+// Package handler implements gRPC endpoints using generated
 // code from models files.
 //
 // It handles everything related to gRPC operations, delegating
 // actual logic and database manipolation to the underlying service
-package server
+package handler
 
 import (
 	"log/slog"
@@ -12,22 +12,22 @@ import (
 	"github.com/lcampit/card-watcher-server/internal/server/service"
 )
 
-type server struct {
+type handler struct {
 	api.UnimplementedCardWatcherServer
 	logger  *slog.Logger
 	service service.Service
 }
 
-type ServerConfig struct {
+type HandlerConfig struct {
 	Logger  *slog.Logger
 	Service service.Service
 }
 
-func NewServer(config ServerConfig) *server {
-	server := &server{
+func NewHandler(config HandlerConfig) *handler {
+	handler := &handler{
 		logger:  config.Logger,
 		service: config.Service,
 	}
 
-	return server
+	return handler
 }

@@ -1,4 +1,4 @@
-package server
+package handler
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	api "github.com/lcampit/card-watcher-server/internal/api/v1"
 )
 
-func (s *server) ListExpansions(ctx context.Context, in *api.ListExpansionsRequest) (*api.ListExpansionsResponse, error) {
+func (s *handler) ListExpansions(ctx context.Context, in *api.ListExpansionsRequest) (*api.ListExpansionsResponse, error) {
 	s.logger.Info("received a ListExpansions request",
 		slog.String("name", in.Name),
 		slog.String("code", in.Code),

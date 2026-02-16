@@ -10,10 +10,10 @@ import (
 
 	api "github.com/lcampit/card-watcher-server/internal/api/v1"
 	"github.com/lcampit/card-watcher-server/internal/server/cardtrader"
+	"github.com/lcampit/card-watcher-server/internal/server/handler"
 	"github.com/lcampit/card-watcher-server/internal/server/logger"
 	"github.com/lcampit/card-watcher-server/internal/server/mongo"
 	"github.com/lcampit/card-watcher-server/internal/server/ntfy"
-	"github.com/lcampit/card-watcher-server/internal/server/server"
 	"github.com/lcampit/card-watcher-server/internal/server/service"
 
 	"go-simpler.org/env"
@@ -101,16 +101,16 @@ func main() {
 	service := service.NewService(ctx, serviceConfig)
 
 	logger.Info("creating server")
-	serverConfig := server.ServerConfig{
+	handlerConfig := handler.HandlerConfig{
 		Logger:  logger,
 		Service: service,
 	}
-	server := server.NewServer(serverConfig)
+	handler := handler.NewHandler(handlerConfig)
 
 	grpcServer := grpc.NewServer()
 	healthcheck := health.NewServer()
 	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
-	api.RegisterCardWatcherServer(grpcServer, server)
+	api.RegisterCardWatcherServer(grpcServer, handler)
 
 	if watcherConfig.ServerEnableReflection {
 		reflection.Register(grpcServer)
