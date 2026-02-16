@@ -1,0 +1,28 @@
+package client
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	"github.com/lcampit/card-watcher-server/internal/cli/printer"
+)
+
+func (c *client) GetBlueprints(expansionID uint64, name string) error {
+	request := api.ListBlueprintsRequest{
+		ExpansionId: expansionID,
+		Name:        name,
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	response, err := c.watcherClient.ListBlueprints(ctx, &request)
+	if err != nil {
+		return fmt.Errorf("error when calling list blueprints: %w", err)
+	}
+
+	printer.PrintBlueprintsTable(response.Blueprints)
+
+	return nil
+}
