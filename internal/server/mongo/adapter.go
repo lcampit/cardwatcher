@@ -4,8 +4,13 @@ package mongo
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
+	"errors"
 	"fmt"
 	"log/slog"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/lcampit/card-watcher-server/internal/server/entities"
@@ -38,6 +43,7 @@ type MongoAdapterConfig struct {
 	Password            string
 	Database            string
 	WatchCollectionName string
+	CAFile              string
 }
 
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
@@ -72,10 +78,18 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 		SetMaxPoolSize(50).
 		SetMinPoolSize(5)
 
-	if host == "localhost" || host == "127.0.0.1" {
+	if isLocalHost(config.Host) {
 		clientOpts.SetDirect(true)
 	} else {
 		clientOpts.SetReplicaSet("rs0")
+	}
+
+	if strings.TrimSpace(config.CAFile) != "" {
+		tlsCfg, err := buildTLSConfig(config)
+		if err != nil {
+			return nil, fmt.Errorf("build TLS config: %w", err)
+		}
+		clientOpts.SetTLSConfig(tlsCfg)
 	}
 
 	client, err := mongo.Connect(clientOpts)
@@ -93,6 +107,30 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 		database:        config.Database,
 		watchCollection: config.WatchCollectionName,
 	}, nil
+}
+
+func isLocalHost(h string) bool {
+	hl := strings.ToLower(strings.TrimSpace(h))
+	return hl == "localhost" || hl == "127.0.0.1"
+}
+
+func buildTLSConfig(config MongoAdapterConfig) (*tls.Config, error) {
+	caPEM, err := os.ReadFile(config.CAFile)
+	if err != nil {
+		return nil, fmt.Errorf("reading CA file: %w", err)
+	}
+	pool := x509.NewCertPool()
+	if !pool.AppendCertsFromPEM(caPEM) {
+		return nil, errors.New("appending CA PEM failed")
+	}
+
+	tlsConfig := &tls.Config{
+		RootCAs:    pool,
+		MinVersion: tls.VersionTLS12,
+		ServerName: config.Host,
+	}
+
+	return tlsConfig, nil
 }
 
 func (a *mongoAdapter) Health() error {
