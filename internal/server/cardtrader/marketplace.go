@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/mongo"
 
 	"github.com/carlmjohnson/requests"
 )
@@ -21,11 +21,11 @@ type Product struct {
 	} `json:"price"`
 	Description string `json:"description"`
 	Properties  struct {
-		Condition entities.WatchCondition `json:"condition"`
-		Signed    bool                    `json:"signed"`
-		Foil      bool                    `json:"foil"`
-		Language  string                  `json:"mtg_language"`
-		Altered   bool                    `json:"altered"`
+		Condition mongo.WatchCondition `json:"condition"`
+		Signed    bool                 `json:"signed"`
+		Foil      bool                 `json:"foil"`
+		Language  string               `json:"mtg_language"`
+		Altered   bool                 `json:"altered"`
 	} `json:"properties_hash"`
 	Expansion struct {
 		ID   uint64 `json:"id"`
@@ -45,7 +45,7 @@ type Product struct {
 	BundleSize uint64 `json:"bundle_size"`
 }
 
-func (a *cardtraderAdapter) GetCurrentPricingCents(ctx context.Context, watch *entities.Watch) (uint64, error) {
+func (a *cardtraderAdapter) GetCurrentPricingCents(ctx context.Context, watch *mongo.Watch) (uint64, error) {
 	response := map[string][]Product{}
 
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "marketplace", "products")

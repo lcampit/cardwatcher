@@ -5,8 +5,6 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
-
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
@@ -30,26 +28,26 @@ func TestCRUDWatches(t *testing.T) {
 	watchID2 := bson.NewObjectID()
 	watchID3 := bson.NewObjectID()
 
-	watch1 := &entities.Watch{
+	watch1 := &Watch{
 		WatchID:     watchID1,
 		ExpansionID: 1,
 		BlueprintID: 1,
-		Condition:   entities.WatchConditionNM,
+		Condition:   WatchConditionNM,
 		Foil:        false,
 	}
-	watch2 := &entities.Watch{
+	watch2 := &Watch{
 		WatchID:     watchID2,
 		ExpansionID: 2,
 		BlueprintID: 2,
-		Condition:   entities.WatchConditionNM,
+		Condition:   WatchConditionNM,
 		Foil:        false,
 	}
 
-	watch3 := &entities.Watch{
+	watch3 := &Watch{
 		WatchID:     watchID3,
 		ExpansionID: 2,
 		BlueprintID: 3,
-		Condition:   entities.WatchConditionNM,
+		Condition:   WatchConditionNM,
 		Foil:        false,
 	}
 

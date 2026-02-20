@@ -8,7 +8,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/mongo"
 )
 
 type CardtraderAdapter interface {
@@ -17,7 +17,7 @@ type CardtraderAdapter interface {
 	GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error)
 	GetExpansions(ctx context.Context) ([]*expansion, error)
 	GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error)
-	GetCurrentPricingCents(ctx context.Context, watch *entities.Watch) (uint64, error)
+	GetCurrentPricingCents(ctx context.Context, watch *mongo.Watch) (uint64, error)
 }
 
 type cardtraderAdapter struct {

@@ -2,45 +2,45 @@ package service
 
 import (
 	api "github.com/lcampit/card-watcher-server/internal/api/v1"
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/mongo"
 )
 
-func convertModelConditionToEntityCondition(modelCondition api.Condition) entities.WatchCondition {
+func convertModelConditionToEntityCondition(modelCondition api.Condition) mongo.WatchCondition {
 	switch modelCondition {
 	case api.Condition_CONDITION_UNSPECIFIED:
 	case api.Condition_CONDITION_NEAR_MINT:
-		return entities.WatchConditionNM
+		return mongo.WatchConditionNM
 	case api.Condition_CONDITION_SLIGHTLY_PLAYED:
-		return entities.WatchConditionSP
+		return mongo.WatchConditionSP
 	case api.Condition_CONDITION_MODERATELY_PLAYED:
-		return entities.WatchConditionMP
+		return mongo.WatchConditionMP
 	case api.Condition_CONDITION_PLAYED:
-		return entities.WatchConditionPL
+		return mongo.WatchConditionPL
 	case api.Condition_CONDITION_POOR:
-		return entities.WatchConditionPO
+		return mongo.WatchConditionPO
 	default:
-		return entities.WatchConditionNM
+		return mongo.WatchConditionNM
 	}
-	return entities.WatchConditionNM
+	return mongo.WatchConditionNM
 }
 
-func convertEntityConditionToModelCondition(entityCondition entities.WatchCondition) api.Condition {
+func convertEntityConditionToModelCondition(entityCondition mongo.WatchCondition) api.Condition {
 	switch entityCondition {
-	case entities.WatchConditionNM:
+	case mongo.WatchConditionNM:
 		return api.Condition_CONDITION_NEAR_MINT
-	case entities.WatchConditionSP:
+	case mongo.WatchConditionSP:
 		return api.Condition_CONDITION_SLIGHTLY_PLAYED
-	case entities.WatchConditionMP:
+	case mongo.WatchConditionMP:
 		return api.Condition_CONDITION_SLIGHTLY_PLAYED
-	case entities.WatchConditionPL:
+	case mongo.WatchConditionPL:
 		return api.Condition_CONDITION_PLAYED
-	case entities.WatchConditionPO:
+	case mongo.WatchConditionPO:
 		return api.Condition_CONDITION_POOR
 	}
 	return api.Condition_CONDITION_NEAR_MINT
 }
 
-func convertEntityWatchToModelWatch(entityWatch *entities.Watch) *api.Watch {
+func convertEntityWatchToModelWatch(entityWatch *mongo.Watch) *api.Watch {
 	return &api.Watch{
 		WatchId:       entityWatch.WatchID.Hex(),
 		Name:          entityWatch.Name,

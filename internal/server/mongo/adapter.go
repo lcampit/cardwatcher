@@ -13,16 +13,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
-
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type MongoAdapter interface {
-	SaveWatch(ctx context.Context, watch *entities.Watch) (string, error)
-	GetWatches(ctx context.Context) ([]*entities.Watch, error)
-	GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error)
+	SaveWatch(ctx context.Context, watch *Watch) (string, error)
+	GetWatches(ctx context.Context) ([]*Watch, error)
+	GetWatchByWatchID(ctx context.Context, watchID string) (*Watch, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
 	Health() error
@@ -47,7 +45,6 @@ type MongoAdapterConfig struct {
 }
 
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
-	config.Logger.Debug("creating mongo adapter with config", slog.Any("config", config))
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancelFunc()
 

@@ -6,7 +6,7 @@ import (
 	"log/slog"
 
 	api "github.com/lcampit/card-watcher-server/internal/api/v1"
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
+	"github.com/lcampit/card-watcher-server/internal/server/mongo"
 )
 
 func (s *service) ListWatches(ctx context.Context) (*api.ListWatchesResponse, error) {
@@ -36,7 +36,7 @@ func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID uint64
 	if err != nil {
 		return "", fmt.Errorf("finding name for expansion %d: %w", expansionID, err)
 	}
-	newWatchID, err := s.mongoAdapter.SaveWatch(ctx, &entities.Watch{
+	newWatchID, err := s.mongoAdapter.SaveWatch(ctx, &mongo.Watch{
 		Name:          blueprintName,
 		ExpansionID:   expansionID,
 		ExpansionName: expansionName,
