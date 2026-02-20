@@ -52,12 +52,14 @@ func TestMain(m *testing.M) {
 func TestNew(t *testing.T) {
 	logger := slog.New(slog.DiscardHandler)
 	config := MongoAdapterConfig{
-		logger,
-		testHost,
-		testPort,
-		testDatabase,
-		"watch-test",
-		5,
+		Logger:              logger,
+		Host:                testHost,
+		Port:                testPort,
+		Username:            "username",
+		Password:            "password",
+		Database:            testDatabase,
+		WatchCollectionName: "watch-test",
+		CAFile:              "",
 	}
 	srv, _ := NewMongoAdapter(config)
 	if srv == nil {
@@ -68,12 +70,14 @@ func TestNew(t *testing.T) {
 func TestHealth(t *testing.T) {
 	logger := slog.New(slog.DiscardHandler)
 	config := MongoAdapterConfig{
-		logger,
-		testHost,
-		testPort,
-		testDatabase,
-		"watch-test",
-		5,
+		Logger:              logger,
+		Host:                testHost,
+		Port:                testPort,
+		Username:            "username",
+		Password:            "password",
+		Database:            testDatabase,
+		WatchCollectionName: "watch-test",
+		CAFile:              "",
 	}
 	srv, _ := NewMongoAdapter(config)
 

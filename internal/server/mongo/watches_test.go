@@ -15,12 +15,14 @@ func TestCRUDWatches(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.DiscardHandler)
 	config := MongoAdapterConfig{
-		logger,
-		testHost,
-		testPort,
-		testDatabase,
-		"watch-test",
-		5,
+		Logger:              logger,
+		Host:                testHost,
+		Port:                testPort,
+		Username:            "username",
+		Password:            "password",
+		Database:            testDatabase,
+		WatchCollectionName: "watch-test",
+		CAFile:              "",
 	}
 	mongoAdapter, _ := NewMongoAdapter(config)
 
