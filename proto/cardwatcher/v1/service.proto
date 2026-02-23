@@ -1,0 +1,38 @@
+syntax = "proto3";
+package cardwatcher.v1;
+
+import "cardwatcher/v1/requests.proto";
+import "cardwatcher/v1/responses.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1";
+
+service CardWatcher {
+  rpc ListExpansions(ListExpansionsRequest) returns (ListExpansionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/expansions"
+    };
+  }
+  rpc ListBlueprints(ListBlueprintsRequest) returns (ListBlueprintsResponse) {
+    option (google.api.http) = {
+      get: "/v1/blueprints"
+    };
+  }
+  rpc SaveWatch(SaveWatchRequest) returns (SaveWatchResponse) {
+    option (google.api.http) = {
+      post: "/v1/watches"
+      body: "*"
+    };
+  }
+  rpc ListWatches(google.protobuf.Empty) returns (ListWatchesResponse) {
+    option (google.api.http) = {
+      get: "/v1/watches"
+    };
+  }
+  rpc DeleteWatchByID(DeleteWatchByIDRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/watches/{watch_id}"
+    };
+  }
+}

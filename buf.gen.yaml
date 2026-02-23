@@ -1,0 +1,31 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - module: buf.build/googleapis/googleapis
+      path: third_party/googleapis
+
+plugins:
+  # Generate Go code for gRPC
+  - plugin: buf.build/protocolbuffers/go
+    out: gen/go
+    opt: paths=source_relative
+
+  # Generate gRPC Go stubs
+  - plugin: buf.build/grpc/go
+    out: gen/go
+    opt: paths=source_relative,require_unimplemented_servers=false
+
+  # Generate gRPC-Gateway stubs
+  - plugin: buf.build/grpc-ecosystem/gateway
+    out: gen/go
+    opt: paths=source_relative
+
+  # Generate OpenAPI v3 (Swagger) JSON
+  - plugin: buf.build/grpc-ecosystem/openapiv2
+    out: gen/openapi
+    opt: json_names_for_fields=true,allow_merge=true,merge_file_name=api
+
+  # Generate TypeScript types for web frontend
+  - plugin: buf.build/es/npm/typescript
+    out: gen/web

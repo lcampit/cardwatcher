@@ -14,8 +14,10 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-# Go workspace file
-go.work
+# Go workspace sum file (generated)
+go.work.sum
+
+# Temporary directories
 tmp/
 
 # IDE specific files
@@ -27,10 +29,18 @@ tmp/
 
 # Project build
 main
+cardwatcher-server
+cardwatcher-gateway
+cardwatcher-cli
+
+# Generated files (keep generated Go code, ignore others)
 *templ.go
+
+# Generated protobuf code (optional: comment out if you want to commit)
+# gen/
 
 # OS X generated file
 .DS_Store
 
-# local env vars
+# Local env vars
 .mise.local.toml

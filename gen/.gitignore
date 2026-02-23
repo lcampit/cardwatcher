@@ -1,0 +1,10 @@
+# Generated protobuf code
+# For monorepos, it's often better to commit generated Go code
+# This file is a placeholder - modify based on your team's workflow
+
+# Uncomment to ignore ALL generated code:
+# *
+
+# Uncomment to ignore specific types:
+# web/
+# openapi/
