@@ -13,7 +13,7 @@ import (
 )
 
 type handler struct {
-	api.UnimplementedCardWatcherServer
+	api.UnsafeCardWatcherServiceServer
 	logger  *slog.Logger
 	service service.Service
 }

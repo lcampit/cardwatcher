@@ -20,7 +20,7 @@ type Client interface {
 
 type client struct {
 	connection    *grpc.ClientConn
-	watcherClient api.CardWatcherClient
+	watcherClient api.CardWatcherServiceClient
 }
 
 func NewClient(server string, port int) (Client, error) {
@@ -30,7 +30,7 @@ func NewClient(server string, port int) (Client, error) {
 		return nil, err
 	}
 
-	watcherClient := api.NewCardWatcherClient(conn)
+	watcherClient := api.NewCardWatcherServiceClient(conn)
 
 	return &client{
 		connection:    conn,

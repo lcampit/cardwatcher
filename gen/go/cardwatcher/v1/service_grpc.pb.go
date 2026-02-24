@@ -20,17 +20,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CardWatcher_ListExpansions_FullMethodName  = "/cardwatcher.v1.CardWatcher/ListExpansions"
-	CardWatcher_ListBlueprints_FullMethodName  = "/cardwatcher.v1.CardWatcher/ListBlueprints"
-	CardWatcher_SaveWatch_FullMethodName       = "/cardwatcher.v1.CardWatcher/SaveWatch"
-	CardWatcher_ListWatches_FullMethodName     = "/cardwatcher.v1.CardWatcher/ListWatches"
-	CardWatcher_DeleteWatchByID_FullMethodName = "/cardwatcher.v1.CardWatcher/DeleteWatchByID"
+	CardWatcherService_ListExpansions_FullMethodName  = "/cardwatcher.v1.CardWatcherService/ListExpansions"
+	CardWatcherService_ListBlueprints_FullMethodName  = "/cardwatcher.v1.CardWatcherService/ListBlueprints"
+	CardWatcherService_SaveWatch_FullMethodName       = "/cardwatcher.v1.CardWatcherService/SaveWatch"
+	CardWatcherService_ListWatches_FullMethodName     = "/cardwatcher.v1.CardWatcherService/ListWatches"
+	CardWatcherService_DeleteWatchByID_FullMethodName = "/cardwatcher.v1.CardWatcherService/DeleteWatchByID"
 )
 
-// CardWatcherClient is the client API for CardWatcher service.
+// CardWatcherServiceClient is the client API for CardWatcherService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type CardWatcherClient interface {
+type CardWatcherServiceClient interface {
 	ListExpansions(ctx context.Context, in *ListExpansionsRequest, opts ...grpc.CallOption) (*ListExpansionsResponse, error)
 	ListBlueprints(ctx context.Context, in *ListBlueprintsRequest, opts ...grpc.CallOption) (*ListBlueprintsResponse, error)
 	SaveWatch(ctx context.Context, in *SaveWatchRequest, opts ...grpc.CallOption) (*SaveWatchResponse, error)
@@ -38,235 +38,235 @@ type CardWatcherClient interface {
 	DeleteWatchByID(ctx context.Context, in *DeleteWatchByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
-type cardWatcherClient struct {
+type cardWatcherServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCardWatcherClient(cc grpc.ClientConnInterface) CardWatcherClient {
-	return &cardWatcherClient{cc}
+func NewCardWatcherServiceClient(cc grpc.ClientConnInterface) CardWatcherServiceClient {
+	return &cardWatcherServiceClient{cc}
 }
 
-func (c *cardWatcherClient) ListExpansions(ctx context.Context, in *ListExpansionsRequest, opts ...grpc.CallOption) (*ListExpansionsResponse, error) {
+func (c *cardWatcherServiceClient) ListExpansions(ctx context.Context, in *ListExpansionsRequest, opts ...grpc.CallOption) (*ListExpansionsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListExpansionsResponse)
-	err := c.cc.Invoke(ctx, CardWatcher_ListExpansions_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CardWatcherService_ListExpansions_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cardWatcherClient) ListBlueprints(ctx context.Context, in *ListBlueprintsRequest, opts ...grpc.CallOption) (*ListBlueprintsResponse, error) {
+func (c *cardWatcherServiceClient) ListBlueprints(ctx context.Context, in *ListBlueprintsRequest, opts ...grpc.CallOption) (*ListBlueprintsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListBlueprintsResponse)
-	err := c.cc.Invoke(ctx, CardWatcher_ListBlueprints_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CardWatcherService_ListBlueprints_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cardWatcherClient) SaveWatch(ctx context.Context, in *SaveWatchRequest, opts ...grpc.CallOption) (*SaveWatchResponse, error) {
+func (c *cardWatcherServiceClient) SaveWatch(ctx context.Context, in *SaveWatchRequest, opts ...grpc.CallOption) (*SaveWatchResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SaveWatchResponse)
-	err := c.cc.Invoke(ctx, CardWatcher_SaveWatch_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CardWatcherService_SaveWatch_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cardWatcherClient) ListWatches(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListWatchesResponse, error) {
+func (c *cardWatcherServiceClient) ListWatches(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListWatchesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListWatchesResponse)
-	err := c.cc.Invoke(ctx, CardWatcher_ListWatches_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CardWatcherService_ListWatches_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cardWatcherClient) DeleteWatchByID(ctx context.Context, in *DeleteWatchByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *cardWatcherServiceClient) DeleteWatchByID(ctx context.Context, in *DeleteWatchByIDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, CardWatcher_DeleteWatchByID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, CardWatcherService_DeleteWatchByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CardWatcherServer is the server API for CardWatcher service.
-// All implementations must embed UnimplementedCardWatcherServer
+// CardWatcherServiceServer is the server API for CardWatcherService service.
+// All implementations must embed UnimplementedCardWatcherServiceServer
 // for forward compatibility.
-type CardWatcherServer interface {
+type CardWatcherServiceServer interface {
 	ListExpansions(context.Context, *ListExpansionsRequest) (*ListExpansionsResponse, error)
 	ListBlueprints(context.Context, *ListBlueprintsRequest) (*ListBlueprintsResponse, error)
 	SaveWatch(context.Context, *SaveWatchRequest) (*SaveWatchResponse, error)
 	ListWatches(context.Context, *emptypb.Empty) (*ListWatchesResponse, error)
 	DeleteWatchByID(context.Context, *DeleteWatchByIDRequest) (*emptypb.Empty, error)
-	mustEmbedUnimplementedCardWatcherServer()
+	mustEmbedUnimplementedCardWatcherServiceServer()
 }
 
-// UnimplementedCardWatcherServer must be embedded to have
+// UnimplementedCardWatcherServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedCardWatcherServer struct{}
+type UnimplementedCardWatcherServiceServer struct{}
 
-func (UnimplementedCardWatcherServer) ListExpansions(context.Context, *ListExpansionsRequest) (*ListExpansionsResponse, error) {
+func (UnimplementedCardWatcherServiceServer) ListExpansions(context.Context, *ListExpansionsRequest) (*ListExpansionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListExpansions not implemented")
 }
-func (UnimplementedCardWatcherServer) ListBlueprints(context.Context, *ListBlueprintsRequest) (*ListBlueprintsResponse, error) {
+func (UnimplementedCardWatcherServiceServer) ListBlueprints(context.Context, *ListBlueprintsRequest) (*ListBlueprintsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBlueprints not implemented")
 }
-func (UnimplementedCardWatcherServer) SaveWatch(context.Context, *SaveWatchRequest) (*SaveWatchResponse, error) {
+func (UnimplementedCardWatcherServiceServer) SaveWatch(context.Context, *SaveWatchRequest) (*SaveWatchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveWatch not implemented")
 }
-func (UnimplementedCardWatcherServer) ListWatches(context.Context, *emptypb.Empty) (*ListWatchesResponse, error) {
+func (UnimplementedCardWatcherServiceServer) ListWatches(context.Context, *emptypb.Empty) (*ListWatchesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListWatches not implemented")
 }
-func (UnimplementedCardWatcherServer) DeleteWatchByID(context.Context, *DeleteWatchByIDRequest) (*emptypb.Empty, error) {
+func (UnimplementedCardWatcherServiceServer) DeleteWatchByID(context.Context, *DeleteWatchByIDRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWatchByID not implemented")
 }
-func (UnimplementedCardWatcherServer) mustEmbedUnimplementedCardWatcherServer() {}
-func (UnimplementedCardWatcherServer) testEmbeddedByValue()                     {}
+func (UnimplementedCardWatcherServiceServer) mustEmbedUnimplementedCardWatcherServiceServer() {}
+func (UnimplementedCardWatcherServiceServer) testEmbeddedByValue()                            {}
 
-// UnsafeCardWatcherServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CardWatcherServer will
+// UnsafeCardWatcherServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CardWatcherServiceServer will
 // result in compilation errors.
-type UnsafeCardWatcherServer interface {
-	mustEmbedUnimplementedCardWatcherServer()
+type UnsafeCardWatcherServiceServer interface {
+	mustEmbedUnimplementedCardWatcherServiceServer()
 }
 
-func RegisterCardWatcherServer(s grpc.ServiceRegistrar, srv CardWatcherServer) {
-	// If the following call pancis, it indicates UnimplementedCardWatcherServer was
+func RegisterCardWatcherServiceServer(s grpc.ServiceRegistrar, srv CardWatcherServiceServer) {
+	// If the following call pancis, it indicates UnimplementedCardWatcherServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&CardWatcher_ServiceDesc, srv)
+	s.RegisterService(&CardWatcherService_ServiceDesc, srv)
 }
 
-func _CardWatcher_ListExpansions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CardWatcherService_ListExpansions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListExpansionsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CardWatcherServer).ListExpansions(ctx, in)
+		return srv.(CardWatcherServiceServer).ListExpansions(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CardWatcher_ListExpansions_FullMethodName,
+		FullMethod: CardWatcherService_ListExpansions_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CardWatcherServer).ListExpansions(ctx, req.(*ListExpansionsRequest))
+		return srv.(CardWatcherServiceServer).ListExpansions(ctx, req.(*ListExpansionsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CardWatcher_ListBlueprints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CardWatcherService_ListBlueprints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListBlueprintsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CardWatcherServer).ListBlueprints(ctx, in)
+		return srv.(CardWatcherServiceServer).ListBlueprints(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CardWatcher_ListBlueprints_FullMethodName,
+		FullMethod: CardWatcherService_ListBlueprints_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CardWatcherServer).ListBlueprints(ctx, req.(*ListBlueprintsRequest))
+		return srv.(CardWatcherServiceServer).ListBlueprints(ctx, req.(*ListBlueprintsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CardWatcher_SaveWatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CardWatcherService_SaveWatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SaveWatchRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CardWatcherServer).SaveWatch(ctx, in)
+		return srv.(CardWatcherServiceServer).SaveWatch(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CardWatcher_SaveWatch_FullMethodName,
+		FullMethod: CardWatcherService_SaveWatch_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CardWatcherServer).SaveWatch(ctx, req.(*SaveWatchRequest))
+		return srv.(CardWatcherServiceServer).SaveWatch(ctx, req.(*SaveWatchRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CardWatcher_ListWatches_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CardWatcherService_ListWatches_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CardWatcherServer).ListWatches(ctx, in)
+		return srv.(CardWatcherServiceServer).ListWatches(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CardWatcher_ListWatches_FullMethodName,
+		FullMethod: CardWatcherService_ListWatches_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CardWatcherServer).ListWatches(ctx, req.(*emptypb.Empty))
+		return srv.(CardWatcherServiceServer).ListWatches(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CardWatcher_DeleteWatchByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CardWatcherService_DeleteWatchByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteWatchByIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CardWatcherServer).DeleteWatchByID(ctx, in)
+		return srv.(CardWatcherServiceServer).DeleteWatchByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CardWatcher_DeleteWatchByID_FullMethodName,
+		FullMethod: CardWatcherService_DeleteWatchByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CardWatcherServer).DeleteWatchByID(ctx, req.(*DeleteWatchByIDRequest))
+		return srv.(CardWatcherServiceServer).DeleteWatchByID(ctx, req.(*DeleteWatchByIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// CardWatcher_ServiceDesc is the grpc.ServiceDesc for CardWatcher service.
+// CardWatcherService_ServiceDesc is the grpc.ServiceDesc for CardWatcherService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var CardWatcher_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "cardwatcher.v1.CardWatcher",
-	HandlerType: (*CardWatcherServer)(nil),
+var CardWatcherService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "cardwatcher.v1.CardWatcherService",
+	HandlerType: (*CardWatcherServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "ListExpansions",
-			Handler:    _CardWatcher_ListExpansions_Handler,
+			Handler:    _CardWatcherService_ListExpansions_Handler,
 		},
 		{
 			MethodName: "ListBlueprints",
-			Handler:    _CardWatcher_ListBlueprints_Handler,
+			Handler:    _CardWatcherService_ListBlueprints_Handler,
 		},
 		{
 			MethodName: "SaveWatch",
-			Handler:    _CardWatcher_SaveWatch_Handler,
+			Handler:    _CardWatcherService_SaveWatch_Handler,
 		},
 		{
 			MethodName: "ListWatches",
-			Handler:    _CardWatcher_ListWatches_Handler,
+			Handler:    _CardWatcherService_ListWatches_Handler,
 		},
 		{
 			MethodName: "DeleteWatchByID",
-			Handler:    _CardWatcher_DeleteWatchByID_Handler,
+			Handler:    _CardWatcherService_DeleteWatchByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

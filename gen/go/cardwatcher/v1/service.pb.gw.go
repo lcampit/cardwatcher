@@ -36,9 +36,9 @@ var (
 	_ = metadata.Join
 )
 
-var filter_CardWatcher_ListExpansions_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var filter_CardWatcherService_ListExpansions_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
-func request_CardWatcher_ListExpansions_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CardWatcherService_ListExpansions_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListExpansionsRequest
 		metadata runtime.ServerMetadata
@@ -47,14 +47,14 @@ func request_CardWatcher_ListExpansions_0(ctx context.Context, marshaler runtime
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcher_ListExpansions_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcherService_ListExpansions_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListExpansions(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_CardWatcher_ListExpansions_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_CardWatcherService_ListExpansions_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListExpansionsRequest
 		metadata runtime.ServerMetadata
@@ -62,16 +62,16 @@ func local_request_CardWatcher_ListExpansions_0(ctx context.Context, marshaler r
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcher_ListExpansions_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcherService_ListExpansions_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListExpansions(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-var filter_CardWatcher_ListBlueprints_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var filter_CardWatcherService_ListBlueprints_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
-func request_CardWatcher_ListBlueprints_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CardWatcherService_ListBlueprints_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListBlueprintsRequest
 		metadata runtime.ServerMetadata
@@ -80,14 +80,14 @@ func request_CardWatcher_ListBlueprints_0(ctx context.Context, marshaler runtime
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcher_ListBlueprints_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcherService_ListBlueprints_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListBlueprints(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_CardWatcher_ListBlueprints_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_CardWatcherService_ListBlueprints_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListBlueprintsRequest
 		metadata runtime.ServerMetadata
@@ -95,14 +95,14 @@ func local_request_CardWatcher_ListBlueprints_0(ctx context.Context, marshaler r
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcher_ListBlueprints_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CardWatcherService_ListBlueprints_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListBlueprints(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_CardWatcher_SaveWatch_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CardWatcherService_SaveWatch_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq SaveWatchRequest
 		metadata runtime.ServerMetadata
@@ -114,7 +114,7 @@ func request_CardWatcher_SaveWatch_0(ctx context.Context, marshaler runtime.Mars
 	return msg, metadata, err
 }
 
-func local_request_CardWatcher_SaveWatch_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_CardWatcherService_SaveWatch_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq SaveWatchRequest
 		metadata runtime.ServerMetadata
@@ -126,7 +126,7 @@ func local_request_CardWatcher_SaveWatch_0(ctx context.Context, marshaler runtim
 	return msg, metadata, err
 }
 
-func request_CardWatcher_ListWatches_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CardWatcherService_ListWatches_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq emptypb.Empty
 		metadata runtime.ServerMetadata
@@ -136,7 +136,7 @@ func request_CardWatcher_ListWatches_0(ctx context.Context, marshaler runtime.Ma
 	return msg, metadata, err
 }
 
-func local_request_CardWatcher_ListWatches_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_CardWatcherService_ListWatches_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq emptypb.Empty
 		metadata runtime.ServerMetadata
@@ -145,7 +145,7 @@ func local_request_CardWatcher_ListWatches_0(ctx context.Context, marshaler runt
 	return msg, metadata, err
 }
 
-func request_CardWatcher_DeleteWatchByID_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_CardWatcherService_DeleteWatchByID_0(ctx context.Context, marshaler runtime.Marshaler, client CardWatcherServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq DeleteWatchByIDRequest
 		metadata runtime.ServerMetadata
@@ -164,7 +164,7 @@ func request_CardWatcher_DeleteWatchByID_0(ctx context.Context, marshaler runtim
 	return msg, metadata, err
 }
 
-func local_request_CardWatcher_DeleteWatchByID_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_CardWatcherService_DeleteWatchByID_0(ctx context.Context, marshaler runtime.Marshaler, server CardWatcherServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq DeleteWatchByIDRequest
 		metadata runtime.ServerMetadata
@@ -182,119 +182,119 @@ func local_request_CardWatcher_DeleteWatchByID_0(ctx context.Context, marshaler 
 	return msg, metadata, err
 }
 
-// RegisterCardWatcherHandlerServer registers the http handlers for service CardWatcher to "mux".
-// UnaryRPC     :call CardWatcherServer directly.
+// RegisterCardWatcherServiceHandlerServer registers the http handlers for service CardWatcherService to "mux".
+// UnaryRPC     :call CardWatcherServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCardWatcherHandlerFromEndpoint instead.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCardWatcherServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
-func RegisterCardWatcherHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CardWatcherServer) error {
-	mux.Handle(http.MethodGet, pattern_CardWatcher_ListExpansions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+func RegisterCardWatcherServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CardWatcherServiceServer) error {
+	mux.Handle(http.MethodGet, pattern_CardWatcherService_ListExpansions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/ListExpansions", runtime.WithHTTPPathPattern("/api/v1/expansions"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/ListExpansions", runtime.WithHTTPPathPattern("/api/v1/expansions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CardWatcher_ListExpansions_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_CardWatcherService_ListExpansions_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_ListExpansions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_ListExpansions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_CardWatcher_ListBlueprints_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_CardWatcherService_ListBlueprints_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/ListBlueprints", runtime.WithHTTPPathPattern("/api/v1/blueprints"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/ListBlueprints", runtime.WithHTTPPathPattern("/api/v1/blueprints"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CardWatcher_ListBlueprints_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_CardWatcherService_ListBlueprints_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_ListBlueprints_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_ListBlueprints_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_CardWatcher_SaveWatch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_CardWatcherService_SaveWatch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/SaveWatch", runtime.WithHTTPPathPattern("/api/v1/watches"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/SaveWatch", runtime.WithHTTPPathPattern("/api/v1/watches"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CardWatcher_SaveWatch_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_CardWatcherService_SaveWatch_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_SaveWatch_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_SaveWatch_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_CardWatcher_ListWatches_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_CardWatcherService_ListWatches_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/ListWatches", runtime.WithHTTPPathPattern("/api/v1/watches"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/ListWatches", runtime.WithHTTPPathPattern("/api/v1/watches"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CardWatcher_ListWatches_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_CardWatcherService_ListWatches_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_ListWatches_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_ListWatches_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_CardWatcher_DeleteWatchByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_CardWatcherService_DeleteWatchByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/DeleteWatchByID", runtime.WithHTTPPathPattern("/api/v1/watches/{watch_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/DeleteWatchByID", runtime.WithHTTPPathPattern("/api/v1/watches/{watch_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CardWatcher_DeleteWatchByID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_CardWatcherService_DeleteWatchByID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_DeleteWatchByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_DeleteWatchByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
 }
 
-// RegisterCardWatcherHandlerFromEndpoint is same as RegisterCardWatcherHandler but
+// RegisterCardWatcherServiceHandlerFromEndpoint is same as RegisterCardWatcherServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterCardWatcherHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterCardWatcherServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
@@ -313,121 +313,121 @@ func RegisterCardWatcherHandlerFromEndpoint(ctx context.Context, mux *runtime.Se
 			}
 		}()
 	}()
-	return RegisterCardWatcherHandler(ctx, mux, conn)
+	return RegisterCardWatcherServiceHandler(ctx, mux, conn)
 }
 
-// RegisterCardWatcherHandler registers the http handlers for service CardWatcher to "mux".
+// RegisterCardWatcherServiceHandler registers the http handlers for service CardWatcherService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterCardWatcherHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterCardWatcherHandlerClient(ctx, mux, NewCardWatcherClient(conn))
+func RegisterCardWatcherServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterCardWatcherServiceHandlerClient(ctx, mux, NewCardWatcherServiceClient(conn))
 }
 
-// RegisterCardWatcherHandlerClient registers the http handlers for service CardWatcher
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CardWatcherClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CardWatcherClient"
+// RegisterCardWatcherServiceHandlerClient registers the http handlers for service CardWatcherService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CardWatcherServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CardWatcherServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "CardWatcherClient" to call the correct interceptors. This client ignores the HTTP middlewares.
-func RegisterCardWatcherHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CardWatcherClient) error {
-	mux.Handle(http.MethodGet, pattern_CardWatcher_ListExpansions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+// "CardWatcherServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
+func RegisterCardWatcherServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CardWatcherServiceClient) error {
+	mux.Handle(http.MethodGet, pattern_CardWatcherService_ListExpansions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/ListExpansions", runtime.WithHTTPPathPattern("/api/v1/expansions"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/ListExpansions", runtime.WithHTTPPathPattern("/api/v1/expansions"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CardWatcher_ListExpansions_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CardWatcherService_ListExpansions_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_ListExpansions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_ListExpansions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_CardWatcher_ListBlueprints_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_CardWatcherService_ListBlueprints_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/ListBlueprints", runtime.WithHTTPPathPattern("/api/v1/blueprints"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/ListBlueprints", runtime.WithHTTPPathPattern("/api/v1/blueprints"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CardWatcher_ListBlueprints_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CardWatcherService_ListBlueprints_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_ListBlueprints_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_ListBlueprints_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_CardWatcher_SaveWatch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_CardWatcherService_SaveWatch_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/SaveWatch", runtime.WithHTTPPathPattern("/api/v1/watches"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/SaveWatch", runtime.WithHTTPPathPattern("/api/v1/watches"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CardWatcher_SaveWatch_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CardWatcherService_SaveWatch_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_SaveWatch_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_SaveWatch_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_CardWatcher_ListWatches_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_CardWatcherService_ListWatches_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/ListWatches", runtime.WithHTTPPathPattern("/api/v1/watches"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/ListWatches", runtime.WithHTTPPathPattern("/api/v1/watches"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CardWatcher_ListWatches_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CardWatcherService_ListWatches_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_ListWatches_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_ListWatches_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_CardWatcher_DeleteWatchByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_CardWatcherService_DeleteWatchByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcher/DeleteWatchByID", runtime.WithHTTPPathPattern("/api/v1/watches/{watch_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/cardwatcher.v1.CardWatcherService/DeleteWatchByID", runtime.WithHTTPPathPattern("/api/v1/watches/{watch_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CardWatcher_DeleteWatchByID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_CardWatcherService_DeleteWatchByID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CardWatcher_DeleteWatchByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_CardWatcherService_DeleteWatchByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
 }
 
 var (
-	pattern_CardWatcher_ListExpansions_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "expansions"}, ""))
-	pattern_CardWatcher_ListBlueprints_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "blueprints"}, ""))
-	pattern_CardWatcher_SaveWatch_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "watches"}, ""))
-	pattern_CardWatcher_ListWatches_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "watches"}, ""))
-	pattern_CardWatcher_DeleteWatchByID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "watches", "watch_id"}, ""))
+	pattern_CardWatcherService_ListExpansions_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "expansions"}, ""))
+	pattern_CardWatcherService_ListBlueprints_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "blueprints"}, ""))
+	pattern_CardWatcherService_SaveWatch_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "watches"}, ""))
+	pattern_CardWatcherService_ListWatches_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "watches"}, ""))
+	pattern_CardWatcherService_DeleteWatchByID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "watches", "watch_id"}, ""))
 )
 
 var (
-	forward_CardWatcher_ListExpansions_0  = runtime.ForwardResponseMessage
-	forward_CardWatcher_ListBlueprints_0  = runtime.ForwardResponseMessage
-	forward_CardWatcher_SaveWatch_0       = runtime.ForwardResponseMessage
-	forward_CardWatcher_ListWatches_0     = runtime.ForwardResponseMessage
-	forward_CardWatcher_DeleteWatchByID_0 = runtime.ForwardResponseMessage
+	forward_CardWatcherService_ListExpansions_0  = runtime.ForwardResponseMessage
+	forward_CardWatcherService_ListBlueprints_0  = runtime.ForwardResponseMessage
+	forward_CardWatcherService_SaveWatch_0       = runtime.ForwardResponseMessage
+	forward_CardWatcherService_ListWatches_0     = runtime.ForwardResponseMessage
+	forward_CardWatcherService_DeleteWatchByID_0 = runtime.ForwardResponseMessage
 )

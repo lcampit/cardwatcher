@@ -116,7 +116,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	healthcheck := health.NewServer()
 	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
-	api.RegisterCardWatcherServer(grpcServer, handler)
+	api.RegisterCardWatcherServiceServer(grpcServer, handler)
 
 	if watcherConfig.ServerEnableReflection {
 		reflection.Register(grpcServer)
