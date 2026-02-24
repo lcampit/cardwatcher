@@ -58,7 +58,7 @@ services:
       - mongo_db:/data/db
       - mongo_config:/data/configdb
       - ./.mongo-init:/docker-entrypoint-initdb.d:ro
-      - ./scripts:/scripts:ro
+      - ./.mongo-scripts:/scripts:ro
     healthcheck:
       test: ["CMD-SHELL", "/scripts/healthcheck.sh"]
       interval: 5s
@@ -74,7 +74,7 @@ services:
         condition: service_healthy
     command: /scripts/init-rs.sh
     volumes:
-      - ./scripts:/scripts:ro
+      - ./.mongo-scripts:/scripts:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
