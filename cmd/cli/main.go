@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/lcampit/card-watcher-server/internal/cli/cmd"
+	"github.com/lcampit/cardwatcher/internal/cli/cmd"
 )
 
 func main() {

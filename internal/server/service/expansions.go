@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	api "github.com/lcampit/cardwatcher/internal/api/v1"
 )
 
 func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*api.ListExpansionsResponse, error) {

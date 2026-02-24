@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	api "github.com/lcampit/card-watcher-server/internal/api/v1"
-	"github.com/lcampit/card-watcher-server/internal/cli/printer"
+	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	"github.com/lcampit/cardwatcher/internal/cli/printer"
 )
 
 func (c *client) GetBlueprints(expansionID uint64, name string) error {
