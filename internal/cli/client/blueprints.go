@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	api "github.com/lcampit/cardwatcher/gen/go/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/internal/cli/printer"
 )
 

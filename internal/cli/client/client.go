@@ -3,7 +3,7 @@ package client
 import (
 	"fmt"
 
-	api "github.com/lcampit/cardwatcher/gen/go/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

@@ -3,7 +3,7 @@ package printer
 import (
 	"os"
 
-	api "github.com/lcampit/cardwatcher/gen/go/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 )

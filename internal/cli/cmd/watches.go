@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	api "github.com/lcampit/cardwatcher/gen/go/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/internal/cli/client"
 
 	"github.com/spf13/cobra"
