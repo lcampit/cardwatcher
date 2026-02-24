@@ -8,4 +8,4 @@ pre-commit:
     format:
       run: mise run format
       stage_fixed: true
-      glob: "*.go"
+      glob: "*.go|*.proto"
