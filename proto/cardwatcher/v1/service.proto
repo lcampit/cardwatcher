@@ -1,12 +1,12 @@
 syntax = "proto3";
 package cardwatcher.v1;
 
-import "requests.proto";
-import "responses.proto";
+import "cardwatcher/v1/requests.proto";
+import "cardwatcher/v1/responses.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/lcampit/cardwatcher/gen/go/v1";
+option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1";
 
 service CardWatcher {
   rpc ListExpansions(ListExpansionsRequest) returns (ListExpansionsResponse) {

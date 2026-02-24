@@ -1,7 +1,7 @@
 syntax = "proto3";
 package cardwatcher.v1;
 
-option go_package = "github.com/lcampit/cardwatcher/gen/go/v1";
+option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1";
 
 enum Condition {
   CONDITION_UNSPECIFIED = 0;

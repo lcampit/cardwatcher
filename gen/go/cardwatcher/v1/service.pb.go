@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: service.proto
+// source: cardwatcher/v1/service.proto
 
 package cardwatcherv1
 
@@ -22,20 +22,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_service_proto protoreflect.FileDescriptor
+var File_cardwatcher_v1_service_proto protoreflect.FileDescriptor
 
-const file_service_proto_rawDesc = "" +
+const file_cardwatcher_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\rservice.proto\x12\x0ecardwatcher.v1\x1a\x0erequests.proto\x1a\x0fresponses.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xd1\x04\n" +
+	"\x1ccardwatcher/v1/service.proto\x12\x0ecardwatcher.v1\x1a\x1dcardwatcher/v1/requests.proto\x1a\x1ecardwatcher/v1/responses.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xd1\x04\n" +
 	"\vCardWatcher\x12{\n" +
 	"\x0eListExpansions\x12%.cardwatcher.v1.ListExpansionsRequest\x1a&.cardwatcher.v1.ListExpansionsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/expansions\x12{\n" +
 	"\x0eListBlueprints\x12%.cardwatcher.v1.ListBlueprintsRequest\x1a&.cardwatcher.v1.ListBlueprintsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/blueprints\x12l\n" +
 	"\tSaveWatch\x12 .cardwatcher.v1.SaveWatchRequest\x1a!.cardwatcher.v1.SaveWatchResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/watches\x12c\n" +
 	"\vListWatches\x12\x16.google.protobuf.Empty\x1a#.cardwatcher.v1.ListWatchesResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/api/v1/watches\x12u\n" +
-	"\x0fDeleteWatchByID\x12&.cardwatcher.v1.DeleteWatchByIDRequest\x1a\x16.google.protobuf.Empty\"\"\x82\xd3\xe4\x93\x02\x1c*\x1a/api/v1/watches/{watch_id}B\xb3\x01\n" +
-	"\x12com.cardwatcher.v1B\fServiceProtoP\x01Z6github.com/lcampit/cardwatcher/gen/go/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
+	"\x0fDeleteWatchByID\x12&.cardwatcher.v1.DeleteWatchByIDRequest\x1a\x16.google.protobuf.Empty\"\"\x82\xd3\xe4\x93\x02\x1c*\x1a/api/v1/watches/{watch_id}B\xbf\x01\n" +
+	"\x12com.cardwatcher.v1B\fServiceProtoP\x01ZBgithub.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
 
-var file_service_proto_goTypes = []any{
+var file_cardwatcher_v1_service_proto_goTypes = []any{
 	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.v1.ListExpansionsRequest
 	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.v1.ListBlueprintsRequest
 	(*SaveWatchRequest)(nil),       // 2: cardwatcher.v1.SaveWatchRequest
@@ -46,7 +46,7 @@ var file_service_proto_goTypes = []any{
 	(*SaveWatchResponse)(nil),      // 7: cardwatcher.v1.SaveWatchResponse
 	(*ListWatchesResponse)(nil),    // 8: cardwatcher.v1.ListWatchesResponse
 }
-var file_service_proto_depIdxs = []int32{
+var file_cardwatcher_v1_service_proto_depIdxs = []int32{
 	0, // 0: cardwatcher.v1.CardWatcher.ListExpansions:input_type -> cardwatcher.v1.ListExpansionsRequest
 	1, // 1: cardwatcher.v1.CardWatcher.ListBlueprints:input_type -> cardwatcher.v1.ListBlueprintsRequest
 	2, // 2: cardwatcher.v1.CardWatcher.SaveWatch:input_type -> cardwatcher.v1.SaveWatchRequest
@@ -64,27 +64,27 @@ var file_service_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_service_proto_init() }
-func file_service_proto_init() {
-	if File_service_proto != nil {
+func init() { file_cardwatcher_v1_service_proto_init() }
+func file_cardwatcher_v1_service_proto_init() {
+	if File_cardwatcher_v1_service_proto != nil {
 		return
 	}
-	file_requests_proto_init()
-	file_responses_proto_init()
+	file_cardwatcher_v1_requests_proto_init()
+	file_cardwatcher_v1_responses_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_proto_rawDesc), len(file_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_v1_service_proto_rawDesc), len(file_cardwatcher_v1_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_proto_goTypes,
-		DependencyIndexes: file_service_proto_depIdxs,
+		GoTypes:           file_cardwatcher_v1_service_proto_goTypes,
+		DependencyIndexes: file_cardwatcher_v1_service_proto_depIdxs,
 	}.Build()
-	File_service_proto = out.File
-	file_service_proto_goTypes = nil
-	file_service_proto_depIdxs = nil
+	File_cardwatcher_v1_service_proto = out.File
+	file_cardwatcher_v1_service_proto_goTypes = nil
+	file_cardwatcher_v1_service_proto_depIdxs = nil
 }

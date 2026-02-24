@@ -3,4 +3,5 @@
 #MISE description="generate code from protobuf files"
 #MISE alias="g"
 
+buf dep update
 buf generate
