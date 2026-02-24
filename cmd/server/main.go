@@ -24,7 +24,7 @@ import (
 )
 
 type WatcherConfig struct {
-	LogLevel                              string `env:"LOG_LEVEL"`
+	LogLevel                              string `env:"LOG_LEVEL" default:"debug"`
 	ServerPort                            int    `env:"SERVER_PORT"`
 	NotificationSchedule                  string `env:"NOTIFICATION_SCHEDULE"`
 	UpdateMapsSchedule                    string `env:"UPDATE_MAPS_SCHEDULE"`
@@ -32,9 +32,12 @@ type WatcherConfig struct {
 	ServerEnableReflection                bool   `env:"SERVER_ENABLE_REFLECTION" default:"false"`
 	MongoHost                             string `env:"MONGO_HOST"`
 	MongoPort                             string `env:"MONGO_PORT"`
+	MongoUsername                         string `env:"MONGO_USERNAME"`
+	MongoPassword                         string `env:"MONGO_PASSWORD"`
 	MongoDatabase                         string `env:"MONGO_DATABASE"`
 	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
-	MongoConnectionRetries                int    `env:"MONGO_CONNECTION_RETRIED" default:"5"`
+	MongoCAFile                           string `env:"MONGO_TLS_CA_FILE"`
+	MongoUseReplicaSet                    bool   `env:"MONGO_USE_REPLICA_SET" default:"false"`
 	CardtraderAPIBaseURL                  string `env:"CARDTRADER_API_BASE_URL"`
 	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
 	NtfyHost                              string `env:"NTFY_HOST"`
@@ -79,9 +82,12 @@ func main() {
 		Logger:              logger,
 		Host:                watcherConfig.MongoHost,
 		Port:                watcherConfig.MongoPort,
+		Username:            watcherConfig.MongoUsername,
+		Password:            watcherConfig.MongoPassword,
+		CAFile:              watcherConfig.MongoCAFile,
 		Database:            watcherConfig.MongoDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
-		ConnectionRetries:   watcherConfig.MongoConnectionRetries,
+		UseReplicaSet:       watcherConfig.MongoUseReplicaSet,
 	}
 	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
 	if err != nil {

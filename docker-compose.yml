@@ -18,6 +18,8 @@ services:
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_WATCH_COLLECTION_NAME: ${MONGO_WATCH_COLLECTION_NAME}
+      MONGO_USE_REPLICASET: true
       CARDTRADER_ACCESS_TOKEN: ${CARDTRADER_ACCESS_TOKEN}
       CARDTRADER_API_BASE_URL: ${CARDTRADER_API_BASE_URL}
       NTFY_HOST: ntfy
@@ -25,26 +27,61 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+      mongo-init-rs:
+        condition: service_completed_successfully
     networks:
       - watcher_network
   mongo:
     image: mongo:8
     restart: unless-stopped
+    container_name: mongo
+    command:
+      [
+        "--auth",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0",
+        "--setParameter",
+        "authenticationMechanisms=SCRAM-SHA-256",
+        "--keyFile",
+        "/data/configdb/mongo-keyfile",
+      ]
     environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
     ports:
       - "${MONGO_PORT}:27017"
     volumes:
-      - mongo_volume:/data/db
+      - mongo_db:/data/db
+      - mongo_config:/data/configdb
+      - ./.mongo-init:/docker-entrypoint-initdb.d:ro
+      - ./scripts:/scripts:ro
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD-SHELL", "/scripts/healthcheck.sh"]
       interval: 5s
       timeout: 5s
       retries: 3
       start_period: 15s
     networks:
       - watcher_network
+  mongo-init-rs:
+    image: mongo:8
+    depends_on:
+      mongo:
+        condition: service_healthy
+    command: /scripts/init-rs.sh
+    volumes:
+      - ./scripts:/scripts:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    networks:
+      - watcher_network
+    restart: "no"
+
   ntfy:
     image: binwiederhier/ntfy
     container_name: ntfy
@@ -72,6 +109,7 @@ services:
       - watcher_network
 
 volumes:
-  mongo_volume:
+  mongo_db:
+  mongo_config:
 networks:
   watcher_network:

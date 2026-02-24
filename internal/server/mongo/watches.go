@@ -5,13 +5,31 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/lcampit/card-watcher-server/internal/server/entities"
-
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *entities.Watch) (string, error) {
+type WatchCondition string
+
+const (
+	WatchConditionNM WatchCondition = "Near Mint"
+	WatchConditionSP WatchCondition = "Slightly Played"
+	WatchConditionMP WatchCondition = "Moderately Played"
+	WatchConditionPL WatchCondition = "Played"
+	WatchConditionPO WatchCondition = "Poor"
+)
+
+type Watch struct {
+	WatchID       bson.ObjectID  `bson:"_id"`
+	Name          string         `bson:"name"`
+	ExpansionID   uint64         `bson:"expansionId"`
+	ExpansionName string         `bson:"expansionName"`
+	BlueprintID   uint64         `bson:"blueprintId"`
+	Condition     WatchCondition `bson:"condition"`
+	Foil          bool           `bson:"foil"`
+}
+
+func (a *mongoAdapter) SaveWatch(ctx context.Context, watch *Watch) (string, error) {
 	watch.WatchID = bson.NewObjectID()
 	_, err := a.client.Database(a.database).Collection(a.watchCollection).
 		InsertOne(ctx, watch)
@@ -37,8 +55,8 @@ func (a *mongoAdapter) DeleteWatchByID(ctx context.Context, watchID string) erro
 	return nil
 }
 
-func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error) {
-	var watches []*entities.Watch
+func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*Watch, error) {
+	var watches []*Watch
 	cursor, err := a.client.Database(a.database).Collection(a.watchCollection).
 		Find(ctx, bson.M{})
 	if err != nil {
@@ -53,13 +71,13 @@ func (a *mongoAdapter) GetWatches(ctx context.Context) ([]*entities.Watch, error
 	return watches, nil
 }
 
-func (a *mongoAdapter) GetWatchByWatchID(ctx context.Context, watchID string) (*entities.Watch, error) {
+func (a *mongoAdapter) GetWatchByWatchID(ctx context.Context, watchID string) (*Watch, error) {
 	convertedID, err := bson.ObjectIDFromHex(watchID)
 	if err != nil {
 		return nil, fmt.Errorf("converting object id %s in get watch by id: %w", watchID, err)
 	}
 
-	var watch entities.Watch
+	var watch Watch
 	filter := bson.M{"_id": convertedID}
 	result := a.client.Database(a.database).Collection(a.watchCollection).
 		FindOne(ctx, filter)
