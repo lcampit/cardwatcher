@@ -16,8 +16,6 @@ func TestCRUDWatches(t *testing.T) {
 		Logger:              logger,
 		Host:                testHost,
 		Port:                testPort,
-		Username:            "username",
-		Password:            "password",
 		Database:            testDatabase,
 		WatchCollectionName: "watch-test",
 		CAFile:              "",

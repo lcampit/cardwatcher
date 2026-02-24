@@ -37,6 +37,7 @@ type WatcherConfig struct {
 	MongoDatabase                         string `env:"MONGO_DATABASE"`
 	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
 	MongoCAFile                           string `env:"MONGO_TLS_CA_FILE"`
+	MongoUseReplicaSet                    bool   `env:"MONGO_USE_REPLICA_SET" default:"false"`
 	CardtraderAPIBaseURL                  string `env:"CARDTRADER_API_BASE_URL"`
 	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
 	NtfyHost                              string `env:"NTFY_HOST"`
@@ -86,6 +87,7 @@ func main() {
 		CAFile:              watcherConfig.MongoCAFile,
 		Database:            watcherConfig.MongoDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
+		UseReplicaSet:       watcherConfig.MongoUseReplicaSet,
 	}
 	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
 	if err != nil {

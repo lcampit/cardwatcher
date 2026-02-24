@@ -14,7 +14,7 @@ import (
 var testHost, testPort, testDatabase string
 
 func mustStartMongoContainer() (func(context.Context, ...testcontainers.TerminateOption) error, error) {
-	dbContainer, err := mongodb.Run(context.Background(), "mongo:latest")
+	dbContainer, err := mongodb.Run(context.Background(), "mongo:8")
 	if err != nil {
 		return nil, fmt.Errorf("error when starting test container: %w", err)
 	}
@@ -55,15 +55,14 @@ func TestNew(t *testing.T) {
 		Logger:              logger,
 		Host:                testHost,
 		Port:                testPort,
-		Username:            "username",
-		Password:            "password",
 		Database:            testDatabase,
 		WatchCollectionName: "watch-test",
 		CAFile:              "",
+		UseReplicaSet:       false,
 	}
-	srv, _ := NewMongoAdapter(config)
+	srv, err := NewMongoAdapter(config)
 	if srv == nil {
-		t.Fatal("New() returned nil")
+		t.Fatal(fmt.Sprint("creating new mongo adapter: %w", err))
 	}
 }
 
@@ -73,16 +72,15 @@ func TestHealth(t *testing.T) {
 		Logger:              logger,
 		Host:                testHost,
 		Port:                testPort,
-		Username:            "username",
-		Password:            "password",
 		Database:            testDatabase,
 		WatchCollectionName: "watch-test",
 		CAFile:              "",
+		UseReplicaSet:       false,
 	}
 	srv, _ := NewMongoAdapter(config)
 
 	err := srv.Health()
 	if err != nil {
-		t.Fatalf("error in healthcheck: %v", err)
+		t.Fatalf("healthchecking: %v", err)
 	}
 }

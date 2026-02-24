@@ -42,18 +42,13 @@ type MongoAdapterConfig struct {
 	Database            string
 	WatchCollectionName string
 	CAFile              string
+	UseReplicaSet       bool
+	ReplicaSetName      string
 }
 
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancelFunc()
-
-	credentials := options.Credential{
-		AuthSource:    config.Database,
-		Username:      config.Username,
-		Password:      config.Password,
-		AuthMechanism: "SCRAM-SHA-256",
-	}
 
 	host := config.Host
 	if host == "" {
@@ -67,7 +62,6 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 
 	clientOpts := options.Client().
 		SetHosts([]string{fmt.Sprintf("%s:%s", host, port)}).
-		SetAuth(credentials).
 		SetRetryReads(true).
 		SetRetryWrites(true).
 		SetServerSelectionTimeout(5 * time.Second).
@@ -75,16 +69,30 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 		SetMaxPoolSize(50).
 		SetMinPoolSize(5)
 
-	if isLocalHost(config.Host) {
-		clientOpts.SetDirect(true)
+	if config.UseReplicaSet {
+		if config.ReplicaSetName == "" {
+			clientOpts.SetReplicaSet("rs0")
+		} else {
+			clientOpts.SetReplicaSet(config.ReplicaSetName)
+		}
 	} else {
-		clientOpts.SetReplicaSet("rs0")
+		clientOpts.SetDirect(true)
+	}
+
+	if config.Username != "" && config.Password != "" {
+		credentials := options.Credential{
+			AuthSource:    config.Database,
+			Username:      config.Username,
+			Password:      config.Password,
+			AuthMechanism: "SCRAM-SHA-256",
+		}
+		clientOpts.SetAuth(credentials)
 	}
 
 	if strings.TrimSpace(config.CAFile) != "" {
 		tlsCfg, err := buildTLSConfig(config)
 		if err != nil {
-			return nil, fmt.Errorf("build TLS config: %w", err)
+			return nil, fmt.Errorf("building TLS config: %w", err)
 		}
 		clientOpts.SetTLSConfig(tlsCfg)
 	}
@@ -104,11 +112,6 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 		database:        config.Database,
 		watchCollection: config.WatchCollectionName,
 	}, nil
-}
-
-func isLocalHost(h string) bool {
-	hl := strings.ToLower(strings.TrimSpace(h))
-	return hl == "localhost" || hl == "127.0.0.1"
 }
 
 func buildTLSConfig(config MongoAdapterConfig) (*tls.Config, error) {
