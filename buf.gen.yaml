@@ -1,9 +1,12 @@
 version: v2
+clean: true
 managed:
   enabled: true
   override:
     - file_option: go_package_prefix
       value: github.com/lcampit/cardwatcher/gen/go/v1
+  disable:
+    - module: buf.build/googleapis/googleapis
 plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.6
     out: gen/go/v1
