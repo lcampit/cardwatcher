@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"strings"
 
-	api "github.com/lcampit/card-watcher-server/internal/api/v1"
+	api "github.com/lcampit/cardwatcher/internal/api/v1"
 )
 
 func (s *service) ListBlueprints(ctx context.Context, expansionID uint64, name string) (*api.ListBlueprintsResponse, error) {

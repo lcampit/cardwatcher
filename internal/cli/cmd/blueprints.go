@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/lcampit/card-watcher-server/internal/cli/client"
+	"github.com/lcampit/cardwatcher/internal/cli/client"
 
 	"github.com/spf13/cobra"
 )

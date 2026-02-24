@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/lcampit/card-watcher-server/internal/server/mongo"
+	"github.com/lcampit/cardwatcher/internal/server/mongo"
 
 	"github.com/carlmjohnson/requests"
 )

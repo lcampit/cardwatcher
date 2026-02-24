@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
-	api "github.com/lcampit/card-watcher-server/internal/api/v1"
-	"github.com/lcampit/card-watcher-server/internal/server/cardtrader"
-	"github.com/lcampit/card-watcher-server/internal/server/mongo"
-	"github.com/lcampit/card-watcher-server/internal/server/ntfy"
+	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	"github.com/lcampit/cardwatcher/internal/server/cardtrader"
+	"github.com/lcampit/cardwatcher/internal/server/mongo"
+	"github.com/lcampit/cardwatcher/internal/server/ntfy"
 
 	"github.com/robfig/cron/v3"
 )

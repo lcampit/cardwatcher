@@ -8,7 +8,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/lcampit/card-watcher-server/internal/server/mongo"
+	"github.com/lcampit/cardwatcher/internal/server/mongo"
 )
 
 type CardtraderAdapter interface {

@@ -8,8 +8,8 @@ package handler
 import (
 	"log/slog"
 
-	api "github.com/lcampit/card-watcher-server/internal/api/v1"
-	"github.com/lcampit/card-watcher-server/internal/server/service"
+	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	"github.com/lcampit/cardwatcher/internal/server/service"
 )
 
 type handler struct {

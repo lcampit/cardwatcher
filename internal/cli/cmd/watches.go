@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	api "github.com/lcampit/card-watcher-server/internal/api/v1"
-	"github.com/lcampit/card-watcher-server/internal/cli/client"
+	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	"github.com/lcampit/cardwatcher/internal/cli/client"
 
 	"github.com/spf13/cobra"
 )
