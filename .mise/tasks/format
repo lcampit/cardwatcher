@@ -4,3 +4,4 @@
 #MISE alias="f"
 
 golangci-lint fmt
+buf format -w

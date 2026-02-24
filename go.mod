@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	github.com/carlmjohnson/requests v0.24.3
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
 	github.com/jedib0t/go-pretty/v6 v6.7.8
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/cobra v1.10.2
@@ -13,6 +14,7 @@ require (
 	github.com/testcontainers/testcontainers-go/modules/mongodb v0.37.0
 	go-simpler.org/env v0.12.0
 	go.mongodb.org/mongo-driver/v2 v2.2.2
+	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.5
 )
@@ -40,7 +42,6 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect

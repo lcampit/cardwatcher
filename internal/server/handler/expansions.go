@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
 func (s *handler) ListExpansions(ctx context.Context, in *api.ListExpansionsRequest) (*api.ListExpansionsResponse, error) {

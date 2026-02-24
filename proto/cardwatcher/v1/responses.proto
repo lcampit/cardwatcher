@@ -1,9 +1,9 @@
 syntax = "proto3";
 package cardwatcher.v1;
 
-import "entities.proto";
+import "cardwatcher/v1/entities.proto";
 
-option go_package = "github.com/lcampit/cardwatcher/internal/api/v1";
+option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1";
 
 message ListExpansionsResponse {
   repeated Expansion expansions = 1;

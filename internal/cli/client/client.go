@@ -3,7 +3,7 @@ package client
 import (
 	"fmt"
 
-	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -20,7 +20,7 @@ type Client interface {
 
 type client struct {
 	connection    *grpc.ClientConn
-	watcherClient api.CardWatcherClient
+	watcherClient api.CardWatcherServiceClient
 }
 
 func NewClient(server string, port int) (Client, error) {
@@ -30,7 +30,7 @@ func NewClient(server string, port int) (Client, error) {
 		return nil, err
 	}
 
-	watcherClient := api.NewCardWatcherClient(conn)
+	watcherClient := api.NewCardWatcherServiceClient(conn)
 
 	return &client{
 		connection:    conn,
