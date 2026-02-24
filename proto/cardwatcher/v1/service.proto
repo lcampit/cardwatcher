@@ -10,14 +10,10 @@ option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1";
 
 service CardWatcherService {
   rpc ListExpansions(ListExpansionsRequest) returns (ListExpansionsResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/expansions"
-    };
+    option (google.api.http) = {get: "/api/v1/expansions"};
   }
   rpc ListBlueprints(ListBlueprintsRequest) returns (ListBlueprintsResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/blueprints"
-    };
+    option (google.api.http) = {get: "/api/v1/blueprints"};
   }
   rpc SaveWatch(SaveWatchRequest) returns (SaveWatchResponse) {
     option (google.api.http) = {
@@ -26,13 +22,9 @@ service CardWatcherService {
     };
   }
   rpc ListWatches(google.protobuf.Empty) returns (ListWatchesResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/watches"
-    };
+    option (google.api.http) = {get: "/api/v1/watches"};
   }
   rpc DeleteWatchByID(DeleteWatchByIDRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/api/v1/watches/{watch_id}"
-    };
+    option (google.api.http) = {delete: "/api/v1/watches/{watch_id}"};
   }
 }

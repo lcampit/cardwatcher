@@ -3,4 +3,5 @@
 #MISE description="run golangci linters and fix issues if any"
 #MISE alias="l"
 
+buf lint
 golangci-lint run
