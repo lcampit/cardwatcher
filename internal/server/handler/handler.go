@@ -8,7 +8,7 @@ package handler
 import (
 	"log/slog"
 
-	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/v1"
 	"github.com/lcampit/cardwatcher/internal/server/service"
 )
 

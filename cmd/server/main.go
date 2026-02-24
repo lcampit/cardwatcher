@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	api "github.com/lcampit/cardwatcher/internal/api/v1"
+	api "github.com/lcampit/cardwatcher/gen/go/v1"
 	"github.com/lcampit/cardwatcher/internal/server/cardtrader"
 	"github.com/lcampit/cardwatcher/internal/server/handler"
 	"github.com/lcampit/cardwatcher/internal/server/logger"

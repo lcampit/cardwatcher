@@ -1,0 +1,12 @@
+version: v2
+modules:
+  - path: proto/v1
+    name: buf.build/lcampit/cardwatcher
+deps:
+  - buf.build/googleapis/googleapis
+breaking:
+  use:
+    - FILE
+lint:
+  use:
+    - STANDARD
