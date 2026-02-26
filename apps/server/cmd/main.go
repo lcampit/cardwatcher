@@ -6,6 +6,8 @@ import (
 	"log/slog"
 	"net"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
@@ -136,12 +138,22 @@ func main() {
 		}
 	}()
 
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		err = grpcServer.Serve(lis)
+		if err != nil {
+			logger.Error("error while listening", slog.Any("error", err))
+		}
+	}()
 	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
-	err = grpcServer.Serve(lis)
-	if err != nil {
-		logger.Error("error while listening", slog.Any("error", err))
-	}
+	// Waiting for cancel signal
+	<-c
 	logger.Info("stopping server")
+	// Gracefulstop will block until current requests are completed
+	grpcServer.GracefulStop()
 	service.Close()
+
 	logger.Info("done")
+	os.Exit(0)
 }
