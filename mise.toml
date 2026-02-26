@@ -12,6 +12,7 @@ gh = "2.80.0"
 golangci-lint = "v2.8.0"
 act = "0.2.84"
 lefthook = "v2.0.15"
+watchexec = "2.5.0"
 
 [env]
 LOG_LEVEL = "debug"

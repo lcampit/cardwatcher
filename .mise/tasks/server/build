@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="build the server binary"
+
+go work sync 
+go build -o bin/server apps/server/cmd/main.go
