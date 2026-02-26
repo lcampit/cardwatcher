@@ -6,8 +6,6 @@ import "cardwatcher/v1/responses.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1";
-
 service CardWatcherService {
   rpc ListExpansions(ListExpansionsRequest) returns (ListExpansionsResponse) {
     option (google.api.http) = {get: "/api/v1/expansions"};
