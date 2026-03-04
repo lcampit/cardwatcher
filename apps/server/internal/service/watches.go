@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
+	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
 func (s *service) ListWatches(ctx context.Context) (*apiv1.ListWatchesResponse, error) {

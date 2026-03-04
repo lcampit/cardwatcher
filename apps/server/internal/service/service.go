@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
 	"github.com/lcampit/cardwatcher/apps/server/internal/ntfy"
+	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
 	"github.com/robfig/cron/v3"
 )

@@ -8,8 +8,8 @@ package handler
 import (
 	"log/slog"
 
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
+	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
 type handler struct {

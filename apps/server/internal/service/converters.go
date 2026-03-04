@@ -1,8 +1,8 @@
 package service
 
 import (
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
+	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
 func convertModelConditionToEntityCondition(modelCondition apiv1.Condition) mongo.WatchCondition {

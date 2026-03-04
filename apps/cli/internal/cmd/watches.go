@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/apps/cli/internal/client"
+	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
 	"github.com/spf13/cobra"
 )

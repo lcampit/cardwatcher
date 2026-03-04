@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 	"github.com/lcampit/cardwatcher/apps/cli/internal/printer"
+	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
 func (c *client) GetExpansions(gameName, expansionName, expansionCode string) error {
