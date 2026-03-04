@@ -2,6 +2,8 @@
 set -euxo pipefail
 
 #MISE description="build the server binary"
+#MISE alias="sb"
+#MISE sources=["apps/server/*.go"]
+#MISE outputs=["bin/server"]
 
-go work sync 
 go build -o bin/server apps/server/cmd/main.go

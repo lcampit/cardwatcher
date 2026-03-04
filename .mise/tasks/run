@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -euxo pipefail
-
-#MISE description="run the server app locally"
-
-trap 'exit 0' INT
-
-go work sync
-go run ./apps/server/cmd/main.go

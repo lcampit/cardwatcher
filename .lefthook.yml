@@ -2,13 +2,13 @@ assert_lefthook_installed: true
 pre-commit:
   parallel: true
   commands:
-    golangci-lint:
-      run: golangci-lint run --fast --fix --new-from-rev HEAD~1
+    go-lint:
+      run: golangci-lint run --fast-only --fix --new-from-rev HEAD~1
       stage_fixed: true
       glob: "*.go"
       exclude:
         - gen/go/*.go
-    golangci-fmt:
+    go-fmt:
       run: |
         git diff --name-only --cached -- '*.go' | xargs -r gofumpt -w 
         git diff --name-only --cached -- '*.go' | xargs -r goimports -w
