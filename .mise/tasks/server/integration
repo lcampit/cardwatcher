@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="run integration tests"
+#MISE alias="sint"
+
+gotestsum --format testname -- -tags=integration ./apps/server/...

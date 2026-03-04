@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="run tests"
+#MISE alias="st"
+
+gotestsum --format testname -- ./apps/server/...

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="run the server binary reloading on changes"
+#MISE alias="sw"
+
+air -root . \
+  -build.cmd "mise run server:build" \
+  -build.bin "./bin/server" \
+  -build.include_dir "apps/server,gen/go,bin" \
+  -build.exclude_regex "_test.go" \
+  -build.stop_on_error "true" \
+  -build.send_interrupt "true" \
+  -misc.clean_on_exit "false"
