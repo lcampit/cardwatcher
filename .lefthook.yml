@@ -1,11 +1,24 @@
 assert_lefthook_installed: true
 pre-commit:
+  parallel: true
   commands:
-    lint:
-      run: git diff --cached > /tmp/stage.patch; golangci-lint run --new-from-patch=/tmp/stage.patch; rm /tmp/stage.patch
+    golangci-lint:
+      run: golangci-lint run --fast --fix --new-from-rev HEAD~1
       stage_fixed: true
       glob: "*.go"
-    format:
-      run: mise run format
+      exclude:
+        - gen/go/*.go
+    golangci-fmt:
+      run: |
+        git diff --name-only --cached -- '*.go' | xargs -r gofumpt -w 
+        git diff --name-only --cached -- '*.go' | xargs -r goimports -w
       stage_fixed: true
-      glob: "*.go|*.proto"
+      glob: "*.go"
+    buf-lint:
+      run: buf lint
+      glob: "*.proto"
+      stage_fixed: true
+    buf_format:
+      run: buf format
+      glob: "*.proto"
+      stage_fixed: true
