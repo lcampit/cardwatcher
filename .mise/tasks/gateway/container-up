@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="build and run the gateway in a docker container"
+#MISE alias="gup"
+
+if command -v docker-compose &>/dev/null; then
+  docker-compose up gateway --build -d
+elif command -v docker compose &>/dev/null; then
+  docker compose up gateway --build -d
+else
+  echo "could not find docker-compose nor docker compose in PATH"
+fi
