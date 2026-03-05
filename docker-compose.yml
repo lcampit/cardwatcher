@@ -2,8 +2,7 @@ services:
   server:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: prod
+      dockerfile: apps/server/Dockerfile
     restart: unless-stopped
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
