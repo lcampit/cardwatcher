@@ -1,5 +1,5 @@
 [tools]
-go = "1.24"
+go = "1.25.7"
 docker-compose = "latest"
 "go:github.com/air-verse/air" = "v1.62"
 "go:github.com/fullstorydev/grpcurl/cmd/grpcurl" = "1.9.2"
