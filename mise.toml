@@ -19,6 +19,8 @@ gofumpt = "v0.9.2"
 [env]
 LOG_LEVEL = "debug"
 SERVER_PORT = 3000
+SERVER_HOST = "localhost"
+GATEWAY_PORT = 8081
 MONGO_PORT = 27017
 NTFY_PORT = 80
 MONGO_DATABASE = "cardwatcher"

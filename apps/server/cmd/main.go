@@ -124,7 +124,13 @@ func main() {
 		reflection.Register(grpcServer)
 	}
 
-	// Periodically check adapters health
+	go func() {
+		err = grpcServer.Serve(lis)
+		if err != nil {
+			logger.Error("error while listening", slog.Any("error", err))
+		}
+	}()
+
 	go func() {
 		for {
 			err := mongoAdapter.Health()
@@ -138,19 +144,12 @@ func main() {
 		}
 	}()
 
+	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		err = grpcServer.Serve(lis)
-		if err != nil {
-			logger.Error("error while listening", slog.Any("error", err))
-		}
-	}()
-	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
-	// Waiting for cancel signal
 	<-c
+
 	logger.Info("stopping server")
-	// Gracefulstop will block until current requests are completed
 	grpcServer.GracefulStop()
 	service.Close()
 
