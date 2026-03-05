@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="run cli tests"
+#MISE alias="ct"
+
+gotestsum --format testname -- ./apps/cli/...

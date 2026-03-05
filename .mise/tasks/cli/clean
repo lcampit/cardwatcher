@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="clean artifacts produced by cli"
+#MISE alias="cc"
+
+rm ./bin/cli

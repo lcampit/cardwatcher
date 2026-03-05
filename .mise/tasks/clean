@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#MISE description="cleans artifacts produced"
+#MISE description="clean artifacts produced"
 #MISE alias="c"
 
 rm -rf tmp
