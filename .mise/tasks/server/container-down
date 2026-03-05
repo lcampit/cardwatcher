@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
+set -euxo pipefail
 
-#MISE description="starts supporting containers for local development"
+#MISE description="tear down the running server container"
+#MISE alias="scdown"
 
 if command -v docker-compose &>/dev/null; then
-  docker-compose up -d mongo ntfy mongo-init-rs
+  docker-compose down server
 elif command -v docker compose &>/dev/null; then
-  docker compose up -d mongo ntfy mongo-init-rs
+  docker compose down server
 else
   echo "could not find docker-compose nor docker compose in PATH"
 fi
