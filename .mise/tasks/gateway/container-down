@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="tear down the running gateway container"
+#MISE alias="gdown"
+
+if command -v docker-compose &>/dev/null; then
+  docker-compose down gateway
+elif command -v docker compose &>/dev/null; then
+  docker compose down gateway
+else
+  echo "could not find docker-compose nor docker compose in PATH"
+fi

@@ -3,8 +3,6 @@ package cardwatcher.v1;
 
 import "cardwatcher/v1/entities.proto";
 
-option go_package = "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1";
-
 message ListExpansionsRequest {
   string name = 1;
   string code = 2;

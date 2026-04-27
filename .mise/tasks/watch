@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-#MISE description="build and run the app watching for changes"
-#MISE alias="w"
-
-air | hl

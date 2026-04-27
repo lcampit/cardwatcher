@@ -7,5 +7,5 @@ if command -v docker-compose &>/dev/null; then
 elif command -v docker compose &>/dev/null; then
   docker compose up -d mongo ntfy mongo-init-rs
 else
-  echo "could not find docker-compose nor docker compose"
+  echo "could not find docker-compose nor docker compose in PATH"
 fi

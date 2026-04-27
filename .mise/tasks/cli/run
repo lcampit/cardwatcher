@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="run the cli binary"
+#MISE alias="cr"
+#MISE depends=["cb"]
+
+./bin/cli

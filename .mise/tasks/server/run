@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="run the server binary locally"
+#MISE alias="sr"
+#MISE depends=["sb", "up"]
+
+./bin/server

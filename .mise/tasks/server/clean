@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+#MISE description="clean artifacts produced by server"
+#MISE alias="sc"
+
+rm ./bin/server

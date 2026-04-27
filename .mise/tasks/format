@@ -3,5 +3,5 @@
 #MISE description="run golangci formatters"
 #MISE alias="f"
 
-golangci-lint fmt
 buf format -w
+golangci-lint fmt

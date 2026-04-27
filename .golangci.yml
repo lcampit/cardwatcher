@@ -38,7 +38,7 @@ formatters:
   settings:
     gofumpt:
       extra-rules: true
-      module-path: "card-watcher"
+      module-path: "github.com/lcampit/cardwatcher"
     goimports:
       local-prefixes:
-        - "card-watcher"
+        - "github.com/lcampit/cardwatcher"
