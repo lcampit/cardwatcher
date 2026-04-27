@@ -15,7 +15,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		return nil, fmt.Errorf("getting expansions from cardtrader adapter: %w", err)
 	}
 	var resultingExpanions []*apiv1.Expansion
-	var gameID uint64
+	var gameID uint64 = 0
 	normalizedExpanionName := strings.ToLower(expansionName)
 	normalizedExpansionCode := strings.ToLower(expansionCode)
 
@@ -24,12 +24,13 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		gameIDFromMap, ok := s.gameIDMap.Load(normalizedGameName)
 		if !ok {
 			s.logger.Debug("filtering expansions for game name: game not found in map", slog.String("gameName", gameName))
-		}
-		gameID, ok = (gameIDFromMap).(uint64)
-		if !ok {
-			s.logger.Error("filtering expansions for game name: ID found in map is not an int",
-				slog.String("gameName", gameName),
-				slog.Any("gameIDFromMap", gameIDFromMap))
+		} else {
+			gameID, ok = (gameIDFromMap).(uint64)
+			if !ok {
+				s.logger.Error("filtering expansions for game name: ID found in map is not an int",
+					slog.String("gameName", gameName),
+					slog.Any("gameIDFromMap", gameIDFromMap))
+			}
 		}
 	}
 	for _, expansion := range expansions {
