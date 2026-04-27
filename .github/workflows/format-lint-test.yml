@@ -74,4 +74,4 @@ jobs:
             [tools]
             go = "1.24"
             "go:gotest.tools/gotestsum" = "v1.12.2"
-      - run: mise run test
+      - run: mise run ci-test

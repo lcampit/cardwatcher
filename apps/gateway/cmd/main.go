@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/lcampit/cardwatcher/apps/gateway/internal/logger"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
@@ -52,7 +53,13 @@ func main() {
 		logger.Info("starting REST gateway",
 			slog.Int("port", gatewayConfig.GatewayPort),
 			slog.String("server", serverAddr))
-		err = http.ListenAndServe(fmt.Sprintf(":%d", gatewayConfig.GatewayPort), mux)
+		server := http.Server{
+			Addr:              serverAddr,
+			Handler:           mux,
+			ReadTimeout:       5 * time.Second,
+			ReadHeaderTimeout: 5 * time.Second,
+		}
+		err = server.ListenAndServe()
 		if err != nil {
 			logger.Error("error starting gateway", slog.Any("error", err))
 			os.Exit(1)
