@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#MISE description="used during pipeline, run each component tests sequentially"
+
+mise run cli:test
+mise run server:test
