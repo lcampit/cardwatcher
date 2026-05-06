@@ -3,8 +3,11 @@ go = "1.26.1"
 docker-compose = "latest"
 "go:gotest.tools/gotestsum" = "v1.12.2"
 buf = "1.65"
-golangci-lint = "v2.8.0"
+golangci-lint = "v2.12.2"
 lefthook = "v2.0.15"
+protoc = "latest"
+gofumpt = "v0.9.2"
+"go:golang.org/x/tools/cmd/goimports" = "0.42.0"
 
 [env]
 LOG_LEVEL = "debug"
