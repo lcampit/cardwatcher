@@ -3,7 +3,5 @@ set -euxo pipefail
 
 #MISE description="build the cli binary"
 #MISE alias="cb"
-#MISE sources=["apps/cli/*.go", "gen/go/*.go"]
-#MISE outputs=["bin/cli"]
 
 go build -o bin/cli apps/cli/cmd/main.go
