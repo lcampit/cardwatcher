@@ -44,6 +44,7 @@ func (s *service) watchAndNotify() {
 						slog.Uint64("blueprintPricing", product.Price.Cents),
 						slog.Uint64("blueprintId", watch.BlueprintID),
 						slog.String("blueprintName", watch.Name))
+					break
 				}
 			}
 		}
