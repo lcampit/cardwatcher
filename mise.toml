@@ -1,7 +1,7 @@
 [tools]
 go = "1.26.1"
 docker-compose = "latest"
-"go:gotest.tools/gotestsum" = "latest"
+"go:gotest.tools/gotestsum" = "1.12.3"
 buf = "1.65"
 golangci-lint = "v2.12.2"
 lefthook = "v2.0.15"
