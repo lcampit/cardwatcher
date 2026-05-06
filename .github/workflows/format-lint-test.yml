@@ -30,13 +30,9 @@ jobs:
         with:
           install: true
           install_args: "-j 1"
-          mise_toml: |
-            [tools]
-            go = "1.24"
-            buf = "1.65"
       - uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.8.0
+          version: v2.12.2
       - name: "Buf lint"
         run: "buf lint"
   format:
@@ -48,11 +44,6 @@ jobs:
         with:
           install: true
           install_args: "-j 1"
-          mise_toml: |
-            [tools]
-            go = "1.24"
-            golangci-lint = "v2.8.0"
-            buf = "1.65"
       - name: "Run formatters"
         run: mise run format
       - name: "Check No Format Needed"
@@ -70,8 +61,4 @@ jobs:
         with:
           install: true
           install_args: "-j 1"
-          mise_toml: |
-            [tools]
-            go = "1.24"
-            "go:gotest.tools/gotestsum" = "v1.12.2"
       - run: mise run ci-test
