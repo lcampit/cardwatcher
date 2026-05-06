@@ -44,6 +44,7 @@ type WatcherConfig struct {
 	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
 	NtfyHost                              string `env:"NTFY_HOST"`
 	NtfyPort                              string `env:"NTFY_PORT"`
+	HttpSkipVerify                        bool   `env:"HTTP_SKIP_VERIFY"`
 }
 
 func main() {
@@ -68,6 +69,7 @@ func main() {
 		Logger:      logger,
 		AccessToken: watcherConfig.CardtraderAccessToken,
 		BaseURL:     watcherConfig.CardtraderAPIBaseURL,
+		SkipVerify:  watcherConfig.HttpSkipVerify,
 	}
 	cardtraderAdapter := cardtrader.NewCardtraderAdapter(cardtraderAdapterConfig)
 

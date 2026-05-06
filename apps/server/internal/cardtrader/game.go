@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"strings"
-
-	"github.com/carlmjohnson/requests"
 )
 
 type game struct {
@@ -25,11 +23,11 @@ func (g *game) GetNormalizedName() string {
 
 func (a *cardtraderAdapter) GetGames(ctx context.Context) ([]*game, error) {
 	var response gameResponse
-	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "games")
-	err := requests.URL(endpoint).Bearer(a.accessToken).
+	endpoint := "games"
+	err := a.client.Path(endpoint).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("cardtrader get expansions endpoint %w", err)
+		return nil, fmt.Errorf("cardtrader get games endpoint %w", err)
 	}
 	a.logger.Debug("received games", slog.Int("gamesCount", len(response.GameList)))
 	return response.GameList, nil

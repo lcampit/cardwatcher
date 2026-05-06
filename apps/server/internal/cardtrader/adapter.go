@@ -6,7 +6,11 @@ package cardtrader
 
 import (
 	"context"
+	"crypto/tls"
 	"log/slog"
+	"net/http"
+
+	"github.com/carlmjohnson/requests"
 )
 
 type CardtraderAdapter interface {
@@ -19,21 +23,35 @@ type CardtraderAdapter interface {
 }
 
 type cardtraderAdapter struct {
-	logger      *slog.Logger
-	baseURL     string
-	accessToken string
+	logger *slog.Logger
+	client *requests.Builder
 }
 
 type CardtraderAdapterConfig struct {
 	Logger      *slog.Logger
 	AccessToken string
 	BaseURL     string
+	// This options should only be used for testing
+	SkipVerify bool
 }
 
 func NewCardtraderAdapter(config CardtraderAdapterConfig) CardtraderAdapter {
+	tlsConfig := tls.Config{
+		InsecureSkipVerify: config.SkipVerify,
+	}
+	transport := http.Transport{
+		ForceAttemptHTTP2: true,
+		TLSClientConfig:   &tlsConfig,
+	}
+	builder := requests.New(
+		func(rb *requests.Builder) {
+			rb.BaseURL(config.BaseURL)
+			rb.Bearer(config.AccessToken)
+			rb.Transport(&transport)
+		},
+	)
 	return &cardtraderAdapter{
-		logger:      config.Logger,
-		baseURL:     config.BaseURL,
-		accessToken: config.AccessToken,
+		logger: config.Logger,
+		client: builder,
 	}
 }

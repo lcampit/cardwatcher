@@ -6,8 +6,6 @@ import (
 	"strconv"
 
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
-
-	"github.com/carlmjohnson/requests"
 )
 
 type Product struct {
@@ -53,10 +51,10 @@ func (a *cardtraderAdapter) GetProducts(ctx context.Context, blueprintID uint64,
 	// cheapest 25 products for that blueprint
 	// if called with an expansionID, the map contains one entry for each blueprint
 	// of that expansion, each of them with its own 25 cheapest products available
-	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "marketplace", "products")
+	endpoint := fmt.Sprintf("%s/%s", "marketplace", "products")
 	blueprintIDString := strconv.FormatUint(blueprintID, 10)
 	foilString := strconv.FormatBool(foil)
-	err := requests.URL(endpoint).Bearer(a.accessToken).
+	err := a.client.Path(endpoint).
 		Param("language", "en").
 		Param("blueprint_id", blueprintIDString).
 		Param("foil", foilString).

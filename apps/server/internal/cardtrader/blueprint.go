@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"strconv"
-
-	"github.com/carlmjohnson/requests"
 )
 
 type blueprint struct {
@@ -25,9 +23,9 @@ type blueprint struct {
 
 func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error) {
 	var response []*blueprint
-	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "blueprints", "export")
+	endpoint := fmt.Sprintf("%s/%s", "blueprints", "export")
 	expansionIDString := strconv.FormatUint(expansionID, 10)
-	err := requests.URL(endpoint).Bearer(a.accessToken).
+	err := a.client.Path(endpoint).
 		Param("expansion_id", expansionIDString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
@@ -41,9 +39,9 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint6
 
 func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID uint64) (string, error) {
 	var response []blueprint
-	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "blueprints", "export")
+	endpoint := fmt.Sprintf("%s/%s", "blueprints", "export")
 	expansionIDString := strconv.FormatUint(expansionID, 10)
-	err := requests.URL(endpoint).Bearer(a.accessToken).
+	err := a.client.Path(endpoint).
 		Param("expansion_id", expansionIDString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
