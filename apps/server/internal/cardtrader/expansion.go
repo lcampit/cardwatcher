@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-
-	"github.com/carlmjohnson/requests"
 )
 
 type expansion struct {
@@ -17,8 +15,8 @@ type expansion struct {
 
 func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, error) {
 	var response []*expansion
-	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "expansions")
-	err := requests.URL(endpoint).Bearer(a.accessToken).
+	endpoint := "expansions"
+	err := a.client.Path(endpoint).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get expansions endpoint %w", err)
@@ -29,8 +27,8 @@ func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, er
 
 func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error) {
 	var response []*expansion
-	endpoint := fmt.Sprintf("%s/%s", a.baseURL, "expansions")
-	err := requests.URL(endpoint).Bearer(a.accessToken).
+	endpoint := "expansions"
+	err := a.client.Path(endpoint).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
 		return "", fmt.Errorf("cardtrader get expansions endpoint for id %d: %w ", expansionID, err)

@@ -1,6 +1,6 @@
 module github.com/lcampit/cardwatcher
 
-go 1.25.0
+go 1.26.1
 
 require (
 	github.com/carlmjohnson/requests v0.25.1

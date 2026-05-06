@@ -69,12 +69,12 @@ A comprehensive docker-compose file is available to
 quickly build and spin up the whole application
 with `docker compose up`.
 
-## 🤝 Contributing
+## Contributing
 
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed
 contributing guidelines.
 
-## 🔗 Links
+## Links
 
 - [Cardtrader](https://www.cardtrader.com) and
 its [APIs](https://www.cardtrader.com/en/docs/api)

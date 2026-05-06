@@ -1,20 +1,13 @@
 [tools]
-go = "1.25.7"
+go = "1.26.1"
 docker-compose = "latest"
-"go:github.com/air-verse/air" = "v1.62"
-"go:github.com/fullstorydev/grpcurl/cmd/grpcurl" = "1.9.2"
-"go:gotest.tools/gotestsum" = "v1.12.2"
+"go:gotest.tools/gotestsum" = "1.12.3"
 buf = "1.65"
-"cargo:https://github.com/pamburus/hl.git" = "latest"
-"go:github.com/aurc/loggo" = "latest"
-gh = "2.80.0"
-"go:github.com/unkn0wn-root/resterm/cmd/resterm" = "v0.19.1"
-golangci-lint = "v2.8.0"
-act = "0.2.84"
+golangci-lint = "v2.12.2"
 lefthook = "v2.0.15"
-watchexec = "2.5.0"
+protoc = "latest"
 gofumpt = "v0.9.2"
-"go:golang.org/x/tools/cmd/goimports" = "0.42.0"
+"go:golang.org/x/tools/cmd/goimports" = "latest"
 
 [env]
 LOG_LEVEL = "debug"
@@ -24,7 +17,7 @@ GATEWAY_PORT = 8081
 MONGO_PORT = 27017
 NTFY_PORT = 80
 MONGO_DATABASE = "cardwatcher"
-CARDTRADER_API_BASE_URL = "https://api.cardtrader.com/api/v2"
+CARDTRADER_API_BASE_URL = "https://api.cardtrader.com/api/v2/"
 NOTIFICATION_SCHEDULE = "* * * * *"
 UPDATE_MAPS_SCHEDULE = "0 4 * * *"
 MONGO_WATCH_COLLECTION_NAME = "watches"

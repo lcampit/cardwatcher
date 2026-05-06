@@ -12,11 +12,12 @@ import (
 type WatchCondition string
 
 const (
-	WatchConditionNM WatchCondition = "Near Mint"
-	WatchConditionSP WatchCondition = "Slightly Played"
-	WatchConditionMP WatchCondition = "Moderately Played"
-	WatchConditionPL WatchCondition = "Played"
-	WatchConditionPO WatchCondition = "Poor"
+	WatchConditionAny WatchCondition = "Any"
+	WatchConditionNM  WatchCondition = "Near Mint"
+	WatchConditionSP  WatchCondition = "Slightly Played"
+	WatchConditionMP  WatchCondition = "Moderately Played"
+	WatchConditionPL  WatchCondition = "Played"
+	WatchConditionPO  WatchCondition = "Poor"
 )
 
 type Watch struct {

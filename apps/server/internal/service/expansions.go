@@ -25,11 +25,11 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		if !ok {
 			s.logger.Debug("filtering expansions for game name: game not found in map", slog.String("gameName", gameName))
 		} else {
-			gameID, ok = (gameIDFromMap).(uint64)
+			gameID, ok = gameIDFromMap.(uint64)
 			if !ok {
 				s.logger.Error("filtering expansions for game name: ID found in map is not an int",
 					slog.String("gameName", gameName),
-					slog.Any("gameIDFromMap", gameIDFromMap))
+					slog.Any("gameIdFromMap", gameIDFromMap))
 			}
 		}
 	}
