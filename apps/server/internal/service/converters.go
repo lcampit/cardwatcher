@@ -8,6 +8,7 @@ import (
 func convertModelConditionToEntityCondition(modelCondition apiv1.Condition) mongo.WatchCondition {
 	switch modelCondition {
 	case apiv1.Condition_CONDITION_UNSPECIFIED:
+		return mongo.WatchConditionAny
 	case apiv1.Condition_CONDITION_NEAR_MINT:
 		return mongo.WatchConditionNM
 	case apiv1.Condition_CONDITION_SLIGHTLY_PLAYED:
@@ -19,13 +20,14 @@ func convertModelConditionToEntityCondition(modelCondition apiv1.Condition) mong
 	case apiv1.Condition_CONDITION_POOR:
 		return mongo.WatchConditionPO
 	default:
-		return mongo.WatchConditionNM
+		return mongo.WatchConditionAny
 	}
-	return mongo.WatchConditionNM
 }
 
 func convertEntityConditionToModelCondition(entityCondition mongo.WatchCondition) apiv1.Condition {
 	switch entityCondition {
+	case mongo.WatchConditionAny:
+		return apiv1.Condition_CONDITION_UNSPECIFIED
 	case mongo.WatchConditionNM:
 		return apiv1.Condition_CONDITION_NEAR_MINT
 	case mongo.WatchConditionSP:
@@ -37,7 +39,7 @@ func convertEntityConditionToModelCondition(entityCondition mongo.WatchCondition
 	case mongo.WatchConditionPO:
 		return apiv1.Condition_CONDITION_POOR
 	}
-	return apiv1.Condition_CONDITION_NEAR_MINT
+	return apiv1.Condition_CONDITION_UNSPECIFIED
 }
 
 func convertEntityWatchToModelWatch(entityWatch *mongo.Watch) *apiv1.Watch {

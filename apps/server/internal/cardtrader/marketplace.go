@@ -45,26 +45,29 @@ type Product struct {
 	BundleSize uint64 `json:"bundle_size"`
 }
 
-func (a *cardtraderAdapter) GetCurrentPricingCents(ctx context.Context, watch *mongo.Watch) (uint64, error) {
+func (a *cardtraderAdapter) GetProducts(ctx context.Context, blueprintID uint64, foil bool) ([]Product, error) {
 	response := map[string][]Product{}
 
+	// Response to this endpoint is a map blueprintID -> list of products
+	// if called with a blueprintID, the map contains only one entry with the
+	// cheapest 25 products for that blueprint
+	// if called with an expansionID, the map contains one entry for each blueprint
+	// of that expansion, each of them with its own 25 cheapest products available
 	endpoint := fmt.Sprintf("%s/%s/%s", a.baseURL, "marketplace", "products")
-	blueprintIDString := strconv.FormatUint(watch.BlueprintID, 10)
-	foilString := strconv.FormatBool(watch.Foil)
+	blueprintIDString := strconv.FormatUint(blueprintID, 10)
+	foilString := strconv.FormatBool(foil)
 	err := requests.URL(endpoint).Bearer(a.accessToken).
-		Param("language", "en").Param("blueprint_id", blueprintIDString).Param("foil", foilString).
+		Param("language", "en").
+		Param("blueprint_id", blueprintIDString).
+		Param("foil", foilString).
 		ToJSON(&response).Fetch(ctx)
 	if err != nil {
-		return 0, fmt.Errorf("cardtrader get products: %w", err)
+		return nil, fmt.Errorf("cardtrader get products: %w", err)
 	}
 
-	if products, ok := response[blueprintIDString]; ok {
-		for _, product := range products {
-			if product.Properties.Condition == watch.Condition && product.User.SellsViaHub {
-				return product.Price.Cents, nil
-			}
-		}
+	productsList, ok := response[blueprintIDString]
+	if !ok {
+		return nil, fmt.Errorf("cardtrader get products: response map does not contain blueprint ID %d", blueprintID)
 	}
-
-	return 0, nil
+	return productsList, nil
 }
