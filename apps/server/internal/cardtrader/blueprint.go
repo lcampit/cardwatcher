@@ -33,7 +33,7 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint6
 	}
 	a.logger.Debug("received blueprints for expansion id",
 		slog.Int("blueprintCount", len(response)),
-		slog.Uint64("expansionID", expansionID))
+		slog.Uint64("expansionId", expansionID))
 	return response, nil
 }
 

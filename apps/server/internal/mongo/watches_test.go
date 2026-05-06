@@ -9,6 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
+const collectionTestName = "watch-test"
+
 func TestCRUDWatches(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.DiscardHandler)
@@ -17,7 +19,7 @@ func TestCRUDWatches(t *testing.T) {
 		Host:                testHost,
 		Port:                testPort,
 		Database:            testDatabase,
-		WatchCollectionName: "watch-test",
+		WatchCollectionName: collectionTestName,
 		CAFile:              "",
 	}
 	mongoAdapter, _ := NewMongoAdapter(config)
