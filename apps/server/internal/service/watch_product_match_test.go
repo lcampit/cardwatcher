@@ -19,6 +19,12 @@ var allConditions = []mongo.WatchCondition{
 	mongo.WatchConditionSP, mongo.WatchConditionPL, mongo.WatchConditionPO,
 }
 
+var allLanguages = []mongo.WatchLanguage{
+	mongo.WatchLanguageAny, mongo.WatchLanguageEn, mongo.WatchLanguageDe,
+	mongo.WatchLanguageFr, mongo.WatchLanguageIt, mongo.WatchLanguageJp,
+	mongo.WatchLanguagePt, mongo.WatchLanguageEs,
+}
+
 func TestWatchProductMatchesByCondition(t *testing.T) {
 	watch := mongo.Watch{
 		Name:          watchName,
@@ -160,6 +166,34 @@ func TestWatchProductMatchesByLanguage(t *testing.T) {
 		matchingProduct := watchConditionsMatchProduct(&watch, product)
 		if matchingProduct {
 			t.Errorf("watch has matched a product with a different language")
+		}
+	}
+}
+
+func TestWatchWithAnyLanguageMatchesAnyProduct(t *testing.T) {
+	watch := mongo.Watch{
+		Name:          watchName,
+		ExpansionID:   expansionID,
+		ExpansionName: expansionName,
+		BlueprintID:   blueprintID,
+		Language:      mongo.WatchLanguageAny,
+		Condition:     mongo.WatchConditionNM,
+		Foil:          false,
+	}
+
+	for _, language := range allLanguages {
+		product := cardtrader.Product{
+			User: cardtrader.ProductUserInfo{
+				SellsViaHub: true,
+			},
+			Properties: cardtrader.ProductProperties{
+				Condition: watch.Condition,
+				Language:  language,
+			},
+		}
+		matchingProduct := watchConditionsMatchProduct(&watch, product)
+		if !matchingProduct {
+			t.Errorf("any language watch does not match product with language: %s", language)
 		}
 	}
 }

@@ -23,13 +23,14 @@ const (
 type WatchLanguage string
 
 const (
-	WatchLanguageEn WatchLanguage = "en"
-	WatchLanguageDe WatchLanguage = "de"
-	WatchLanguageFr WatchLanguage = "fr"
-	WatchLanguageIt WatchLanguage = "it"
-	WatchLanguageJp WatchLanguage = "jp"
-	WatchLanguagePt WatchLanguage = "pt"
-	WatchLanguageEs WatchLanguage = "es"
+	WatchLanguageAny WatchLanguage = "any"
+	WatchLanguageEn  WatchLanguage = "en"
+	WatchLanguageDe  WatchLanguage = "de"
+	WatchLanguageFr  WatchLanguage = "fr"
+	WatchLanguageIt  WatchLanguage = "it"
+	WatchLanguageJp  WatchLanguage = "jp"
+	WatchLanguagePt  WatchLanguage = "pt"
+	WatchLanguageEs  WatchLanguage = "es"
 )
 
 type Watch struct {

@@ -57,12 +57,8 @@ func (s *service) watchAndNotify() {
 }
 
 func watchConditionsMatchProduct(watch *mongo.Watch, product cardtrader.Product) bool {
-	languageMatch := watch.Language == product.Properties.Language
+	languageMatch := watch.Language == mongo.WatchLanguageAny || watch.Language == product.Properties.Language
+	conditionMatch := watch.Condition == mongo.WatchConditionAny || watch.Condition == product.Properties.Condition
 	sellsViaHub := product.User.SellsViaHub
-	if watch.Condition == mongo.WatchConditionAny {
-		return sellsViaHub && languageMatch
-	}
-
-	conditionMatch := watch.Condition == product.Properties.Condition
 	return languageMatch && conditionMatch && sellsViaHub
 }
