@@ -11,15 +11,15 @@ import (
 func PrintWatchesTable(watches []*apiv1.Watch) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Watches", "Watch ID", "Expansion ID", "Blueprint ID", "Expansion Name", "Name", "Condition", "Foil"})
+	t.AppendHeader(table.Row{"Watches", "Watch ID", "Expansion ID", "Blueprint ID", "Expansion Name", "Name", "Condition", "Language", "Foil"})
 	for _, watch := range watches {
-		t.AppendRow(table.Row{"", watch.WatchId, watch.ExpansionId, watch.BlueprintId, watch.ExpansionName, watch.Name, NormalizeWatchCondition(watch.Condition), watch.Foil})
+		t.AppendRow(table.Row{"", watch.WatchId, watch.ExpansionId, watch.BlueprintId, watch.ExpansionName, watch.Name, normalizeWatchCondition(watch.Condition), normalizeWatchLanguage(watch.Language), watch.Foil})
 		t.AppendSeparator()
 	}
 	t.Render()
 }
 
-func NormalizeWatchCondition(condition apiv1.Condition) string {
+func normalizeWatchCondition(condition apiv1.Condition) string {
 	switch condition {
 	case apiv1.Condition_CONDITION_NEAR_MINT:
 		return "NEAR MINT"
@@ -32,5 +32,25 @@ func NormalizeWatchCondition(condition apiv1.Condition) string {
 	case apiv1.Condition_CONDITION_POOR:
 		return "POOR"
 	}
-	return condition.String()
+	return "ANY"
+}
+
+func normalizeWatchLanguage(language apiv1.Language) string {
+	switch language {
+	case apiv1.Language_LANGUAGE_EN:
+		return "EN"
+	case apiv1.Language_LANGUAGE_DE:
+		return "DE"
+	case apiv1.Language_LANGUAGE_FR:
+		return "FR"
+	case apiv1.Language_LANGUAGE_IT:
+		return "IT"
+	case apiv1.Language_LANGUAGE_JP:
+		return "JP"
+	case apiv1.Language_LANGUAGE_PT:
+		return "PT"
+	case apiv1.Language_LANGUAGE_ES:
+		return "ES"
+	}
+	return "ANY"
 }

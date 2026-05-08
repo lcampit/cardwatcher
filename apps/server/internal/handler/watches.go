@@ -12,7 +12,9 @@ import (
 func (s *handler) SaveWatch(ctx context.Context, in *apiv1.SaveWatchRequest) (*apiv1.SaveWatchResponse, error) {
 	s.logger.Info("received a SaveWatch request")
 	s.logger.Debug("request received", slog.Any("request", in))
-	watchID, err := s.service.SaveWatch(ctx, in.ExpansionId, in.BlueprintId, in.Condition, in.Foil)
+	watchID, err := s.service.SaveWatch(ctx,
+		in.ExpansionId, in.BlueprintId, in.Condition,
+		in.Language, in.Foil)
 	if err != nil {
 		s.logger.Error("error in save watch", slog.Any("error", err))
 		return nil, err

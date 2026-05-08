@@ -8,9 +8,8 @@ import (
 	"context"
 	"crypto/tls"
 	"log/slog"
-	"net/http"
 
-	"github.com/carlmjohnson/requests"
+	"resty.dev/v3"
 )
 
 type CardtraderAdapter interface {
@@ -24,7 +23,7 @@ type CardtraderAdapter interface {
 
 type cardtraderAdapter struct {
 	logger *slog.Logger
-	client *requests.Builder
+	client *resty.Client
 }
 
 type CardtraderAdapterConfig struct {
@@ -39,19 +38,14 @@ func NewCardtraderAdapter(config CardtraderAdapterConfig) CardtraderAdapter {
 	tlsConfig := tls.Config{
 		InsecureSkipVerify: config.SkipVerify,
 	}
-	transport := http.Transport{
-		ForceAttemptHTTP2: true,
-		TLSClientConfig:   &tlsConfig,
-	}
-	builder := requests.New(
-		func(rb *requests.Builder) {
-			rb.BaseURL(config.BaseURL)
-			rb.Bearer(config.AccessToken)
-			rb.Transport(&transport)
-		},
-	)
+
+	client := resty.New().
+		SetTLSClientConfig(&tlsConfig).
+		SetAuthToken(config.AccessToken).
+		SetBaseURL(config.BaseURL)
+
 	return &cardtraderAdapter{
 		logger: config.Logger,
-		client: builder,
+		client: client,
 	}
 }

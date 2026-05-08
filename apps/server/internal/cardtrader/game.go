@@ -24,8 +24,9 @@ func (g *game) GetNormalizedName() string {
 func (a *cardtraderAdapter) GetGames(ctx context.Context) ([]*game, error) {
 	var response gameResponse
 	endpoint := "games"
-	err := a.client.Path(endpoint).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetResult(&response).
+		Get(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get games endpoint %w", err)
 	}

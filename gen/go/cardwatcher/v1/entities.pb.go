@@ -7,11 +7,12 @@
 package cardwatcherv1
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -77,6 +78,70 @@ func (x Condition) Number() protoreflect.EnumNumber {
 // Deprecated: Use Condition.Descriptor instead.
 func (Condition) EnumDescriptor() ([]byte, []int) {
 	return file_cardwatcher_v1_entities_proto_rawDescGZIP(), []int{0}
+}
+
+type Language int32
+
+const (
+	Language_LANGUAGE_UNSPECIFIED Language = 0
+	Language_LANGUAGE_EN          Language = 1
+	Language_LANGUAGE_DE          Language = 2
+	Language_LANGUAGE_FR          Language = 3
+	Language_LANGUAGE_IT          Language = 4
+	Language_LANGUAGE_JP          Language = 5
+	Language_LANGUAGE_PT          Language = 6
+	Language_LANGUAGE_ES          Language = 7
+)
+
+// Enum value maps for Language.
+var (
+	Language_name = map[int32]string{
+		0: "LANGUAGE_UNSPECIFIED",
+		1: "LANGUAGE_EN",
+		2: "LANGUAGE_DE",
+		3: "LANGUAGE_FR",
+		4: "LANGUAGE_IT",
+		5: "LANGUAGE_JP",
+		6: "LANGUAGE_PT",
+		7: "LANGUAGE_ES",
+	}
+	Language_value = map[string]int32{
+		"LANGUAGE_UNSPECIFIED": 0,
+		"LANGUAGE_EN":          1,
+		"LANGUAGE_DE":          2,
+		"LANGUAGE_FR":          3,
+		"LANGUAGE_IT":          4,
+		"LANGUAGE_JP":          5,
+		"LANGUAGE_PT":          6,
+		"LANGUAGE_ES":          7,
+	}
+)
+
+func (x Language) Enum() *Language {
+	p := new(Language)
+	*p = x
+	return p
+}
+
+func (x Language) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Language) Descriptor() protoreflect.EnumDescriptor {
+	return file_cardwatcher_v1_entities_proto_enumTypes[1].Descriptor()
+}
+
+func (Language) Type() protoreflect.EnumType {
+	return &file_cardwatcher_v1_entities_proto_enumTypes[1]
+}
+
+func (x Language) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Language.Descriptor instead.
+func (Language) EnumDescriptor() ([]byte, []int) {
+	return file_cardwatcher_v1_entities_proto_rawDescGZIP(), []int{1}
 }
 
 type Expansion struct {
@@ -208,6 +273,7 @@ type Watch struct {
 	Condition     Condition              `protobuf:"varint,5,opt,name=condition,proto3,enum=cardwatcher.v1.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,6,opt,name=foil,proto3" json:"foil,omitempty"`
 	ExpansionName string                 `protobuf:"bytes,7,opt,name=expansion_name,json=expansionName,proto3" json:"expansion_name,omitempty"`
+	Language      Language               `protobuf:"varint,8,opt,name=language,proto3,enum=cardwatcher.v1.Language" json:"language,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -291,6 +357,13 @@ func (x *Watch) GetExpansionName() string {
 	return ""
 }
 
+func (x *Watch) GetLanguage() Language {
+	if x != nil {
+		return x.Language
+	}
+	return Language_LANGUAGE_UNSPECIFIED
+}
+
 var File_cardwatcher_v1_entities_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_v1_entities_proto_rawDesc = "" +
@@ -303,7 +376,7 @@ const file_cardwatcher_v1_entities_proto_rawDesc = "" +
 	"\tBlueprint\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\"\xf0\x01\n" +
+	"\fexpansion_id\x18\x03 \x01(\x04R\vexpansionId\"\xa6\x02\n" +
 	"\x05Watch\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
@@ -311,14 +384,24 @@ const file_cardwatcher_v1_entities_proto_rawDesc = "" +
 	"\fblueprint_id\x18\x04 \x01(\x04R\vblueprintId\x127\n" +
 	"\tcondition\x18\x05 \x01(\x0e2\x19.cardwatcher.v1.ConditionR\tcondition\x12\x12\n" +
 	"\x04foil\x18\x06 \x01(\bR\x04foil\x12%\n" +
-	"\x0eexpansion_name\x18\a \x01(\tR\rexpansionName*\xa9\x01\n" +
+	"\x0eexpansion_name\x18\a \x01(\tR\rexpansionName\x124\n" +
+	"\blanguage\x18\b \x01(\x0e2\x18.cardwatcher.v1.LanguageR\blanguage*\xa9\x01\n" +
 	"\tCondition\x12\x19\n" +
 	"\x15CONDITION_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13CONDITION_NEAR_MINT\x10\x01\x12\x1d\n" +
 	"\x19CONDITION_SLIGHTLY_PLAYED\x10\x02\x12\x1f\n" +
 	"\x1bCONDITION_MODERATELY_PLAYED\x10\x03\x12\x14\n" +
 	"\x10CONDITION_PLAYED\x10\x04\x12\x12\n" +
-	"\x0eCONDITION_POOR\x10\x05B\xc0\x01\n" +
+	"\x0eCONDITION_POOR\x10\x05*\x9b\x01\n" +
+	"\bLanguage\x12\x18\n" +
+	"\x14LANGUAGE_UNSPECIFIED\x10\x00\x12\x0f\n" +
+	"\vLANGUAGE_EN\x10\x01\x12\x0f\n" +
+	"\vLANGUAGE_DE\x10\x02\x12\x0f\n" +
+	"\vLANGUAGE_FR\x10\x03\x12\x0f\n" +
+	"\vLANGUAGE_IT\x10\x04\x12\x0f\n" +
+	"\vLANGUAGE_JP\x10\x05\x12\x0f\n" +
+	"\vLANGUAGE_PT\x10\x06\x12\x0f\n" +
+	"\vLANGUAGE_ES\x10\aB\xc0\x01\n" +
 	"\x12com.cardwatcher.v1B\rEntitiesProtoP\x01ZBgithub.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
 
 var (
@@ -333,21 +416,25 @@ func file_cardwatcher_v1_entities_proto_rawDescGZIP() []byte {
 	return file_cardwatcher_v1_entities_proto_rawDescData
 }
 
-var file_cardwatcher_v1_entities_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_cardwatcher_v1_entities_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_cardwatcher_v1_entities_proto_goTypes = []any{
-	(Condition)(0),    // 0: cardwatcher.v1.Condition
-	(*Expansion)(nil), // 1: cardwatcher.v1.Expansion
-	(*Blueprint)(nil), // 2: cardwatcher.v1.Blueprint
-	(*Watch)(nil),     // 3: cardwatcher.v1.Watch
-}
+var (
+	file_cardwatcher_v1_entities_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+	file_cardwatcher_v1_entities_proto_msgTypes  = make([]protoimpl.MessageInfo, 3)
+	file_cardwatcher_v1_entities_proto_goTypes   = []any{
+		Condition(0),      // 0: cardwatcher.v1.Condition
+		Language(0),       // 1: cardwatcher.v1.Language
+		(*Expansion)(nil), // 2: cardwatcher.v1.Expansion
+		(*Blueprint)(nil), // 3: cardwatcher.v1.Blueprint
+		(*Watch)(nil),     // 4: cardwatcher.v1.Watch
+	}
+)
 var file_cardwatcher_v1_entities_proto_depIdxs = []int32{
 	0, // 0: cardwatcher.v1.Watch.condition:type_name -> cardwatcher.v1.Condition
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	1, // 1: cardwatcher.v1.Watch.language:type_name -> cardwatcher.v1.Language
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_cardwatcher_v1_entities_proto_init() }
@@ -360,7 +447,7 @@ func file_cardwatcher_v1_entities_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_v1_entities_proto_rawDesc), len(file_cardwatcher_v1_entities_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,

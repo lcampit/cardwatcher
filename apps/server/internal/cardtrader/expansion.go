@@ -16,8 +16,9 @@ type expansion struct {
 func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, error) {
 	var response []*expansion
 	endpoint := "expansions"
-	err := a.client.Path(endpoint).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetResult(&response).
+		Get(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get expansions endpoint %w", err)
 	}
@@ -28,8 +29,9 @@ func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, er
 func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error) {
 	var response []*expansion
 	endpoint := "expansions"
-	err := a.client.Path(endpoint).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetResult(&response).
+		Get(endpoint)
 	if err != nil {
 		return "", fmt.Errorf("cardtrader get expansions endpoint for id %d: %w ", expansionID, err)
 	}

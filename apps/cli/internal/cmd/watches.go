@@ -13,6 +13,7 @@ import (
 var (
 	isFoil                                                   bool
 	nearMint, slightlyPlayed, moderatelyPlayed, played, poor bool
+	en, de, fr, it, jp, pt, es                               bool
 )
 
 var saveWatchCmd = &cobra.Command{
@@ -37,22 +38,55 @@ var saveWatchCmd = &cobra.Command{
 			return fmt.Errorf("please provide a valid integer expansion ID as obtained using the `get expansions` command. Received %s", args[0])
 		}
 
-		condition := apiv1.Condition_CONDITION_NEAR_MINT
-		if slightlyPlayed {
-			condition = apiv1.Condition_CONDITION_SLIGHTLY_PLAYED
-		}
-		if moderatelyPlayed {
-			condition = apiv1.Condition_CONDITION_MODERATELY_PLAYED
-		}
-		if played {
-			condition = apiv1.Condition_CONDITION_PLAYED
-		}
-		if poor {
-			condition = apiv1.Condition_CONDITION_POOR
-		}
+		condition := extractCondition()
+		language := extractLanguage()
 
-		return client.SaveWatch(expansionID, blueprintID, condition, isFoil)
+		return client.SaveWatch(expansionID, blueprintID, condition, language, isFoil)
 	},
+}
+
+func extractLanguage() apiv1.Language {
+	if en {
+		return apiv1.Language_LANGUAGE_EN
+	}
+	if de {
+		return apiv1.Language_LANGUAGE_DE
+	}
+	if fr {
+		return apiv1.Language_LANGUAGE_FR
+	}
+	if it {
+		return apiv1.Language_LANGUAGE_IT
+	}
+	if jp {
+		return apiv1.Language_LANGUAGE_JP
+	}
+	if pt {
+		return apiv1.Language_LANGUAGE_PT
+	}
+	if es {
+		return apiv1.Language_LANGUAGE_ES
+	}
+	return apiv1.Language_LANGUAGE_UNSPECIFIED
+}
+
+func extractCondition() apiv1.Condition {
+	if nearMint {
+		return apiv1.Condition_CONDITION_NEAR_MINT
+	}
+	if slightlyPlayed {
+		return apiv1.Condition_CONDITION_SLIGHTLY_PLAYED
+	}
+	if moderatelyPlayed {
+		return apiv1.Condition_CONDITION_MODERATELY_PLAYED
+	}
+	if played {
+		return apiv1.Condition_CONDITION_PLAYED
+	}
+	if poor {
+		return apiv1.Condition_CONDITION_POOR
+	}
+	return apiv1.Condition_CONDITION_UNSPECIFIED
 }
 
 var getWatchesCmd = &cobra.Command{
@@ -87,12 +121,23 @@ var deleteWatchCmd = &cobra.Command{
 }
 
 func init() {
-	saveWatchCmd.Flags().BoolVarP(&isFoil, "foil", "f", false, "whether to look for foil cards or not")
+	saveWatchCmd.Flags().BoolVarP(&isFoil, "foil", "f", false, "whether to look for foil cards")
+	// add condition flags
 	saveWatchCmd.Flags().BoolVar(&nearMint, "nm", false, "whether to look for near mint condition cards")
 	saveWatchCmd.Flags().BoolVar(&slightlyPlayed, "sp", false, "whether to look for slightly played condition cards")
 	saveWatchCmd.Flags().BoolVar(&moderatelyPlayed, "mp", false, "whether to look for moderately played condition cards")
 	saveWatchCmd.Flags().BoolVar(&played, "pl", false, "whether to look for played condition cards")
 	saveWatchCmd.Flags().BoolVar(&poor, "po", false, "whether to look for poor condition cards")
+
+	// add language flags
+	saveWatchCmd.Flags().BoolVar(&en, "en", false, "whether to look for english cards")
+	saveWatchCmd.Flags().BoolVar(&de, "de", false, "whether to look for german cards")
+	saveWatchCmd.Flags().BoolVar(&fr, "fr", false, "whether to look for french cards")
+	saveWatchCmd.Flags().BoolVar(&it, "it", false, "whether to look for italian cards")
+	saveWatchCmd.Flags().BoolVar(&jp, "jp", false, "whether to look for japanese cards")
+	saveWatchCmd.Flags().BoolVar(&pt, "pt", false, "whether to look for portuguese cards")
+	saveWatchCmd.Flags().BoolVar(&es, "es", false, "whether to look for spanish cards")
+
 	saveCmd.AddCommand(saveWatchCmd)
 	getCmd.AddCommand(getWatchesCmd)
 	deleteCmd.AddCommand(deleteWatchCmd)

@@ -42,6 +42,46 @@ func convertEntityConditionToModelCondition(entityCondition mongo.WatchCondition
 	return apiv1.Condition_CONDITION_UNSPECIFIED
 }
 
+func convertEntityLanguageToModelLanguage(entityLanguage mongo.WatchLanguage) apiv1.Language {
+	switch entityLanguage {
+	case mongo.WatchLanguageAny:
+		return apiv1.Language_LANGUAGE_UNSPECIFIED
+	case mongo.WatchLanguageEn:
+		return apiv1.Language_LANGUAGE_EN
+	case mongo.WatchLanguageDe:
+		return apiv1.Language_LANGUAGE_DE
+	case mongo.WatchLanguageFr:
+		return apiv1.Language_LANGUAGE_FR
+	case mongo.WatchLanguageIt:
+		return apiv1.Language_LANGUAGE_IT
+	case mongo.WatchLanguageJp:
+		return apiv1.Language_LANGUAGE_JP
+	case mongo.WatchLanguageEs:
+		return apiv1.Language_LANGUAGE_ES
+	}
+	return apiv1.Language_LANGUAGE_UNSPECIFIED
+}
+
+func convertModelLanguageToEntityLanguage(modelLanguage apiv1.Language) mongo.WatchLanguage {
+	switch modelLanguage {
+	case apiv1.Language_LANGUAGE_UNSPECIFIED:
+		return mongo.WatchLanguageAny
+	case apiv1.Language_LANGUAGE_EN:
+		return mongo.WatchLanguageEn
+	case apiv1.Language_LANGUAGE_DE:
+		return mongo.WatchLanguageDe
+	case apiv1.Language_LANGUAGE_FR:
+		return mongo.WatchLanguageFr
+	case apiv1.Language_LANGUAGE_IT:
+		return mongo.WatchLanguageIt
+	case apiv1.Language_LANGUAGE_JP:
+		return mongo.WatchLanguageJp
+	case apiv1.Language_LANGUAGE_ES:
+		return mongo.WatchLanguageEs
+	}
+	return mongo.WatchLanguageAny
+}
+
 func convertEntityWatchToModelWatch(entityWatch *mongo.Watch) *apiv1.Watch {
 	return &apiv1.Watch{
 		WatchId:       entityWatch.WatchID.Hex(),
@@ -51,5 +91,6 @@ func convertEntityWatchToModelWatch(entityWatch *mongo.Watch) *apiv1.Watch {
 		BlueprintId:   entityWatch.BlueprintID,
 		Condition:     convertEntityConditionToModelCondition(entityWatch.Condition),
 		Foil:          entityWatch.Foil,
+		Language:      convertEntityLanguageToModelLanguage(entityWatch.Language),
 	}
 }
