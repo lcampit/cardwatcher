@@ -44,6 +44,7 @@ type WatcherConfig struct {
 	CardtraderAccessToken                 string `env:"CARDTRADER_ACCESS_TOKEN"`
 	NtfyHost                              string `env:"NTFY_HOST"`
 	NtfyPort                              string `env:"NTFY_PORT"`
+	NtfyTopic                             string `env:"NTFY_TOPIC"`
 	HttpSkipVerify                        bool   `env:"HTTP_SKIP_VERIFY"`
 }
 
@@ -78,6 +79,7 @@ func main() {
 		Logger: logger,
 		Host:   watcherConfig.NtfyHost,
 		Port:   watcherConfig.NtfyPort,
+		Topic:  watcherConfig.NtfyTopic,
 	}
 	ntfyAdapter := ntfy.NewNtfyAdapter(ntfyAdapterConfig)
 
