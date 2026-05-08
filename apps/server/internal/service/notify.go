@@ -54,7 +54,7 @@ func buildNotificationMessage(watch *mongo.Watch, availableProducts []cardtrader
 		}
 	}
 
-	return fmt.Sprintf("no product aviailable found for %s, condition %s, language %s, foil %b", watch.Name, watch.Condition, watch.Language, watch.Foil)
+	return fmt.Sprintf("no product aviailable found for %s, condition %s, language %s, foil %t", watch.Name, watch.Condition, watch.Language, watch.Foil)
 }
 
 func watchConditionsMatchProduct(watch *mongo.Watch, product cardtrader.Product) bool {
