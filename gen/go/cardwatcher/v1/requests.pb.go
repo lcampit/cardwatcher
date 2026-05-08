@@ -7,11 +7,12 @@
 package cardwatcherv1
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -139,6 +140,7 @@ type SaveWatchRequest struct {
 	BlueprintId   uint64                 `protobuf:"varint,3,opt,name=blueprint_id,json=blueprintId,proto3" json:"blueprint_id,omitempty"`
 	Condition     Condition              `protobuf:"varint,4,opt,name=condition,proto3,enum=cardwatcher.v1.Condition" json:"condition,omitempty"`
 	Foil          bool                   `protobuf:"varint,5,opt,name=foil,proto3" json:"foil,omitempty"`
+	Language      Language               `protobuf:"varint,6,opt,name=language,proto3,enum=cardwatcher.v1.Language" json:"language,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -201,6 +203,13 @@ func (x *SaveWatchRequest) GetFoil() bool {
 	return false
 }
 
+func (x *SaveWatchRequest) GetLanguage() Language {
+	if x != nil {
+		return x.Language
+	}
+	return Language_LANGUAGE_UNSPECIFIED
+}
+
 type DeleteWatchByIDRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
@@ -256,12 +265,13 @@ const file_cardwatcher_v1_requests_proto_rawDesc = "" +
 	"\x04game\x18\x03 \x01(\tR\x04game\"N\n" +
 	"\x15ListBlueprintsRequest\x12!\n" +
 	"\fexpansion_id\x18\x01 \x01(\x04R\vexpansionId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xa5\x01\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xdb\x01\n" +
 	"\x10SaveWatchRequest\x12!\n" +
 	"\fexpansion_id\x18\x02 \x01(\x04R\vexpansionId\x12!\n" +
 	"\fblueprint_id\x18\x03 \x01(\x04R\vblueprintId\x127\n" +
 	"\tcondition\x18\x04 \x01(\x0e2\x19.cardwatcher.v1.ConditionR\tcondition\x12\x12\n" +
-	"\x04foil\x18\x05 \x01(\bR\x04foil\"3\n" +
+	"\x04foil\x18\x05 \x01(\bR\x04foil\x124\n" +
+	"\blanguage\x18\x06 \x01(\x0e2\x18.cardwatcher.v1.LanguageR\blanguage\"3\n" +
 	"\x16DeleteWatchByIDRequest\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\xc0\x01\n" +
 	"\x12com.cardwatcher.v1B\rRequestsProtoP\x01ZBgithub.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
@@ -278,21 +288,25 @@ func file_cardwatcher_v1_requests_proto_rawDescGZIP() []byte {
 	return file_cardwatcher_v1_requests_proto_rawDescData
 }
 
-var file_cardwatcher_v1_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_cardwatcher_v1_requests_proto_goTypes = []any{
-	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.v1.ListExpansionsRequest
-	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.v1.ListBlueprintsRequest
-	(*SaveWatchRequest)(nil),       // 2: cardwatcher.v1.SaveWatchRequest
-	(*DeleteWatchByIDRequest)(nil), // 3: cardwatcher.v1.DeleteWatchByIDRequest
-	(Condition)(0),                 // 4: cardwatcher.v1.Condition
-}
+var (
+	file_cardwatcher_v1_requests_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+	file_cardwatcher_v1_requests_proto_goTypes  = []any{
+		(*ListExpansionsRequest)(nil),  // 0: cardwatcher.v1.ListExpansionsRequest
+		(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.v1.ListBlueprintsRequest
+		(*SaveWatchRequest)(nil),       // 2: cardwatcher.v1.SaveWatchRequest
+		(*DeleteWatchByIDRequest)(nil), // 3: cardwatcher.v1.DeleteWatchByIDRequest
+		Condition(0),                   // 4: cardwatcher.v1.Condition
+		Language(0),                    // 5: cardwatcher.v1.Language
+	}
+)
 var file_cardwatcher_v1_requests_proto_depIdxs = []int32{
 	4, // 0: cardwatcher.v1.SaveWatchRequest.condition:type_name -> cardwatcher.v1.Condition
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	5, // 1: cardwatcher.v1.SaveWatchRequest.language:type_name -> cardwatcher.v1.Language
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_cardwatcher_v1_requests_proto_init() }

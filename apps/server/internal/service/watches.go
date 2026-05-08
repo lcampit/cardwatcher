@@ -27,7 +27,7 @@ func (s *service) ListWatches(ctx context.Context) (*apiv1.ListWatchesResponse, 
 	}, nil
 }
 
-func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition apiv1.Condition, foil bool) (string, error) {
+func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition apiv1.Condition, language apiv1.Language, foil bool) (string, error) {
 	blueprintName, err := s.cardtraderAdapter.GetBlueprintNameByExpansionID(ctx, expansionID, blueprintID)
 	if err != nil {
 		return "", fmt.Errorf("finding name for expansion %d and blueprint %d: %w", expansionID, blueprintID, err)
@@ -42,6 +42,7 @@ func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID uint64
 		ExpansionName: expansionName,
 		BlueprintID:   blueprintID,
 		Condition:     convertModelConditionToEntityCondition(condition),
+		Language:      convertModelLanguageToEntityLanguage(language),
 		Foil:          foil,
 	})
 	if err != nil {

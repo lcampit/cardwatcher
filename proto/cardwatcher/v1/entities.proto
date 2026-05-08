@@ -10,6 +10,17 @@ enum Condition {
   CONDITION_POOR = 5;
 }
 
+enum Language {
+  LANGUAGE_UNSPECIFIED = 0;
+  LANGUAGE_EN = 1;
+  LANGUAGE_DE = 2;
+  LANGUAGE_FR = 3;
+  LANGUAGE_IT = 4;
+  LANGUAGE_JP = 5;
+  LANGUAGE_PT = 6;
+  LANGUAGE_ES = 7;
+}
+
 message Expansion {
   uint64 id = 1;
   string code = 2;
@@ -30,4 +41,5 @@ message Watch {
   Condition condition = 5;
   bool foil = 6;
   string expansion_name = 7;
+  Language language = 8;
 }
