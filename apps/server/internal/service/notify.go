@@ -21,7 +21,7 @@ func (s *service) watchAndNotify() {
 
 	s.logger.Debug("handling notifications", slog.Int("blueprintCount", len(watches)))
 	for _, watch := range watches {
-		blueprintProducts, err := s.cardtraderAdapter.GetProducts(ctx, watch.BlueprintID, watch.Foil)
+		availableProducts, err := s.cardtraderAdapter.GetProducts(ctx, watch.BlueprintID, watch.Foil)
 		if err != nil {
 			s.logger.Error("error getting current pricing",
 				slog.Uint64("blueprintId", watch.BlueprintID),
@@ -30,30 +30,31 @@ func (s *service) watchAndNotify() {
 			continue
 		}
 
-		var msg string
-		if len(blueprintProducts) == 0 {
-			msg = fmt.Sprintf("Looks like no one is selling %s today", watch.Name)
-			s.logger.Info("no products found for blueprint",
-				slog.Uint64("blueprintId", watch.BlueprintID),
-				slog.String("blueprintName", watch.Name))
-		} else {
-			for _, product := range blueprintProducts {
-				if watchConditionsMatchProduct(watch, product) {
-					msg = fmt.Sprintf("%s price is %d today", watch.Name, product.Price.Cents)
-					s.logger.Info("found price for blueprint",
-						slog.Uint64("blueprintPricing", product.Price.Cents),
-						slog.Uint64("blueprintId", watch.BlueprintID),
-						slog.String("blueprintName", watch.Name))
-					break
-				}
-			}
-		}
+		msg := buildNotificationMessage(watch, availableProducts)
+		s.logger.Info("notification message built",
+			slog.String("message", msg),
+			slog.Uint64("blueprintId", watch.BlueprintID),
+			slog.String("blueprintName", watch.Name))
 
 		err = s.ntfyAdapter.Notify(ctx, msg)
 		if err != nil {
 			s.logger.Error("creating notification", slog.Any("error", err))
 		}
 	}
+}
+
+func buildNotificationMessage(watch *mongo.Watch, availableProducts []cardtrader.Product) string {
+	if len(availableProducts) == 0 {
+		return fmt.Sprintf("looks like no one is selling %s today", watch.Name)
+	}
+
+	for _, product := range availableProducts {
+		if watchConditionsMatchProduct(watch, product) {
+			return fmt.Sprintf("%s price is %d today", watch.Name, product.Price.Cents)
+		}
+	}
+
+	return fmt.Sprintf("no product aviailable found for %s, condition %s, language %s, foil %b", watch.Name, watch.Condition, watch.Language, watch.Foil)
 }
 
 func watchConditionsMatchProduct(watch *mongo.Watch, product cardtrader.Product) bool {
