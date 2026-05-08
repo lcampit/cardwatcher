@@ -64,6 +64,7 @@ func (a *cardtraderAdapter) GetProducts(ctx context.Context, blueprintID uint64,
 			"blueprint_id": blueprintIDString,
 			"foil":         foilString,
 		}).
+		SetResult(&response).
 		Get(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get products: %w", err)
