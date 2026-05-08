@@ -58,11 +58,13 @@ func (a *cardtraderAdapter) GetProducts(ctx context.Context, blueprintID uint64,
 	endpoint := fmt.Sprintf("%s/%s", "marketplace", "products")
 	blueprintIDString := strconv.FormatUint(blueprintID, 10)
 	foilString := strconv.FormatBool(foil)
-	err := a.client.Path(endpoint).
-		Param("language", "en").
-		Param("blueprint_id", blueprintIDString).
-		Param("foil", foilString).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetQueryParams(map[string]string{
+			"language":     "en",
+			"blueprint_id": blueprintIDString,
+			"foil":         foilString,
+		}).
+		Get(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get products: %w", err)
 	}

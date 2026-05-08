@@ -25,9 +25,10 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint6
 	var response []*blueprint
 	endpoint := fmt.Sprintf("%s/%s", "blueprints", "export")
 	expansionIDString := strconv.FormatUint(expansionID, 10)
-	err := a.client.Path(endpoint).
-		Param("expansion_id", expansionIDString).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetQueryParam("expansion_id", expansionIDString).
+		SetResult(&response).
+		Get(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get blueprint request for expansion id %d: %w", expansionID, err)
 	}
@@ -41,9 +42,10 @@ func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, e
 	var response []blueprint
 	endpoint := fmt.Sprintf("%s/%s", "blueprints", "export")
 	expansionIDString := strconv.FormatUint(expansionID, 10)
-	err := a.client.Path(endpoint).
-		Param("expansion_id", expansionIDString).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetQueryParam("expansion_id", expansionIDString).
+		SetResult(&response).
+		Get(endpoint)
 	if err != nil {
 		return "", fmt.Errorf("cardtrader get blueprint endpoint for expansion id %d, blueprint id %d: %w", expansionID, blueprintID, err)
 	}
