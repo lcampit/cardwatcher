@@ -16,6 +16,7 @@ import (
 	"github.com/lcampit/cardwatcher/apps/server/internal/ntfy"
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 	"github.com/testcontainers/testcontainers-go/modules/mongodb"
 	"google.golang.org/grpc"
@@ -58,27 +59,29 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 	}
 
 	ntfyMock := ntfy.NewMockNtfyAdapter(suite.T())
-	cardtraderMock := cardtrader.NewMockCardtraderAdapter(suite.T())
+	cardtraderMock := setupCardtraderAdapterMock(suite.T())
 
 	mongoHost, err := mongoContainer.Host(suite.ctx)
 	if err != nil {
 		suite.FailNowf("error getting mongo host: %s", err.Error())
 	}
-	logger.Info("mongo host", slog.String("host", mongoHost))
+	port, err := mongoContainer.MappedPort(suite.ctx, "27017")
+	logger.Info("mongo host", slog.String("host", mongoHost), slog.String("port", port.Port()))
 
 	mongoAdapterConfig := mongo.MongoAdapterConfig{
 		Logger:              logger,
 		Host:                mongoHost,
-		Port:                "27017",
+		Port:                port.Port(),
 		Username:            mongoUser,
 		Password:            mongoPassword,
 		Database:            mongoDatabase,
+		AuthDatabase:        "admin",
 		WatchCollectionName: mongoWatchCollectioName,
 		UseReplicaSet:       true,
 	}
 	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
 	if err != nil {
-		suite.FailNowf("error connecting to mongo test container: %s", err.Error())
+		suite.FailNowf("error connecting to mongo test container", err.Error())
 	}
 
 	serviceConfig := service.ServiceConfig{
@@ -118,4 +121,10 @@ func (suite *ServerIntegrationTestSuite) TearDownSuite() {
 
 func TestServerIntegrationTestSuite(t *testing.T) {
 	suite.Run(t, new(ServerIntegrationTestSuite))
+}
+
+func setupCardtraderAdapterMock(t *testing.T) *cardtrader.MockCardtraderAdapter {
+	cardtraderMock := cardtrader.NewMockCardtraderAdapter(t)
+	cardtraderMock.On("GetGames", mock.Anything).Return(nil, nil)
+	return cardtraderMock
 }

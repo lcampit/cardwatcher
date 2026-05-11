@@ -40,6 +40,7 @@ type MongoAdapterConfig struct {
 	Username            string
 	Password            string
 	Database            string
+	AuthDatabase        string
 	WatchCollectionName string
 	CAFile              string
 	UseReplicaSet       bool
@@ -81,7 +82,7 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 
 	if config.Username != "" && config.Password != "" {
 		credentials := options.Credential{
-			AuthSource:    config.Database,
+			AuthSource:    config.AuthDatabase,
 			Username:      config.Username,
 			Password:      config.Password,
 			AuthMechanism: "SCRAM-SHA-256",
