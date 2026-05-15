@@ -15,7 +15,7 @@ service CardWatcherService {
   }
   rpc SaveWatch(SaveWatchRequest) returns (SaveWatchResponse) {
     option (google.api.http) = {
-      post: "/api/v1/watches"
+      post: "/api/v1/old-watches"
       body: "*"
     };
   }
@@ -24,5 +24,12 @@ service CardWatcherService {
   }
   rpc DeleteWatchByID(DeleteWatchByIDRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/api/v1/watches/{watch_id}"};
+  }
+
+  rpc CreateWatch(CreateWatchRequest) returns (CreateWatchResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/watches"
+      body: "*"
+    };
   }
 }

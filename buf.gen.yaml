@@ -7,6 +7,8 @@ managed:
       value: github.com/lcampit/cardwatcher/gen/go
   disable:
     - module: buf.build/googleapis/googleapis
+    - file_option: go_package
+      module: buf.build/bufbuild/protovalidate
 plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.6
     out: gen/go

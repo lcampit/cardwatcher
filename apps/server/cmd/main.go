@@ -18,6 +18,8 @@ import (
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
+	"buf.build/go/protovalidate"
+	protovalidate_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/protovalidate"
 	"go-simpler.org/env"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -119,7 +121,14 @@ func main() {
 	}
 	handler := handler.NewHandler(handlerConfig)
 
-	grpcServer := grpc.NewServer()
+	validator, err := protovalidate.New()
+	if err != nil {
+		logger.Error("error creating protobuf validator", slog.Any("error", err))
+		os.Exit(1)
+	}
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(protovalidate_middleware.UnaryServerInterceptor(validator)),
+	)
 	healthcheck := health.NewServer()
 	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
 	apiv1.RegisterCardWatcherServiceServer(grpcServer, handler)
