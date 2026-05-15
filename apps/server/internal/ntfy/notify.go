@@ -3,15 +3,12 @@ package ntfy
 import (
 	"context"
 	"fmt"
-
-	"github.com/carlmjohnson/requests"
 )
 
 func (a *ntfyAdapter) Notify(ctx context.Context, message string) error {
-	endpoint := fmt.Sprintf("%s/%s", a.ntfyHost, "cardwatcher-alerts-lc")
-	err := requests.URL(endpoint).Post().BodyBytes([]byte(message)).Fetch(ctx)
+	_, err := a.client.R().SetBody(message).Post(a.topic)
 	if err != nil {
-		return fmt.Errorf("sending message %s: %w", message, err)
+		return fmt.Errorf("sending notification message %s: %w", message, err)
 	}
 	return nil
 }

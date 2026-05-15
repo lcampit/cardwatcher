@@ -17,30 +17,34 @@ type Product struct {
 		Cents    uint64 `json:"cents"`
 		Currency string `json:"currency"`
 	} `json:"price"`
-	Description string `json:"description"`
-	Properties  struct {
-		Condition mongo.WatchCondition `json:"condition"`
-		Signed    bool                 `json:"signed"`
-		Foil      bool                 `json:"foil"`
-		Language  string               `json:"mtg_language"`
-		Altered   bool                 `json:"altered"`
-	} `json:"properties_hash"`
-	Expansion struct {
+	Description string            `json:"description"`
+	Properties  ProductProperties `json:"properties_hash"`
+	Expansion   struct {
 		ID   uint64 `json:"id"`
 		Code string `json:"code"`
 		Name string `json:"name_en"`
 	} `json:"expansion"`
-	User struct {
-		ID                   uint64 `json:"id"`
-		Username             string `json:"username"`
-		SellsViaHub          bool   `json:"can_sell_via_hub"`
-		CountryCode          string `json:"country_code"`
-		UserType             string `json:"user_type"`
-		MaxSellableIn24Hours uint64 `json:"max_sellable_in24h_quantity"`
-	} `json:"user"`
-	Graded     bool   `json:"graded"`
-	OnVacation bool   `json:"on_vavation"`
-	BundleSize uint64 `json:"bundle_size"`
+	User       ProductUserInfo `json:"user"`
+	Graded     bool            `json:"graded"`
+	OnVacation bool            `json:"on_vavation"`
+	BundleSize uint64          `json:"bundle_size"`
+}
+
+type ProductUserInfo struct {
+	ID                   uint64 `json:"id"`
+	Username             string `json:"username"`
+	SellsViaHub          bool   `json:"can_sell_via_hub"`
+	CountryCode          string `json:"country_code"`
+	UserType             string `json:"user_type"`
+	MaxSellableIn24Hours uint64 `json:"max_sellable_in24h_quantity"`
+}
+
+type ProductProperties struct {
+	Condition mongo.WatchCondition `json:"condition"`
+	Signed    bool                 `json:"signed"`
+	Foil      bool                 `json:"foil"`
+	Language  mongo.WatchLanguage  `json:"mtg_language"`
+	Altered   bool                 `json:"altered"`
 }
 
 func (a *cardtraderAdapter) GetProducts(ctx context.Context, blueprintID uint64, foil bool) ([]Product, error) {
@@ -54,11 +58,14 @@ func (a *cardtraderAdapter) GetProducts(ctx context.Context, blueprintID uint64,
 	endpoint := fmt.Sprintf("%s/%s", "marketplace", "products")
 	blueprintIDString := strconv.FormatUint(blueprintID, 10)
 	foilString := strconv.FormatBool(foil)
-	err := a.client.Path(endpoint).
-		Param("language", "en").
-		Param("blueprint_id", blueprintIDString).
-		Param("foil", foilString).
-		ToJSON(&response).Fetch(ctx)
+	_, err := a.client.R().
+		SetQueryParams(map[string]string{
+			"language":     "en",
+			"blueprint_id": blueprintIDString,
+			"foil":         foilString,
+		}).
+		SetResult(&response).
+		Get(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get products: %w", err)
 	}

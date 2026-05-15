@@ -20,6 +20,19 @@ const (
 	WatchConditionPO  WatchCondition = "Poor"
 )
 
+type WatchLanguage string
+
+const (
+	WatchLanguageAny WatchLanguage = "any"
+	WatchLanguageEn  WatchLanguage = "en"
+	WatchLanguageDe  WatchLanguage = "de"
+	WatchLanguageFr  WatchLanguage = "fr"
+	WatchLanguageIt  WatchLanguage = "it"
+	WatchLanguageJp  WatchLanguage = "jp"
+	WatchLanguagePt  WatchLanguage = "pt"
+	WatchLanguageEs  WatchLanguage = "es"
+)
+
 type Watch struct {
 	WatchID       bson.ObjectID  `bson:"_id"`
 	Name          string         `bson:"name"`
@@ -27,6 +40,7 @@ type Watch struct {
 	ExpansionName string         `bson:"expansionName"`
 	BlueprintID   uint64         `bson:"blueprintId"`
 	Condition     WatchCondition `bson:"condition"`
+	Language      WatchLanguage  `bson:"language"`
 	Foil          bool           `bson:"foil"`
 }
 

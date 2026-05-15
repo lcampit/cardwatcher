@@ -16,6 +16,7 @@ SERVER_PORT = 3000
 SERVER_HOST = "localhost"
 GATEWAY_PORT = 8081
 MONGO_PORT = 27017
+NTFY_HOST = "localhost"
 NTFY_PORT = 80
 MONGO_DATABASE = "cardwatcher"
 MONGO_AUTH_DATABASE = "cardwatcher"

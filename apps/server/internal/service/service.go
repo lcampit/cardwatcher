@@ -16,7 +16,7 @@ import (
 )
 
 type Service interface {
-	SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition apiv1.Condition, foil bool) (string, error)
+	SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition apiv1.Condition, language apiv1.Language, foil bool) (string, error)
 	ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*apiv1.ListExpansionsResponse, error)
 	ListBlueprints(ctx context.Context, expansionID uint64, name string) (*apiv1.ListBlueprintsResponse, error)
 	ListWatches(ctx context.Context) (*apiv1.ListWatchesResponse, error)

@@ -19,6 +19,7 @@ message SaveWatchRequest {
   uint64 blueprint_id = 3;
   Condition condition = 4;
   bool foil = 5;
+  Language language = 6;
 }
 
 message DeleteWatchByIDRequest {

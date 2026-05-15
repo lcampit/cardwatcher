@@ -9,12 +9,13 @@ import (
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
-func (c *client) SaveWatch(expansionID, blueprintID uint64, condition apiv1.Condition, foil bool) error {
+func (c *client) SaveWatch(expansionID, blueprintID uint64, condition apiv1.Condition, language apiv1.Language, foil bool) error {
 	request := apiv1.SaveWatchRequest{
 		ExpansionId: expansionID,
 		BlueprintId: blueprintID,
 		Condition:   condition,
 		Foil:        foil,
+		Language:    language,
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

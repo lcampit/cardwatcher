@@ -3,7 +3,6 @@ module github.com/lcampit/cardwatcher
 go 1.26.1
 
 require (
-	github.com/carlmjohnson/requests v0.25.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0
 	github.com/jedib0t/go-pretty/v6 v6.7.8
 	github.com/robfig/cron/v3 v3.0.1
@@ -17,6 +16,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20260226221140-a57be14db171
 	google.golang.org/grpc v1.79.1
 	google.golang.org/protobuf v1.36.11
+	resty.dev/v3 v3.0.0-beta.6
 )
 
 require (
