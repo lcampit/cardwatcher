@@ -4,10 +4,12 @@ docker-compose = "latest"
 "go:gotest.tools/gotestsum" = "1.12.3"
 buf = "1.65"
 golangci-lint = "v2.12.2"
-lefthook = "v2.0.15"
 protoc = "latest"
 gofumpt = "v0.9.2"
 "go:golang.org/x/tools/cmd/goimports" = "latest"
+hk = "latest"
+pkl = "latest"
+"aqua:securego/gosec" = "latest"
 
 [env]
 LOG_LEVEL = "debug"
@@ -23,6 +25,11 @@ UPDATE_MAPS_SCHEDULE = "0 4 * * *"
 MONGO_WATCH_COLLECTION_NAME = "watches"
 SERVER_HEALTH_CHECK_INTERVAL_MILLISECONDS = 1000
 SERVER_ENABLE_REFLECTION = true
+HK_MISE = "1"
 
 [settings]
 lockfile = true
+
+[hooks]
+# Automatically install/update hooks when tools are installed
+postinstall = "hk install --mise --silent"

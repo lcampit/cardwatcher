@@ -4,6 +4,38 @@
 version = "0.2.84"
 backend = "aqua:nektos/act"
 
+[[tools."aqua:securego/gosec"]]
+version = "2.26.1"
+backend = "aqua:securego/gosec"
+
+[tools."aqua:securego/gosec"."platforms.linux-arm64"]
+checksum = "sha256:86e98ccb6518ab17fd0d1c795a24f70c60cfd724c9688a72ae2c3e63fbb3b671"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_linux_arm64.tar.gz"
+
+[tools."aqua:securego/gosec"."platforms.linux-arm64-musl"]
+checksum = "sha256:86e98ccb6518ab17fd0d1c795a24f70c60cfd724c9688a72ae2c3e63fbb3b671"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_linux_arm64.tar.gz"
+
+[tools."aqua:securego/gosec"."platforms.linux-x64"]
+checksum = "sha256:665f48c10b10251ab70ef06635c8522900e6d25b0e6902931a697af2f7646360"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_linux_amd64.tar.gz"
+
+[tools."aqua:securego/gosec"."platforms.linux-x64-musl"]
+checksum = "sha256:665f48c10b10251ab70ef06635c8522900e6d25b0e6902931a697af2f7646360"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_linux_amd64.tar.gz"
+
+[tools."aqua:securego/gosec"."platforms.macos-arm64"]
+checksum = "sha256:2d10709ab4b85f0ae6f4d74b0041ff074e91ec134500e4f3910a3f1ba0056498"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_darwin_arm64.tar.gz"
+
+[tools."aqua:securego/gosec"."platforms.macos-x64"]
+checksum = "sha256:0220d7e7887b85846119d239f32ce262eea0110b5a64c59cc6822ec46da141b6"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_darwin_amd64.tar.gz"
+
+[tools."aqua:securego/gosec"."platforms.windows-x64"]
+checksum = "sha256:47b211886ff1215a970aa875bcc72e9c2870b558cbe09cdefd845e712f2bba6f"
+url = "https://github.com/securego/gosec/releases/download/v2.26.1/gosec_2.26.1_windows_amd64.tar.gz"
+
 [[tools.buf]]
 version = "1.65.0"
 backend = "aqua:bufbuild/buf"
@@ -179,9 +211,69 @@ url = "https://github.com/gotestyourself/gotestsum/releases/download/v1.13.0/got
 checksum = "sha256:fd5a6dc69e46a0970593e70d85a7e75f16714e9c61d6d72ccc324eb82df5bb8a"
 url = "https://github.com/gotestyourself/gotestsum/releases/download/v1.13.0/gotestsum_1.13.0_windows_amd64.tar.gz"
 
+[[tools.hk]]
+version = "1.45.0"
+backend = "aqua:jdx/hk"
+
+[tools.hk."platforms.linux-arm64"]
+checksum = "sha256:22293f9c742f0def32299689022891ced7c5c9d5024c91afd33a83e6f714686c"
+url = "https://github.com/jdx/hk/releases/download/v1.45.0/hk-aarch64-unknown-linux-gnu.tar.gz"
+
+[tools.hk."platforms.linux-arm64-musl"]
+checksum = "sha256:81b64f76df8a399f926a4158bfcbef0fa28dcd60b40799b9474ca2ab21d89c02"
+url = "https://github.com/jdx/hk/releases/download/v1.45.0/hk-aarch64-unknown-linux-musl.tar.gz"
+
+[tools.hk."platforms.linux-x64"]
+checksum = "sha256:47a3338403f689cc295d36213cfede4e1098c335d18064416ea9ac2b9739c148"
+url = "https://github.com/jdx/hk/releases/download/v1.45.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+
+[tools.hk."platforms.linux-x64-musl"]
+checksum = "sha256:afdb201d251f35615f00f3880daa5a4e97d7948304473c259245a7123c0fedcf"
+url = "https://github.com/jdx/hk/releases/download/v1.45.0/hk-x86_64-unknown-linux-musl.tar.gz"
+
+[tools.hk."platforms.macos-arm64"]
+checksum = "sha256:17bd1d9eccbfc894c4b0191871a964dc67df80c1bfbee072e5c12d4bb893a8a6"
+url = "https://github.com/jdx/hk/releases/download/v1.45.0/hk-aarch64-apple-darwin.tar.gz"
+
+[tools.hk."platforms.windows-x64"]
+checksum = "sha256:94c7c460d05748524a96583b656e8dec31a11a30ce6a997b9a5b5d8ec4d1b7e7"
+url = "https://github.com/jdx/hk/releases/download/v1.45.0/hk-x86_64-pc-windows-msvc.zip"
+
 [[tools.lefthook]]
 version = "v2.0.15"
 backend = "aqua:evilmartians/lefthook"
+
+[[tools.pkl]]
+version = "0.31.1"
+backend = "aqua:apple/pkl"
+
+[tools.pkl."platforms.linux-arm64"]
+checksum = "sha256:7ef10e743daa921fb94ae7bdb9ec6986f362bf250c55814b9ea2aeb13f2d083e"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-linux-aarch64"
+
+[tools.pkl."platforms.linux-arm64-musl"]
+checksum = "sha256:7ef10e743daa921fb94ae7bdb9ec6986f362bf250c55814b9ea2aeb13f2d083e"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-linux-aarch64"
+
+[tools.pkl."platforms.linux-x64"]
+checksum = "sha256:618f13955d755cafbfe8c9cba1d27635848cd49dbc6abffd398d2751db1231bf"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-linux-amd64"
+
+[tools.pkl."platforms.linux-x64-musl"]
+checksum = "sha256:618f13955d755cafbfe8c9cba1d27635848cd49dbc6abffd398d2751db1231bf"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-linux-amd64"
+
+[tools.pkl."platforms.macos-arm64"]
+checksum = "sha256:1b6a5438d9624cd2798a7530721bbbfa27ef72efe5c878a1b6c546c6e7ca0e8f"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-macos-aarch64"
+
+[tools.pkl."platforms.macos-x64"]
+checksum = "sha256:22123ed4ae4c03afa8c54c69f77f0bec39b0fa0f67b09d6d148e0a376a2a471d"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-macos-amd64"
+
+[tools.pkl."platforms.windows-x64"]
+checksum = "sha256:a8834481667325b44c539dbb758d7365a16389070f343c04b639bbe525ede013"
+url = "https://github.com/apple/pkl/releases/download/0.31.1/pkl-windows-amd64.exe"
 
 [[tools.protoc]]
 version = "32.1"
