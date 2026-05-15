@@ -4,7 +4,6 @@ package main_test
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"net"
 	"testing"
@@ -20,6 +19,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	"github.com/testcontainers/testcontainers-go/modules/mongodb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/test/bufconn"
 )
 
 type ServerIntegrationTestSuite struct {
@@ -28,14 +29,25 @@ type ServerIntegrationTestSuite struct {
 
 	mongoTestContainer *mongodb.MongoDBContainer
 	service            service.Service
+	lis                *bufconn.Listener
 	grpcServer         *grpc.Server
+
+	cardtraderMock *cardtrader.MockCardtraderAdapter
+	ntfyMock       *ntfy.MockNtfyAdapter
 }
 
 const (
+	bufSize = 1024 * 1024
+
 	mongoUser               = "user-test"
 	mongoPassword           = "password-test"
 	mongoDatabase           = "cardwatcher-test"
 	mongoWatchCollectioName = "cardwatcher-collection-test"
+
+	expansionId = 1
+	blueprintId = 1
+	condition   = apiv1.Condition_CONDITION_NEAR_MINT
+	foil        = true
 )
 
 func (suite *ServerIntegrationTestSuite) SetupSuite() {
@@ -53,20 +65,16 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 
 	logger := logger.NewLogger("debug")
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 8000))
-	if err != nil {
-		suite.FailNowf("error listening: %s", err.Error())
-	}
+	suite.lis = bufconn.Listen(bufSize)
 
-	ntfyMock := ntfy.NewMockNtfyAdapter(suite.T())
-	cardtraderMock := setupCardtraderAdapterMock(suite.T())
+	suite.ntfyMock = ntfy.NewMockNtfyAdapter(suite.T())
+	suite.cardtraderMock = setupCardtraderAdapterMock(suite.T())
 
 	mongoHost, err := mongoContainer.Host(suite.ctx)
 	if err != nil {
 		suite.FailNowf("error getting mongo host: %s", err.Error())
 	}
 	port, err := mongoContainer.MappedPort(suite.ctx, "27017")
-	logger.Info("mongo host", slog.String("host", mongoHost), slog.String("port", port.Port()))
 
 	mongoAdapterConfig := mongo.MongoAdapterConfig{
 		Logger:              logger,
@@ -86,9 +94,9 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 
 	serviceConfig := service.ServiceConfig{
 		Logger:               logger,
-		CardtraderAdapter:    cardtraderMock,
+		CardtraderAdapter:    suite.cardtraderMock,
 		MongoAdapter:         mongoAdapter,
-		NtfyAdapter:          ntfyMock,
+		NtfyAdapter:          suite.ntfyMock,
 		NotificationSchedule: "10 * * * *",
 		UpdateMapsSchedule:   "10 * * * *",
 	}
@@ -102,14 +110,41 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 	suite.grpcServer = grpc.NewServer()
 	apiv1.RegisterCardWatcherServiceServer(suite.grpcServer, handler)
 	go func() {
-		err = suite.grpcServer.Serve(lis)
+		err = suite.grpcServer.Serve(suite.lis)
 		if err != nil {
 			logger.Error("error while listening", slog.Any("error", err))
 		}
 	}()
 }
 
-func (suite *ServerIntegrationTestSuite) TestConnectToContainers() {
+func (suite *ServerIntegrationTestSuite) TestCreateWatchAndGetNotify() {
+	ctx := context.Background()
+	conn, err := grpc.NewClient("passthrough:///bufconn",
+		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
+			return suite.lis.DialContext(ctx)
+		}),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		suite.FailNowf("failed to dial bufnet", "error %v", err)
+	}
+	defer conn.Close()
+	client := apiv1.NewCardWatcherServiceClient(conn)
+
+	watchRequest := apiv1.SaveWatchRequest{
+		ExpansionId: expansionId,
+		BlueprintId: blueprintId,
+		Condition:   condition,
+		Foil:        foil,
+	}
+
+	suite.cardtraderMock.On("GetBlueprintNameByExpansionID", mock.Anything, expansionId, blueprintId).Return()
+
+	resp, err := client.SaveWatch(ctx, &watchRequest)
+	if err != nil {
+		suite.FailNowf("save watch request failed", "error %v", err)
+	}
+
+	suite.Assert().NotEmpty(resp.WatchId, "save watch returned an empty watch ID")
 }
 
 func (suite *ServerIntegrationTestSuite) TearDownSuite() {
