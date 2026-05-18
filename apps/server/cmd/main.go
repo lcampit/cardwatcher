@@ -39,6 +39,7 @@ type WatcherConfig struct {
 	MongoUsername                         string `env:"MONGO_USERNAME"`
 	MongoPassword                         string `env:"MONGO_PASSWORD"`
 	MongoDatabase                         string `env:"MONGO_DATABASE"`
+	MongoAuthDatabase                     string `env:"MONGO_AUTH_DATABASE"`
 	MongoWatchCollectioName               string `env:"MONGO_WATCH_COLLECTION_NAME"`
 	MongoCAFile                           string `env:"MONGO_TLS_CA_FILE"`
 	MongoUseReplicaSet                    bool   `env:"MONGO_USE_REPLICA_SET" default:"false"`
@@ -94,6 +95,7 @@ func main() {
 		Password:            watcherConfig.MongoPassword,
 		CAFile:              watcherConfig.MongoCAFile,
 		Database:            watcherConfig.MongoDatabase,
+		AuthDatabase:        watcherConfig.MongoAuthDatabase,
 		WatchCollectionName: watcherConfig.MongoWatchCollectioName,
 		UseReplicaSet:       watcherConfig.MongoUseReplicaSet,
 	}
