@@ -57,6 +57,7 @@ func NewService(ctx context.Context, config ServiceConfig) *service {
 	}
 	service.gameNameToIDMap = sync.Map{}
 	service.updateGamesMap()
+	service.updateExpansionsMaps()
 
 	loc, _ := time.LoadLocation("Europe/Rome")
 	c := cron.New(cron.WithLocation(loc))
@@ -103,6 +104,7 @@ func (s *service) updateExpansionsMaps() {
 	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
 	if err != nil {
 		s.logger.Error("getting expansions from cardtrader adapter", slog.Any("error", err))
+		return
 	}
 
 	for _, expansion := range expansions {
