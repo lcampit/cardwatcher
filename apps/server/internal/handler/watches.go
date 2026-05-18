@@ -24,6 +24,18 @@ func (s *handler) SaveWatch(ctx context.Context, in *apiv1.SaveWatchRequest) (*a
 	}, nil
 }
 
+func (s *handler) CreateWatch(ctx context.Context, in *apiv1.CreateWatchRequest) (*apiv1.CreateWatchResponse, error) {
+	s.logger.Info("received a CreateWatch request")
+	watchID, err := s.service.CreateWatch(ctx, in)
+	if err != nil {
+		s.logger.Error("error in create watch", slog.Any("error", err))
+		return nil, err
+	}
+	return &apiv1.CreateWatchResponse{
+		WatchId: watchID,
+	}, nil
+}
+
 func (s *handler) ListWatches(ctx context.Context, in *emptypb.Empty) (*apiv1.ListWatchesResponse, error) {
 	s.logger.Info("received a ListWatches request")
 	response, err := s.service.ListWatches(ctx)
