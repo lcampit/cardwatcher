@@ -30,6 +30,27 @@ func (c *client) SaveWatch(expansionID, blueprintID uint64, condition apiv1.Cond
 	return nil
 }
 
+func (c *client) CreateWatch(expansionNameOrCode, cardName string, condition apiv1.Condition, language apiv1.Language, foil bool) error {
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: expansionNameOrCode,
+		CardName:            cardName,
+		Condition:           condition,
+		Foil:                foil,
+		Language:            language,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	response, err := c.watcherClient.CreateWatch(ctx, &request)
+	if err != nil {
+		return fmt.Errorf("error when calling create watch: %w", err)
+	}
+
+	fmt.Printf("Watch saved with ID: %s\n", response.WatchId)
+	return nil
+}
+
 func (c *client) GetWatches() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

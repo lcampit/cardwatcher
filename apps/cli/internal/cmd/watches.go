@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/lcampit/cardwatcher/apps/cli/internal/client"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
@@ -19,7 +18,7 @@ var (
 var saveWatchCmd = &cobra.Command{
 	Use:     "watch",
 	Aliases: []string{"w"},
-	Short:   "save a watch to the card watcher server",
+	Short:   "create a watch",
 	Args:    cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client, err := client.NewClient(WatcherServerAddress, WatcherServerPort)
@@ -28,20 +27,10 @@ var saveWatchCmd = &cobra.Command{
 		}
 		defer client.Close()
 
-		expansionID, err := strconv.ParseUint(args[0], 10, 32)
-		if err != nil {
-			return fmt.Errorf("please provide a valid integer expansion ID as obtained using the `get expansions` command. Received %s", args[0])
-		}
-
-		blueprintID, err := strconv.ParseUint(args[1], 10, 32)
-		if err != nil {
-			return fmt.Errorf("please provide a valid integer expansion ID as obtained using the `get expansions` command. Received %s", args[0])
-		}
-
 		condition := extractCondition()
 		language := extractLanguage()
 
-		return client.SaveWatch(expansionID, blueprintID, condition, language, isFoil)
+		return client.CreateWatch(args[1], args[0], condition, language, isFoil)
 	},
 }
 

@@ -11,6 +11,7 @@ import (
 
 type Client interface {
 	SaveWatch(expansionID, blueprintID uint64, condition apiv1.Condition, language apiv1.Language, foil bool) error
+	CreateWatch(expansionNameOrCode, cardName string, condition apiv1.Condition, language apiv1.Language, foil bool) error
 	GetWatches() error
 	DeleteWatchByID(watchID string) error
 	GetExpansions(gameName, expansionName, expansionCode string) error
