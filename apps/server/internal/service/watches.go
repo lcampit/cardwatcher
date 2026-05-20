@@ -85,7 +85,7 @@ func (s *service) CreateWatch(ctx context.Context, request *apiv1.CreateWatchReq
 
 	cardNameRequested := normalizeString(request.CardName)
 	for _, blueprint := range blueprints {
-		if cardNameRequested == normalizeString(blueprint.Name) {
+		if blueprint.ExpansionID == expansion.ID && cardNameRequested == normalizeString(blueprint.Name) {
 			watchID, err := s.mongoAdapter.SaveWatch(ctx, &mongo.Watch{
 				Name:          blueprint.Name,
 				ExpansionID:   expansion.ID,
