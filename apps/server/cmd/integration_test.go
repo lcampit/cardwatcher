@@ -44,11 +44,25 @@ const (
 	mongoDatabase           = "cardwatcher-test"
 	mongoWatchCollectioName = "cardwatcher-collection-test"
 
-	expansionId = 1
-	blueprintId = 1
-	condition   = apiv1.Condition_CONDITION_NEAR_MINT
-	foil        = true
+	expansionId uint64 = 1
+	blueprintId uint64 = 1
+	condition          = apiv1.Condition_CONDITION_NEAR_MINT
+	foil               = true
 )
+
+var expansion = cardtrader.Expansion{
+	ID:     expansionId,
+	GameID: 1,
+	Code:   "exptest",
+	Name:   "Test Expansion",
+}
+
+var blueprint = cardtrader.Blueprint{
+	ID:          blueprintId,
+	Name:        "super strong card",
+	GameID:      1,
+	ExpansionID: expansionId,
+}
 
 func (suite *ServerIntegrationTestSuite) SetupSuite() {
 	suite.ctx = context.Background()
@@ -117,7 +131,7 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 	}()
 }
 
-func (suite *ServerIntegrationTestSuite) TestCreateWatchAndGetNotify() {
+func (suite *ServerIntegrationTestSuite) TestCreateWatch() {
 	ctx := context.Background()
 	conn, err := grpc.NewClient("passthrough:///bufconn",
 		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
@@ -129,22 +143,25 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchAndGetNotify() {
 	}
 	defer conn.Close()
 	client := apiv1.NewCardWatcherServiceClient(conn)
+	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
+		[]*cardtrader.Blueprint{
+			&blueprint,
+		}, nil,
+	)
 
-	watchRequest := apiv1.SaveWatchRequest{
-		ExpansionId: expansionId,
-		BlueprintId: blueprintId,
-		Condition:   condition,
-		Foil:        foil,
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: expansion.Name,
+		CardName:            blueprint.Name,
+		Condition:           condition,
+		Foil:                foil,
+		Language:            apiv1.Language_LANGUAGE_EN,
 	}
-
-	suite.cardtraderMock.On("GetBlueprintNameByExpansionID", mock.Anything, expansionId, blueprintId).Return()
-
-	resp, err := client.SaveWatch(ctx, &watchRequest)
+	resp, err := client.CreateWatch(ctx, &request)
 	if err != nil {
-		suite.FailNowf("save watch request failed", "error %v", err)
+		suite.FailNowf("create watch request failed", "error %v", err)
 	}
 
-	suite.Assert().NotEmpty(resp.WatchId, "save watch returned an empty watch ID")
+	suite.Assert().NotEmpty(resp.WatchId, "create watch returned an empty watch ID")
 }
 
 func (suite *ServerIntegrationTestSuite) TearDownSuite() {
@@ -161,5 +178,6 @@ func TestServerIntegrationTestSuite(t *testing.T) {
 func setupCardtraderAdapterMock(t *testing.T) *cardtrader.MockCardtraderAdapter {
 	cardtraderMock := cardtrader.NewMockCardtraderAdapter(t)
 	cardtraderMock.On("GetGames", mock.Anything).Return(nil, nil)
+	cardtraderMock.On("GetExpansions", mock.Anything).Return([]*cardtrader.Expansion{&expansion}, nil)
 	return cardtraderMock
 }

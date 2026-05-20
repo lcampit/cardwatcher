@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-type blueprint struct {
+type Blueprint struct {
 	ID                 uint64               `json:"id"`
 	Name               string               `json:"name"`
 	Version            string               `json:"version"`
@@ -21,8 +21,8 @@ type blueprint struct {
 	TcgPlayerID        uint64               `json:"tcg_player_id"`
 }
 
-func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error) {
-	var response []*blueprint
+func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint64) ([]*Blueprint, error) {
+	var response []*Blueprint
 	endpoint := fmt.Sprintf("%s/%s", "blueprints", "export")
 	expansionIDString := strconv.FormatUint(expansionID, 10)
 	_, err := a.client.R().
@@ -39,7 +39,7 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint6
 }
 
 func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID uint64) (string, error) {
-	var response []blueprint
+	var response []Blueprint
 	endpoint := fmt.Sprintf("%s/%s", "blueprints", "export")
 	expansionIDString := strconv.FormatUint(expansionID, 10)
 	_, err := a.client.R().

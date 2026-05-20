@@ -111,23 +111,23 @@ func (_c *MockCardtraderAdapter_GetBlueprintNameByExpansionID_Call) RunAndReturn
 }
 
 // GetBlueprints provides a mock function for the type MockCardtraderAdapter
-func (_mock *MockCardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error) {
+func (_mock *MockCardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint64) ([]*Blueprint, error) {
 	ret := _mock.Called(ctx, expansionID)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetBlueprints")
 	}
 
-	var r0 []*blueprint
+	var r0 []*Blueprint
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, uint64) ([]*blueprint, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uint64) ([]*Blueprint, error)); ok {
 		return returnFunc(ctx, expansionID)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, uint64) []*blueprint); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uint64) []*Blueprint); ok {
 		r0 = returnFunc(ctx, expansionID)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*blueprint)
+			r0 = ret.Get(0).([]*Blueprint)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, uint64) error); ok {
@@ -168,12 +168,12 @@ func (_c *MockCardtraderAdapter_GetBlueprints_Call) Run(run func(ctx context.Con
 	return _c
 }
 
-func (_c *MockCardtraderAdapter_GetBlueprints_Call) Return(blueprintMoqParams []*blueprint, err error) *MockCardtraderAdapter_GetBlueprints_Call {
+func (_c *MockCardtraderAdapter_GetBlueprints_Call) Return(blueprintMoqParams []*Blueprint, err error) *MockCardtraderAdapter_GetBlueprints_Call {
 	_c.Call.Return(blueprintMoqParams, err)
 	return _c
 }
 
-func (_c *MockCardtraderAdapter_GetBlueprints_Call) RunAndReturn(run func(ctx context.Context, expansionID uint64) ([]*blueprint, error)) *MockCardtraderAdapter_GetBlueprints_Call {
+func (_c *MockCardtraderAdapter_GetBlueprints_Call) RunAndReturn(run func(ctx context.Context, expansionID uint64) ([]*Blueprint, error)) *MockCardtraderAdapter_GetBlueprints_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -245,23 +245,23 @@ func (_c *MockCardtraderAdapter_GetExpansionNameByID_Call) RunAndReturn(run func
 }
 
 // GetExpansions provides a mock function for the type MockCardtraderAdapter
-func (_mock *MockCardtraderAdapter) GetExpansions(ctx context.Context) ([]*expansion, error) {
+func (_mock *MockCardtraderAdapter) GetExpansions(ctx context.Context) ([]*Expansion, error) {
 	ret := _mock.Called(ctx)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetExpansions")
 	}
 
-	var r0 []*expansion
+	var r0 []*Expansion
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]*expansion, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]*Expansion, error)); ok {
 		return returnFunc(ctx)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []*expansion); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []*Expansion); ok {
 		r0 = returnFunc(ctx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*expansion)
+			r0 = ret.Get(0).([]*Expansion)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
@@ -296,12 +296,12 @@ func (_c *MockCardtraderAdapter_GetExpansions_Call) Run(run func(ctx context.Con
 	return _c
 }
 
-func (_c *MockCardtraderAdapter_GetExpansions_Call) Return(expansionMoqParams []*expansion, err error) *MockCardtraderAdapter_GetExpansions_Call {
-	_c.Call.Return(expansionMoqParams, err)
+func (_c *MockCardtraderAdapter_GetExpansions_Call) Return(expansions []*Expansion, err error) *MockCardtraderAdapter_GetExpansions_Call {
+	_c.Call.Return(expansions, err)
 	return _c
 }
 
-func (_c *MockCardtraderAdapter_GetExpansions_Call) RunAndReturn(run func(ctx context.Context) ([]*expansion, error)) *MockCardtraderAdapter_GetExpansions_Call {
+func (_c *MockCardtraderAdapter_GetExpansions_Call) RunAndReturn(run func(ctx context.Context) ([]*Expansion, error)) *MockCardtraderAdapter_GetExpansions_Call {
 	_c.Call.Return(run)
 	return _c
 }

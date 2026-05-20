@@ -15,8 +15,7 @@ import (
 func NewMockNtfyAdapter(t interface {
 	mock.TestingT
 	Cleanup(func())
-},
-) *MockNtfyAdapter {
+}) *MockNtfyAdapter {
 	mock := &MockNtfyAdapter{}
 	mock.Mock.Test(t)
 
