@@ -19,7 +19,9 @@ import (
 	"github.com/stretchr/testify/suite"
 	"github.com/testcontainers/testcontainers-go/modules/mongodb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -180,6 +182,80 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatch() {
 		}
 	}
 	suite.Assert().True(found, "created watch not found in list watches response")
+}
+
+func (suite *ServerIntegrationTestSuite) TestCreateWatchDefaultValues() {
+	ctx := context.Background()
+	conn, err := grpc.NewClient("passthrough:///bufconn",
+		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
+			return suite.lis.DialContext(ctx)
+		}),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		suite.FailNowf("failed to dial bufnet", "error %v", err)
+	}
+	defer conn.Close()
+	client := apiv1.NewCardWatcherServiceClient(conn)
+	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
+		[]*cardtrader.Blueprint{
+			&blueprint,
+		}, nil,
+	)
+
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: expansion.Name,
+		CardName:            blueprint.Name,
+	}
+	resp, err := client.CreateWatch(ctx, &request)
+	if err != nil {
+		suite.FailNowf("create watch request failed", "error %v", err)
+	}
+
+	suite.Assert().NotEmpty(resp.WatchId, "create watch returned an empty watch ID")
+
+	watches, err := client.ListWatches(ctx, &emptypb.Empty{})
+	suite.Assert().Nil(err, "list watches request failed: %v", err)
+
+	found := false
+	for _, watch := range watches.GetWatches() {
+		if watch.WatchId == resp.GetWatchId() {
+			found = true
+			suite.Assert().Equal(apiv1.Condition_CONDITION_UNSPECIFIED, watch.Condition)
+			suite.Assert().Equal(apiv1.Language_LANGUAGE_UNSPECIFIED, watch.Language)
+			suite.Assert().Equal(false, watch.Foil)
+			suite.Assert().Equal(blueprint.ID, watch.BlueprintId)
+			suite.Assert().Equal(blueprint.ExpansionID, watch.ExpansionId)
+			suite.Assert().Equal(expansion.Name, watch.ExpansionName)
+		}
+	}
+	suite.Assert().True(found, "created watch not found in list watches response")
+}
+
+func (suite *ServerIntegrationTestSuite) TestCreateWatchInvalidRequest() {
+	ctx := context.Background()
+	conn, err := grpc.NewClient("passthrough:///bufconn",
+		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
+			return suite.lis.DialContext(ctx)
+		}),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		suite.FailNowf("failed to dial bufnet", "error %v", err)
+	}
+	defer conn.Close()
+	client := apiv1.NewCardWatcherServiceClient(conn)
+	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
+		[]*cardtrader.Blueprint{
+			&blueprint,
+		}, nil,
+	)
+
+	request := apiv1.CreateWatchRequest{}
+	_, err = client.CreateWatch(ctx, &request)
+	suite.Assert().NotNil(err, "create watch did not fail on empty request")
+
+	grpcErr, ok := status.FromError(err)
+	suite.Assert().True(ok, "cretae watch returned a non-grpc error %v", err)
+	suite.Assert().Equal(grpcErr.Code(), codes.InvalidArgument, "create watch returned another error code: %d", grpcErr.Code())
 }
 
 func (suite *ServerIntegrationTestSuite) TearDownSuite() {
