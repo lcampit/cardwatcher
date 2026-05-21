@@ -1,0 +1,61 @@
+syntax = "proto3";
+package cardwatcher.v1;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+message ErrorDetail {
+  string code = 1;
+  string title = 2;
+  string detail = 3;
+  repeated FieldViolation field_violation = 4;
+  string trace_id = 5;
+  google.protobuf.Timestamp timestamp = 6;
+  string instance = 7;
+  map<string, google.protobuf.Any> extensions = 8;
+}
+
+// Describes a single validation failure.
+message FieldViolation {
+  // The path to the field that failed validation, e.g., "title".
+  string field = 1;
+  // A developer-facing description of the validation rule that failed.
+  string description = 2;
+  // Application-specific error code for this validation failure
+  string code = 3;
+}
+
+// AppErrorCode defines a list of standardized, application-specific error codes.
+enum AppErrorCode {
+  APP_ERROR_CODE_UNSPECIFIED = 0;
+
+  // Validation failures
+  APP_ERROR_CODE_VALIDATION_FAILED = 1;
+  APP_ERROR_CODE_REQUIRED_FIELD = 2;
+  APP_ERROR_CODE_TOO_SHORT = 3;
+  APP_ERROR_CODE_TOO_LONG = 4;
+  APP_ERROR_CODE_INVALID_FORMAT = 5;
+  APP_ERROR_CODE_MUST_BE_FUTURE = 6;
+  APP_ERROR_CODE_INVALID_VALUE = 7;
+  APP_ERROR_CODE_DUPLICATE_TAG = 8;
+  APP_ERROR_CODE_INVALID_TAG_FORMAT = 9;
+  APP_ERROR_CODE_OVERDUE_COMPLETION = 10;
+  APP_ERROR_CODE_EMPTY_BATCH = 11;
+  APP_ERROR_CODE_BATCH_TOO_LARGE = 12;
+  APP_ERROR_CODE_DUPLICATE_TITLE = 13;
+
+  // Resource errors
+  APP_ERROR_CODE_RESOURCE_NOT_FOUND = 1001;
+  APP_ERROR_CODE_RESOURCE_CONFLICT = 1002;
+
+  // Authentication and authorization
+  APP_ERROR_CODE_AUTHENTICATION_FAILED = 2001;
+  APP_ERROR_CODE_PERMISSION_DENIED = 2002;
+
+  // Rate limiting and service availability
+  APP_ERROR_CODE_RATE_LIMIT_EXCEEDED = 3001;
+  APP_ERROR_CODE_SERVICE_UNAVAILABLE = 3002;
+
+  // Internal errors
+  APP_ERROR_CODE_INTERNAL_ERROR = 9001;
+}

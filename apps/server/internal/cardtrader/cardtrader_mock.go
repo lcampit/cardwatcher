@@ -15,8 +15,7 @@ import (
 func NewMockCardtraderAdapter(t interface {
 	mock.TestingT
 	Cleanup(func())
-},
-) *MockCardtraderAdapter {
+}) *MockCardtraderAdapter {
 	mock := &MockCardtraderAdapter{}
 	mock.Mock.Test(t)
 
@@ -168,8 +167,8 @@ func (_c *MockCardtraderAdapter_GetBlueprints_Call) Run(run func(ctx context.Con
 	return _c
 }
 
-func (_c *MockCardtraderAdapter_GetBlueprints_Call) Return(blueprintMoqParams []*Blueprint, err error) *MockCardtraderAdapter_GetBlueprints_Call {
-	_c.Call.Return(blueprintMoqParams, err)
+func (_c *MockCardtraderAdapter_GetBlueprints_Call) Return(blueprints []*Blueprint, err error) *MockCardtraderAdapter_GetBlueprints_Call {
+	_c.Call.Return(blueprints, err)
 	return _c
 }
 
