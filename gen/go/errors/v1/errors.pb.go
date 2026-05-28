@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: cardwatcher/v1/errors.proto
+// source: errors/v1/errors.proto
 
-package cardwatcherv1
+package errorsv1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -116,11 +116,11 @@ func (x AppErrorCode) String() string {
 }
 
 func (AppErrorCode) Descriptor() protoreflect.EnumDescriptor {
-	return file_cardwatcher_v1_errors_proto_enumTypes[0].Descriptor()
+	return file_errors_v1_errors_proto_enumTypes[0].Descriptor()
 }
 
 func (AppErrorCode) Type() protoreflect.EnumType {
-	return &file_cardwatcher_v1_errors_proto_enumTypes[0]
+	return &file_errors_v1_errors_proto_enumTypes[0]
 }
 
 func (x AppErrorCode) Number() protoreflect.EnumNumber {
@@ -129,26 +129,26 @@ func (x AppErrorCode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AppErrorCode.Descriptor instead.
 func (AppErrorCode) EnumDescriptor() ([]byte, []int) {
-	return file_cardwatcher_v1_errors_proto_rawDescGZIP(), []int{0}
+	return file_errors_v1_errors_proto_rawDescGZIP(), []int{0}
 }
 
 type ErrorDetail struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Code           string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Title          string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Detail         string                 `protobuf:"bytes,3,opt,name=detail,proto3" json:"detail,omitempty"`
-	FieldViolation []*FieldViolation      `protobuf:"bytes,4,rep,name=field_violation,json=fieldViolation,proto3" json:"field_violation,omitempty"`
-	TraceId        string                 `protobuf:"bytes,5,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
-	Timestamp      *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Instance       string                 `protobuf:"bytes,7,opt,name=instance,proto3" json:"instance,omitempty"`
-	Extensions     map[string]*anypb.Any  `protobuf:"bytes,8,rep,name=extensions,proto3" json:"extensions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Code            string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Title           string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Detail          string                 `protobuf:"bytes,3,opt,name=detail,proto3" json:"detail,omitempty"`
+	FieldViolations []*FieldViolation      `protobuf:"bytes,4,rep,name=field_violations,json=fieldViolations,proto3" json:"field_violations,omitempty"`
+	TraceId         string                 `protobuf:"bytes,5,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	Timestamp       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Instance        string                 `protobuf:"bytes,7,opt,name=instance,proto3" json:"instance,omitempty"`
+	Extensions      map[string]*anypb.Any  `protobuf:"bytes,8,rep,name=extensions,proto3" json:"extensions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ErrorDetail) Reset() {
 	*x = ErrorDetail{}
-	mi := &file_cardwatcher_v1_errors_proto_msgTypes[0]
+	mi := &file_errors_v1_errors_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -160,7 +160,7 @@ func (x *ErrorDetail) String() string {
 func (*ErrorDetail) ProtoMessage() {}
 
 func (x *ErrorDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_v1_errors_proto_msgTypes[0]
+	mi := &file_errors_v1_errors_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -173,7 +173,7 @@ func (x *ErrorDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ErrorDetail.ProtoReflect.Descriptor instead.
 func (*ErrorDetail) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_v1_errors_proto_rawDescGZIP(), []int{0}
+	return file_errors_v1_errors_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ErrorDetail) GetCode() string {
@@ -197,9 +197,9 @@ func (x *ErrorDetail) GetDetail() string {
 	return ""
 }
 
-func (x *ErrorDetail) GetFieldViolation() []*FieldViolation {
+func (x *ErrorDetail) GetFieldViolations() []*FieldViolation {
 	if x != nil {
-		return x.FieldViolation
+		return x.FieldViolations
 	}
 	return nil
 }
@@ -247,7 +247,7 @@ type FieldViolation struct {
 
 func (x *FieldViolation) Reset() {
 	*x = FieldViolation{}
-	mi := &file_cardwatcher_v1_errors_proto_msgTypes[1]
+	mi := &file_errors_v1_errors_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -259,7 +259,7 @@ func (x *FieldViolation) String() string {
 func (*FieldViolation) ProtoMessage() {}
 
 func (x *FieldViolation) ProtoReflect() protoreflect.Message {
-	mi := &file_cardwatcher_v1_errors_proto_msgTypes[1]
+	mi := &file_errors_v1_errors_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -272,7 +272,7 @@ func (x *FieldViolation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldViolation.ProtoReflect.Descriptor instead.
 func (*FieldViolation) Descriptor() ([]byte, []int) {
-	return file_cardwatcher_v1_errors_proto_rawDescGZIP(), []int{1}
+	return file_errors_v1_errors_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *FieldViolation) GetField() string {
@@ -296,21 +296,21 @@ func (x *FieldViolation) GetCode() string {
 	return ""
 }
 
-var File_cardwatcher_v1_errors_proto protoreflect.FileDescriptor
+var File_errors_v1_errors_proto protoreflect.FileDescriptor
 
-const file_cardwatcher_v1_errors_proto_rawDesc = "" +
+const file_errors_v1_errors_proto_rawDesc = "" +
 	"\n" +
-	"\x1bcardwatcher/v1/errors.proto\x12\x0ecardwatcher.v1\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xab\x03\n" +
+	"\x16errors/v1/errors.proto\x12\terrors.v1\x1a\x19google/protobuf/any.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa3\x03\n" +
 	"\vErrorDetail\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x16\n" +
-	"\x06detail\x18\x03 \x01(\tR\x06detail\x12G\n" +
-	"\x0ffield_violation\x18\x04 \x03(\v2\x1e.cardwatcher.v1.FieldViolationR\x0efieldViolation\x12\x19\n" +
+	"\x06detail\x18\x03 \x01(\tR\x06detail\x12D\n" +
+	"\x10field_violations\x18\x04 \x03(\v2\x19.errors.v1.FieldViolationR\x0ffieldViolations\x12\x19\n" +
 	"\btrace_id\x18\x05 \x01(\tR\atraceId\x128\n" +
 	"\ttimestamp\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x1a\n" +
-	"\binstance\x18\a \x01(\tR\binstance\x12K\n" +
+	"\binstance\x18\a \x01(\tR\binstance\x12F\n" +
 	"\n" +
-	"extensions\x18\b \x03(\v2+.cardwatcher.v1.ErrorDetail.ExtensionsEntryR\n" +
+	"extensions\x18\b \x03(\v2&.errors.v1.ErrorDetail.ExtensionsEntryR\n" +
 	"extensions\x1aS\n" +
 	"\x0fExtensionsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12*\n" +
@@ -341,36 +341,37 @@ const file_cardwatcher_v1_errors_proto_rawDesc = "" +
 	" APP_ERROR_CODE_PERMISSION_DENIED\x10\xd2\x0f\x12'\n" +
 	"\"APP_ERROR_CODE_RATE_LIMIT_EXCEEDED\x10\xb9\x17\x12'\n" +
 	"\"APP_ERROR_CODE_SERVICE_UNAVAILABLE\x10\xba\x17\x12\"\n" +
-	"\x1dAPP_ERROR_CODE_INTERNAL_ERROR\x10\xa9FB\xbe\x01\n" +
-	"\x12com.cardwatcher.v1B\vErrorsProtoP\x01ZBgithub.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
+	"\x1dAPP_ERROR_CODE_INTERNAL_ERROR\x10\xa9FB\x9b\x01\n" +
+	"\rcom.errors.v1B\vErrorsProtoP\x01Z8github.com/lcampit/cardwatcher/gen/go/errors/v1;errorsv1\xa2\x02\x03EXX\xaa\x02\tErrors.V1\xca\x02\tErrors\\V1\xe2\x02\x15Errors\\V1\\GPBMetadata\xea\x02\n" +
+	"Errors::V1b\x06proto3"
 
 var (
-	file_cardwatcher_v1_errors_proto_rawDescOnce sync.Once
-	file_cardwatcher_v1_errors_proto_rawDescData []byte
+	file_errors_v1_errors_proto_rawDescOnce sync.Once
+	file_errors_v1_errors_proto_rawDescData []byte
 )
 
-func file_cardwatcher_v1_errors_proto_rawDescGZIP() []byte {
-	file_cardwatcher_v1_errors_proto_rawDescOnce.Do(func() {
-		file_cardwatcher_v1_errors_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_cardwatcher_v1_errors_proto_rawDesc), len(file_cardwatcher_v1_errors_proto_rawDesc)))
+func file_errors_v1_errors_proto_rawDescGZIP() []byte {
+	file_errors_v1_errors_proto_rawDescOnce.Do(func() {
+		file_errors_v1_errors_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_errors_v1_errors_proto_rawDesc), len(file_errors_v1_errors_proto_rawDesc)))
 	})
-	return file_cardwatcher_v1_errors_proto_rawDescData
+	return file_errors_v1_errors_proto_rawDescData
 }
 
-var file_cardwatcher_v1_errors_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_cardwatcher_v1_errors_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_cardwatcher_v1_errors_proto_goTypes = []any{
-	(AppErrorCode)(0),             // 0: cardwatcher.v1.AppErrorCode
-	(*ErrorDetail)(nil),           // 1: cardwatcher.v1.ErrorDetail
-	(*FieldViolation)(nil),        // 2: cardwatcher.v1.FieldViolation
-	nil,                           // 3: cardwatcher.v1.ErrorDetail.ExtensionsEntry
+var file_errors_v1_errors_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_errors_v1_errors_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_errors_v1_errors_proto_goTypes = []any{
+	(AppErrorCode)(0),             // 0: errors.v1.AppErrorCode
+	(*ErrorDetail)(nil),           // 1: errors.v1.ErrorDetail
+	(*FieldViolation)(nil),        // 2: errors.v1.FieldViolation
+	nil,                           // 3: errors.v1.ErrorDetail.ExtensionsEntry
 	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
 	(*anypb.Any)(nil),             // 5: google.protobuf.Any
 }
-var file_cardwatcher_v1_errors_proto_depIdxs = []int32{
-	2, // 0: cardwatcher.v1.ErrorDetail.field_violation:type_name -> cardwatcher.v1.FieldViolation
-	4, // 1: cardwatcher.v1.ErrorDetail.timestamp:type_name -> google.protobuf.Timestamp
-	3, // 2: cardwatcher.v1.ErrorDetail.extensions:type_name -> cardwatcher.v1.ErrorDetail.ExtensionsEntry
-	5, // 3: cardwatcher.v1.ErrorDetail.ExtensionsEntry.value:type_name -> google.protobuf.Any
+var file_errors_v1_errors_proto_depIdxs = []int32{
+	2, // 0: errors.v1.ErrorDetail.field_violations:type_name -> errors.v1.FieldViolation
+	4, // 1: errors.v1.ErrorDetail.timestamp:type_name -> google.protobuf.Timestamp
+	3, // 2: errors.v1.ErrorDetail.extensions:type_name -> errors.v1.ErrorDetail.ExtensionsEntry
+	5, // 3: errors.v1.ErrorDetail.ExtensionsEntry.value:type_name -> google.protobuf.Any
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -378,27 +379,27 @@ var file_cardwatcher_v1_errors_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_cardwatcher_v1_errors_proto_init() }
-func file_cardwatcher_v1_errors_proto_init() {
-	if File_cardwatcher_v1_errors_proto != nil {
+func init() { file_errors_v1_errors_proto_init() }
+func file_errors_v1_errors_proto_init() {
+	if File_errors_v1_errors_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_v1_errors_proto_rawDesc), len(file_cardwatcher_v1_errors_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_errors_v1_errors_proto_rawDesc), len(file_errors_v1_errors_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_cardwatcher_v1_errors_proto_goTypes,
-		DependencyIndexes: file_cardwatcher_v1_errors_proto_depIdxs,
-		EnumInfos:         file_cardwatcher_v1_errors_proto_enumTypes,
-		MessageInfos:      file_cardwatcher_v1_errors_proto_msgTypes,
+		GoTypes:           file_errors_v1_errors_proto_goTypes,
+		DependencyIndexes: file_errors_v1_errors_proto_depIdxs,
+		EnumInfos:         file_errors_v1_errors_proto_enumTypes,
+		MessageInfos:      file_errors_v1_errors_proto_msgTypes,
 	}.Build()
-	File_cardwatcher_v1_errors_proto = out.File
-	file_cardwatcher_v1_errors_proto_goTypes = nil
-	file_cardwatcher_v1_errors_proto_depIdxs = nil
+	File_errors_v1_errors_proto = out.File
+	file_errors_v1_errors_proto_goTypes = nil
+	file_errors_v1_errors_proto_depIdxs = nil
 }

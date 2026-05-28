@@ -3,7 +3,7 @@ package errors
 import (
 	"fmt"
 
-	errorspb "github.com/bhatti/todo-api-errors/api/proto/errors/v1"
+	errorspb "github.com/lcampit/cardwatcher/gen/go/errors/v1"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -66,7 +66,7 @@ func (e *AppError) ToGRPCStatus() *status.Status {
 func NewValidationFailed(violations []*errorspb.FieldViolation, traceID string) *AppError {
 	return &AppError{
 		GRPCCode:        codes.InvalidArgument,
-		AppCode:         errorspb.AppErrorCode_VALIDATION_FAILED,
+		AppCode:         errorspb.AppErrorCode_APP_ERROR_CODE_VALIDATION_FAILED,
 		Title:           "Validation Failed",
 		Detail:          fmt.Sprintf("The request contains %d validation errors", len(violations)),
 		FieldViolations: violations,
@@ -74,70 +74,13 @@ func NewValidationFailed(violations []*errorspb.FieldViolation, traceID string) 
 	}
 }
 
-func NewNotFound(resource string, id string, traceID string) *AppError {
-	return &AppError{
-		GRPCCode: codes.NotFound,
-		AppCode:  errorspb.AppErrorCode_RESOURCE_NOT_FOUND,
-		Title:    "Resource Not Found",
-		Detail:   fmt.Sprintf("%s with ID '%s' was not found.", resource, id),
-		TraceID:  traceID,
-	}
-}
-
-func NewConflict(resource, reason string, traceID string) *AppError {
-	return &AppError{
-		GRPCCode: codes.AlreadyExists,
-		AppCode:  errorspb.AppErrorCode_RESOURCE_CONFLICT,
-		Title:    "Resource Conflict",
-		Detail:   fmt.Sprintf("Conflict creating %s: %s", resource, reason),
-		TraceID:  traceID,
-	}
-}
-
 func NewInternal(message string, traceID string, causedBy error) *AppError {
 	return &AppError{
 		GRPCCode: codes.Internal,
-		AppCode:  errorspb.AppErrorCode_INTERNAL_ERROR,
+		AppCode:  errorspb.AppErrorCode_APP_ERROR_CODE_INTERNAL_ERROR,
 		Title:    "Internal Server Error",
 		Detail:   message,
 		TraceID:  traceID,
 		CausedBy: causedBy,
-	}
-}
-
-func NewPermissionDenied(resource, action string, traceID string) *AppError {
-	return &AppError{
-		GRPCCode: codes.PermissionDenied,
-		AppCode:  errorspb.AppErrorCode_PERMISSION_DENIED,
-		Title:    "Permission Denied",
-		Detail:   fmt.Sprintf("You don't have permission to %s %s", action, resource),
-		TraceID:  traceID,
-	}
-}
-
-func NewServiceUnavailable(message string, traceID string) *AppError {
-	return &AppError{
-		GRPCCode: codes.Unavailable,
-		AppCode:  errorspb.AppErrorCode_SERVICE_UNAVAILABLE,
-		Title:    "Service Unavailable",
-		Detail:   message,
-		TraceID:  traceID,
-	}
-}
-
-func NewRequiredField(field, message string, traceID string) *AppError {
-	return &AppError{
-		GRPCCode: codes.InvalidArgument,
-		AppCode:  errorspb.AppErrorCode_VALIDATION_FAILED,
-		Title:    "Validation Failed",
-		Detail:   "The request contains validation errors",
-		FieldViolations: []*errorspb.FieldViolation{
-			{
-				Field:       field,
-				Code:        errorspb.AppErrorCode_REQUIRED_FIELD.String(),
-				Description: message,
-			},
-		},
-		TraceID: traceID,
 	}
 }
