@@ -440,3 +440,54 @@ func (_c *MockCardtraderAdapter_GetProducts_Call) RunAndReturn(run func(ctx cont
 	_c.Call.Return(run)
 	return _c
 }
+
+// Health provides a mock function for the type MockCardtraderAdapter
+func (_mock *MockCardtraderAdapter) Health(ctx context.Context) error {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Health")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context) error); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockCardtraderAdapter_Health_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Health'
+type MockCardtraderAdapter_Health_Call struct {
+	*mock.Call
+}
+
+// Health is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockCardtraderAdapter_Expecter) Health(ctx interface{}) *MockCardtraderAdapter_Health_Call {
+	return &MockCardtraderAdapter_Health_Call{Call: _e.mock.On("Health", ctx)}
+}
+
+func (_c *MockCardtraderAdapter_Health_Call) Run(run func(ctx context.Context)) *MockCardtraderAdapter_Health_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCardtraderAdapter_Health_Call) Return(err error) *MockCardtraderAdapter_Health_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockCardtraderAdapter_Health_Call) RunAndReturn(run func(ctx context.Context) error) *MockCardtraderAdapter_Health_Call {
+	_c.Call.Return(run)
+	return _c
+}

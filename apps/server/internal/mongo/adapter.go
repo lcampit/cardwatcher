@@ -23,7 +23,7 @@ type MongoAdapter interface {
 	GetWatchByWatchID(ctx context.Context, watchID string) (*Watch, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
-	Health() error
+	Health(ctx context.Context) error
 }
 
 type mongoAdapter struct {
@@ -47,7 +47,19 @@ type MongoAdapterConfig struct {
 	ReplicaSetName      string
 }
 
+func (config MongoAdapterConfig) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("host", config.Host),
+		slog.String("port", config.Port),
+		slog.String("database", config.Database),
+		slog.String("watchCollectionName", config.WatchCollectionName),
+		slog.Bool("useReplicaSet", config.UseReplicaSet),
+		slog.String("replicaSetName", config.ReplicaSetName),
+	)
+}
+
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
+	config.Logger.Debug("creating mongo adapter", slog.Any("config", config))
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancelFunc()
 
@@ -134,9 +146,6 @@ func buildTLSConfig(config MongoAdapterConfig) (*tls.Config, error) {
 	return tlsConfig, nil
 }
 
-func (a *mongoAdapter) Health() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
+func (a *mongoAdapter) Health(ctx context.Context) error {
 	return a.client.Ping(ctx, nil)
 }

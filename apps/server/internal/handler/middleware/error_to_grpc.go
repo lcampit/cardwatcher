@@ -5,9 +5,10 @@ import (
 	"errors"
 	"log"
 
-	apperrors "github.com/lcampit/cardwatcher/apps/server/internal/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
+
+	apperrors "github.com/lcampit/cardwatcher/apps/server/internal/errors"
 )
 
 // UnaryErrorInterceptor translates application errors into gRPC statuses.

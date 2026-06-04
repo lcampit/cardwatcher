@@ -4,26 +4,20 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"net"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/lcampit/cardwatcher/apps/server/internal/app"
 	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
 	"github.com/lcampit/cardwatcher/apps/server/internal/handler"
-	"github.com/lcampit/cardwatcher/apps/server/internal/handler/middleware"
 	"github.com/lcampit/cardwatcher/apps/server/internal/logger"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
 	"github.com/lcampit/cardwatcher/apps/server/internal/ntfy"
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
-	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 
 	"go-simpler.org/env"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/health"
-	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
-	"google.golang.org/grpc/reflection"
 )
 
 type WatcherConfig struct {
@@ -62,12 +56,6 @@ func main() {
 
 	logger := logger.NewLogger(watcherConfig.LogLevel)
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", watcherConfig.ServerPort))
-	if err != nil {
-		logger.Error("failed to listen", slog.Any("error", err))
-	}
-
-	logger.Info("creating cardtrader adapter")
 	cardtraderAdapterConfig := cardtrader.CardtraderAdapterConfig{
 		Logger:      logger,
 		AccessToken: watcherConfig.CardtraderAccessToken,
@@ -76,7 +64,6 @@ func main() {
 	}
 	cardtraderAdapter := cardtrader.NewCardtraderAdapter(cardtraderAdapterConfig)
 
-	logger.Info("creating ntfy adapter")
 	ntfyAdapterConfig := ntfy.NtfyAdapterConfig{
 		Logger: logger,
 		Host:   watcherConfig.NtfyHost,
@@ -85,7 +72,6 @@ func main() {
 	}
 	ntfyAdapter := ntfy.NewNtfyAdapter(ntfyAdapterConfig)
 
-	logger.Info("creating mongo adapter")
 	mongoAdapterConfig := mongo.MongoAdapterConfig{
 		Logger:              logger,
 		Host:                watcherConfig.MongoHost,
@@ -104,7 +90,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger.Info("creating service")
 	serviceConfig := service.ServiceConfig{
 		Logger:               logger,
 		CardtraderAdapter:    cardtraderAdapter,
@@ -114,54 +99,39 @@ func main() {
 		UpdateMapsSchedule:   watcherConfig.UpdateMapsSchedule,
 	}
 	service := service.NewService(ctx, serviceConfig)
+	defer service.Close()
 
-	logger.Info("creating server")
 	handlerConfig := handler.HandlerConfig{
 		Logger:  logger,
 		Service: service,
 	}
 	handler := handler.NewHandler(handlerConfig)
 
-	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(middleware.UnaryErrorInterceptor),
+	app, err := app.NewProductionApp(
+		handler,
+		logger,
+		watcherConfig.ServerPort,
+		watcherConfig.ServerEnableReflection,
 	)
-	healthcheck := health.NewServer()
-	healthgrpc.RegisterHealthServer(grpcServer, healthcheck)
-	apiv1.RegisterCardWatcherServiceServer(grpcServer, handler)
-
-	if watcherConfig.ServerEnableReflection {
-		reflection.Register(grpcServer)
+	if err != nil {
+		logger.Error("failed to create cardwatcher server app", slog.Any("error", err))
+		os.Exit(1)
 	}
 
-	go func() {
-		err = grpcServer.Serve(lis)
-		if err != nil {
-			logger.Error("error while listening", slog.Any("error", err))
-		}
-	}()
+	app.StartHealthChecks(time.Duration(watcherConfig.ServerHealthCheckIntervalMilliseconds))
 
-	go func() {
-		for {
-			err := mongoAdapter.Health()
-			if err != nil {
-				logger.Error("error in mongo adapter health check", slog.Any("error", err))
-				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_NOT_SERVING)
-			} else {
-				healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_SERVING)
-			}
-			time.Sleep(time.Duration(watcherConfig.ServerHealthCheckIntervalMilliseconds) * time.Millisecond)
-		}
-	}()
-
-	logger.Info("server started", slog.Int("serverPort", watcherConfig.ServerPort))
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	<-c
 
-	logger.Info("stopping server")
-	grpcServer.GracefulStop()
-	service.Close()
+	go func() {
+		<-c
+		app.Shutdown(5 * time.Second)
+	}()
 
-	logger.Info("done")
+	if err = app.Run(); err != nil {
+		logger.Error("error running app", slog.Any("error", err))
+		os.Exit(1)
+	}
+
 	os.Exit(0)
 }

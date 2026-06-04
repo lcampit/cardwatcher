@@ -2,13 +2,15 @@ package errors
 
 import (
 	"fmt"
+	"log/slog"
 
-	errorspb "github.com/lcampit/cardwatcher/gen/go/errors/v1"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	errorspb "github.com/lcampit/cardwatcher/gen/go/errors/v1"
 )
 
 // AppError is our custom error type using protobuf definitions.
@@ -26,6 +28,15 @@ type AppError struct {
 
 func (e *AppError) Error() string {
 	return fmt.Sprintf("gRPC Code: %s, App Code: %s, Title: %s, Detail: %s", e.GRPCCode, e.AppCode, e.Title, e.Detail)
+}
+
+func (e *AppError) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.Int64("grpcCode", int64(e.GRPCCode)),
+		slog.Int64("appCode", int64(e.AppCode)),
+		slog.String("title", e.Title),
+		slog.String("detali", e.Detail),
+	)
 }
 
 // ToGRPCStatus converts our AppError into a gRPC status.Status.
@@ -74,7 +85,7 @@ func NewValidationFailed(violations []*errorspb.FieldViolation, traceID string) 
 	}
 }
 
-func NewInternal(message string, traceID string, causedBy error) *AppError {
+func NewInternal(message, traceID string, causedBy error) *AppError {
 	return &AppError{
 		GRPCCode: codes.Internal,
 		AppCode:  errorspb.AppErrorCode_APP_ERROR_CODE_INTERNAL_ERROR,

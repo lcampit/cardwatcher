@@ -6,11 +6,17 @@
 package handler
 
 import (
+	"context"
 	"log/slog"
 
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
+
+type Handler interface {
+	apiv1.CardWatcherServiceServer
+	Health(ctx context.Context) error
+}
 
 type handler struct {
 	apiv1.UnsafeCardWatcherServiceServer
@@ -23,11 +29,15 @@ type HandlerConfig struct {
 	Service service.Service
 }
 
-func NewHandler(config HandlerConfig) *handler {
+func NewHandler(config HandlerConfig) Handler {
 	handler := &handler{
 		logger:  config.Logger,
 		service: config.Service,
 	}
 
 	return handler
+}
+
+func (s *handler) Health(ctx context.Context) error {
+	return s.service.Health(ctx)
 }

@@ -24,6 +24,7 @@ type Service interface {
 	ListWatches(ctx context.Context) (*apiv1.ListWatchesResponse, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
+	Health(ctx context.Context) error
 	Close()
 }
 
@@ -48,7 +49,15 @@ type ServiceConfig struct {
 	UpdateMapsSchedule   string
 }
 
+func (config ServiceConfig) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("notificationSchedule", config.NotificationSchedule),
+		slog.String("updateMapsSchedule", config.UpdateMapsSchedule),
+	)
+}
+
 func NewService(ctx context.Context, config ServiceConfig) *service {
+	config.Logger.Debug("creating service", slog.Any("config", config))
 	service := &service{
 		logger:            config.Logger,
 		cardtraderAdapter: config.CardtraderAdapter,
@@ -121,4 +130,12 @@ func HashAccessToken(accessToken string) string {
 
 func normalizeString(input string) string {
 	return strings.TrimSpace(strings.ToLower(input))
+}
+
+func (s *service) Health(ctx context.Context) error {
+	err := s.mongoAdapter.Health(ctx)
+	if err != nil {
+		return err
+	}
+	return s.cardtraderAdapter.Health(ctx)
 }
