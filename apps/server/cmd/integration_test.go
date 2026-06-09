@@ -42,6 +42,9 @@ type ServerIntegrationTestSuite struct {
 	service        service.Service
 	cardtraderMock *cardtrader.MockCardtraderAdapter
 	ntfyMock       *ntfy.MockNtfyAdapter
+
+	conn   *grpc.ClientConn
+	client apiv1.CardWatcherServiceClient
 }
 
 const (
@@ -121,8 +124,12 @@ func (suite *ServerIntegrationTestSuite) SetupTest() {
 
 	suite.ntfyMock = ntfy.NewMockNtfyAdapter(suite.T())
 	suite.cardtraderMock = cardtrader.NewMockCardtraderAdapter(suite.T())
+
+	// Mock cardtrader adapter calls used for service startup here. Each test
+	// will then set up its own mocks
 	suite.cardtraderMock.On("GetGames", mock.Anything).Return(nil, nil).Once()
 	suite.cardtraderMock.On("GetExpansions", mock.Anything).Return([]*cardtrader.Expansion{&expansion}, nil).Once()
+
 	serviceConfig := service.ServiceConfig{
 		Logger:               logger,
 		CardtraderAdapter:    suite.cardtraderMock,
@@ -157,18 +164,8 @@ func (suite *ServerIntegrationTestSuite) SetupTest() {
 			logger.Error("error while starting app", slog.Any("error", err))
 		}
 	}()
-}
 
-// TeardownTest stops the app created previously so that the new
-// setupTest can recreate it from scratch
-func (suite *ServerIntegrationTestSuite) TeardownTest() {
-	suite.app.Shutdown(1 * time.Second)
-	suite.service.Close()
-}
-
-func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
-	ctx := context.Background()
-	conn, err := grpc.NewClient("passthrough:///bufconn",
+	suite.conn, err = grpc.NewClient("passthrough:///bufconn",
 		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
 			return suite.lis.DialContext(ctx)
 		}),
@@ -176,8 +173,19 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
 	if err != nil {
 		suite.FailNowf("failed to dial bufnet", "error %v", err)
 	}
-	defer conn.Close()
-	client := apiv1.NewCardWatcherServiceClient(conn)
+	suite.client = apiv1.NewCardWatcherServiceClient(suite.conn)
+}
+
+// TeardownTest stops the app created previously so that the new
+// setupTest can recreate it from scratch
+func (suite *ServerIntegrationTestSuite) TeardownTest() {
+	suite.conn.Close()
+	suite.app.Shutdown(1 * time.Second)
+	suite.service.Close()
+}
+
+func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
+	ctx := context.Background()
 	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
 		[]*cardtrader.Blueprint{
 			&blueprint,
@@ -191,14 +199,14 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
 		Foil:                foil,
 		Language:            apiv1.Language_LANGUAGE_EN,
 	}
-	resp, err := client.CreateWatch(ctx, &request)
+	resp, err := suite.client.CreateWatch(ctx, &request)
 	if err != nil {
 		suite.FailNowf("create watch request failed", "error %v", err)
 	}
 
 	suite.Assert().NotEmpty(resp.WatchId, "create watch returned an empty watch ID")
 
-	watches, err := client.ListWatches(ctx, &emptypb.Empty{})
+	watches, err := suite.client.ListWatches(ctx, &emptypb.Empty{})
 	suite.Assert().Nil(err, "list watches request failed: %v", err)
 
 	found := false
@@ -218,16 +226,6 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
 
 func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMapDefaultValues() {
 	ctx := context.Background()
-	conn, err := grpc.NewClient("passthrough:///bufconn",
-		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
-			return suite.lis.DialContext(ctx)
-		}),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		suite.FailNowf("failed to dial bufnet", "error %v", err)
-	}
-	defer conn.Close()
-	client := apiv1.NewCardWatcherServiceClient(conn)
 	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
 		[]*cardtrader.Blueprint{
 			&blueprint,
@@ -238,14 +236,14 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMapDefaultValu
 		ExpansionNameOrCode: expansion.Name,
 		CardName:            blueprint.Name,
 	}
-	resp, err := client.CreateWatch(ctx, &request)
+	resp, err := suite.client.CreateWatch(ctx, &request)
 	if err != nil {
 		suite.FailNowf("create watch request failed", "error %v", err)
 	}
 
 	suite.Assert().NotEmpty(resp.WatchId, "create watch returned an empty watch ID")
 
-	watches, err := client.ListWatches(ctx, &emptypb.Empty{})
+	watches, err := suite.client.ListWatches(ctx, &emptypb.Empty{})
 	suite.Assert().Nil(err, "list watches request failed: %v", err)
 
 	found := false
@@ -265,16 +263,6 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMapDefaultValu
 
 func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutExpansionFails() {
 	ctx := context.Background()
-	conn, err := grpc.NewClient("passthrough:///bufconn",
-		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
-			return suite.lis.DialContext(ctx)
-		}),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		suite.FailNowf("failed to dial bufnet", "error %v", err)
-	}
-	defer conn.Close()
-	client := apiv1.NewCardWatcherServiceClient(conn)
 
 	request := apiv1.CreateWatchRequest{
 		CardName:  blueprint.Name,
@@ -282,7 +270,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutExpansionFails() 
 		Foil:      foil,
 		Language:  apiv1.Language_LANGUAGE_EN,
 	}
-	_, err = client.CreateWatch(ctx, &request)
+	_, err := suite.client.CreateWatch(ctx, &request)
 	suite.Assert().NotNil(err, "create watch did not fail on request without expansion")
 
 	grpcErr, ok := status.FromError(err)
@@ -292,16 +280,6 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutExpansionFails() 
 
 func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutCardnameFails() {
 	ctx := context.Background()
-	conn, err := grpc.NewClient("passthrough:///bufconn",
-		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
-			return suite.lis.DialContext(ctx)
-		}),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		suite.FailNowf("failed to dial bufnet", "error %v", err)
-	}
-	defer conn.Close()
-	client := apiv1.NewCardWatcherServiceClient(conn)
 
 	request := apiv1.CreateWatchRequest{
 		ExpansionNameOrCode: expansion.Name,
@@ -309,7 +287,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutCardnameFails() {
 		Foil:                foil,
 		Language:            apiv1.Language_LANGUAGE_EN,
 	}
-	_, err = client.CreateWatch(ctx, &request)
+	_, err := suite.client.CreateWatch(ctx, &request)
 	suite.Assert().NotNil(err, "create watch did not fail on request without cardname")
 
 	grpcErr, ok := status.FromError(err)
@@ -319,16 +297,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutCardnameFails() {
 
 func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingExpansionReturnsNotFound() {
 	ctx := context.Background()
-	conn, err := grpc.NewClient("passthrough:///bufconn",
-		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
-			return suite.lis.DialContext(ctx)
-		}),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		suite.FailNowf("failed to dial bufnet", "error %v", err)
-	}
-	defer conn.Close()
-	client := apiv1.NewCardWatcherServiceClient(conn)
+
 	suite.cardtraderMock.On("GetExpansions", mock.Anything).
 		Return(nil, nil)
 
@@ -339,7 +308,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingExpansion
 		Foil:                foil,
 		Language:            apiv1.Language_LANGUAGE_EN,
 	}
-	_, err = client.CreateWatch(ctx, &request)
+	_, err := suite.client.CreateWatch(ctx, &request)
 	suite.Assert().NotNil(err)
 
 	grpcErr, ok := status.FromError(err)
@@ -349,16 +318,6 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingExpansion
 
 func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtraderError() {
 	ctx := context.Background()
-	conn, err := grpc.NewClient("passthrough:///bufconn",
-		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
-			return suite.lis.DialContext(ctx)
-		}),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		suite.FailNowf("failed to dial bufnet", "error %v", err)
-	}
-	defer conn.Close()
-	client := apiv1.NewCardWatcherServiceClient(conn)
 
 	suite.cardtraderMock.On("GetExpansions", mock.Anything).
 		Return(nil, errors.New("internal error"))
@@ -372,7 +331,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtra
 		Foil:                foil,
 		Language:            apiv1.Language_LANGUAGE_EN,
 	}
-	_, err = client.CreateWatch(ctx, &request)
+	_, err := suite.client.CreateWatch(ctx, &request)
 	suite.Assert().NotNil(err)
 
 	grpcErr, ok := status.FromError(err)
