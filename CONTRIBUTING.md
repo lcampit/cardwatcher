@@ -25,11 +25,8 @@ This ensures consistent tooling across all contributors.
    mise install
    ```
 
-3. Install git hooks with [lefthook](https://lefthook.dev/)
-
-```bash
-  lefthook install
-```
+This will also install git hooks managed by [kh](https://hk.jdx.dev/)
+to run linters and formatters.
 
 That's it! All required tools and dependencies will be automatically
 configured by mise.
@@ -47,8 +44,7 @@ Common tasks include:
 
 - Building applications components
 - Running tests
-- Generating protobuf code
-- Linting
+- Generating protobuf or mocks code
 
 Each task is defined in a standalone *executable* file in the
 `.mise/tasks` directory.
@@ -104,8 +100,6 @@ database, notifications).
 Github Actions and git hooks are in place to
 ensure a standard formatting and style across the
 repo.
-When not sure, refer to `mise run` commands to run
-formatters and linters.
 
 ## Questions?
 
