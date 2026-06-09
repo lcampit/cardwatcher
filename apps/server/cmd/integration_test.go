@@ -4,6 +4,7 @@ package main_test
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 	"net"
 	"testing"
@@ -34,10 +35,11 @@ type ServerIntegrationTestSuite struct {
 	ctx context.Context
 
 	mongoTestContainer *mongodb.MongoDBContainer
-	service            service.Service
+	mongoAdapter       mongo.MongoAdapter
 	lis                *bufconn.Listener
-	app                *app.App
 
+	app            *app.App
+	service        service.Service
 	cardtraderMock *cardtrader.MockCardtraderAdapter
 	ntfyMock       *ntfy.MockNtfyAdapter
 }
@@ -85,11 +87,6 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 
 	logger := logger.NewLogger("debug")
 
-	suite.lis = bufconn.Listen(bufSize)
-
-	suite.ntfyMock = ntfy.NewMockNtfyAdapter(suite.T())
-	suite.cardtraderMock = setupCardtraderAdapterMock(suite.T())
-
 	mongoHost, err := mongoContainer.Host(suite.ctx)
 	if err != nil {
 		suite.FailNowf("error getting mongo host: %s", err.Error())
@@ -110,15 +107,24 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 		WatchCollectionName: mongoWatchCollectioName,
 		UseReplicaSet:       true,
 	}
-	mongoAdapter, err := mongo.NewMongoAdapter(mongoAdapterConfig)
+	suite.mongoAdapter, err = mongo.NewMongoAdapter(mongoAdapterConfig)
 	if err != nil {
 		suite.FailNowf("error connecting to mongo test container", err.Error())
 	}
+}
 
+// SetupTest creates the whole service -> handler -> app chain so that
+// every test is performed in isolation between each other
+func (suite *ServerIntegrationTestSuite) SetupTest() {
+	logger := logger.NewLogger("debug")
+	suite.lis = bufconn.Listen(bufSize)
+
+	suite.ntfyMock = ntfy.NewMockNtfyAdapter(suite.T())
+	suite.cardtraderMock = setupCardtraderAdapterMock(suite.T())
 	serviceConfig := service.ServiceConfig{
 		Logger:               logger,
 		CardtraderAdapter:    suite.cardtraderMock,
-		MongoAdapter:         mongoAdapter,
+		MongoAdapter:         suite.mongoAdapter,
 		NtfyAdapter:          suite.ntfyMock,
 		NotificationSchedule: "10 * * * *",
 		UpdateMapsSchedule:   "10 * * * *",
@@ -131,6 +137,7 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 	}
 	handler := handler.NewHandler(handlerConfig)
 
+	var err error
 	suite.app, err = app.NewApp(
 		handler,
 		logger,
@@ -138,6 +145,9 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 		0,
 		true,
 	)
+	if err != nil {
+		suite.FailNowf("error creating app", err.Error())
+	}
 
 	go func() {
 		err = suite.app.Run()
@@ -145,6 +155,13 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 			logger.Error("error while starting app", slog.Any("error", err))
 		}
 	}()
+}
+
+// TeardownTest stops the app created previously so that the new
+// setupTest can recreate it from scratch
+func (suite *ServerIntegrationTestSuite) TeardownTest() {
+	suite.app.Shutdown(1 * time.Second)
+	suite.service.Close()
 }
 
 func (suite *ServerIntegrationTestSuite) TestCreateWatch() {
@@ -308,7 +325,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutCardnameFails() {
 	suite.Assert().Equal(grpcErr.Code(), codes.InvalidArgument, "create watch returned another error code: %d", grpcErr.Code())
 }
 
-func (suite *ServerIntegrationTestSuite) Testboh() {
+func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingExpansionReturnsNotFound() {
 	ctx := context.Background()
 	conn, err := grpc.NewClient("passthrough:///bufconn",
 		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
@@ -320,14 +337,53 @@ func (suite *ServerIntegrationTestSuite) Testboh() {
 	}
 	defer conn.Close()
 	client := apiv1.NewCardWatcherServiceClient(conn)
-	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
-		[]*cardtrader.Blueprint{
-			&blueprint,
-		}, nil,
-	)
 
-	request := apiv1.CreateWatchRequest{}
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: "non-existing-expansion-name",
+		CardName:            "non-existing-card-name",
+		Condition:           condition,
+		Foil:                foil,
+		Language:            apiv1.Language_LANGUAGE_EN,
+	}
 	_, err = client.CreateWatch(ctx, &request)
+	suite.Assert().NotNil(err)
+
+	grpcErr, ok := status.FromError(err)
+	suite.Assert().True(ok, "create watch returned a non-grpc error %v", err)
+	suite.Assert().Equal(grpcErr.Code(), codes.NotFound, "create watch returned another error code: %d", grpcErr.Code())
+}
+
+func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtraderError() {
+	ctx := context.Background()
+	conn, err := grpc.NewClient("passthrough:///bufconn",
+		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
+			return suite.lis.DialContext(ctx)
+		}),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		suite.FailNowf("failed to dial bufnet", "error %v", err)
+	}
+	defer conn.Close()
+	client := apiv1.NewCardWatcherServiceClient(conn)
+
+	suite.cardtraderMock.On("GetExpansions", mock.Anything).
+		Return(nil, errors.New("internal error"))
+
+	// We need to use non existing names here to make sure we do not
+	// hit the inner maps
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: "non-existing-expansion-name",
+		CardName:            "non-existing-card-name",
+		Condition:           condition,
+		Foil:                foil,
+		Language:            apiv1.Language_LANGUAGE_EN,
+	}
+	_, err = client.CreateWatch(ctx, &request)
+	suite.Assert().NotNil(err)
+
+	grpcErr, ok := status.FromError(err)
+	suite.Assert().True(ok, "create watch returned a non-grpc error %v", err)
+	suite.Assert().Equal(grpcErr.Code(), codes.Internal, "create watch returned another error code: %d", grpcErr.Code())
 }
 
 func (suite *ServerIntegrationTestSuite) TearDownSuite() {

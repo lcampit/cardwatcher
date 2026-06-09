@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
+	"github.com/lcampit/cardwatcher/apps/server/internal/errors"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
@@ -54,23 +54,26 @@ func (s *service) SaveWatch(ctx context.Context, expansionID, blueprintID uint64
 
 func (s *service) CreateWatch(ctx context.Context, request *apiv1.CreateWatchRequest) (string, error) {
 	nameOrCodeRequested := normalizeString(request.ExpansionNameOrCode)
-	savedExpansion, ok := s.expansionCodeMap.Load(nameOrCodeRequested)
-
-	var expansion *cardtrader.Expansion
-	if ok {
-		expansion, _ = savedExpansion.(*cardtrader.Expansion)
-	} else {
-		savedExpansion, ok = s.expansionNameMap.Load(nameOrCodeRequested)
-		if ok {
-			expansion, _ = savedExpansion.(*cardtrader.Expansion)
-		} else {
-			return "", fmt.Errorf("finding expansion in preloaded map: no expansion found for %s", request.ExpansionNameOrCode)
+	expansion, ok := s.getExpansionFromMaps(nameOrCodeRequested)
+	if !ok {
+		expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
+		if err != nil {
+			return "", errors.NewInternal("cardtrader expansion endpoint failed", "", err)
+		}
+		for _, exp := range expansions {
+			if exp.GetNormalizedName() == nameOrCodeRequested || exp.GetNormalizedCode() == nameOrCodeRequested {
+				expansion = exp
+				break
+			}
+		}
+		if expansion == nil {
+			return "", errors.NewNotFound("expansion", request.ExpansionNameOrCode, "")
 		}
 	}
 
 	blueprints, err := s.cardtraderAdapter.GetBlueprints(ctx, expansion.ID)
 	if err != nil {
-		return "", fmt.Errorf("finding blueprints for expansion %s (ID %d)", request.ExpansionNameOrCode, expansion.ID)
+		return "", errors.NewInternal("cardtrader blueprint endpoint failed", "", err)
 	}
 
 	condition := mongo.WatchConditionAny
@@ -96,13 +99,13 @@ func (s *service) CreateWatch(ctx context.Context, request *apiv1.CreateWatchReq
 				Foil:          request.Foil,
 			})
 			if err != nil {
-				return "", fmt.Errorf("creating watch: %v", err)
+				return "", errors.NewInternal("creating watch failed", "", err)
 			}
 			return watchID, nil
 		}
 	}
 
-	return "", fmt.Errorf("no blueprint named %s found for expansion %s (ID %d)", cardNameRequested, expansion.Name, expansion.ID)
+	return "", errors.NewNotFound("blueprint", cardNameRequested, "")
 }
 
 func (s *service) DeleteWatchByID(ctx context.Context, watchID string) error {

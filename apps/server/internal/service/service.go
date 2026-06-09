@@ -122,6 +122,28 @@ func (s *service) updateExpansionsMaps() {
 	}
 }
 
+// getExpansionFromMaps returns the preloaded expansion
+// from either one of the preloaded expansion maps.
+//
+// Return a true control boolean if the given expansion name or code
+// was found in the preloaded maps, false otherwise
+func (s *service) getExpansionFromMaps(expansionNameOrCode string) (*cardtrader.Expansion, bool) {
+	nameOrCodeRequested := normalizeString(expansionNameOrCode)
+	savedExpansion, ok := s.expansionCodeMap.Load(nameOrCodeRequested)
+	if ok {
+		result, _ := savedExpansion.(*cardtrader.Expansion)
+		return result, true
+	}
+
+	savedExpansion, ok = s.expansionNameMap.Load(nameOrCodeRequested)
+	if ok {
+		result, _ := savedExpansion.(*cardtrader.Expansion)
+		return result, false
+	}
+
+	return nil, false
+}
+
 func HashAccessToken(accessToken string) string {
 	h := sha256.New()
 	h.Write([]byte(accessToken))

@@ -35,7 +35,7 @@ func (e *AppError) LogValue() slog.Value {
 		slog.Int64("grpcCode", int64(e.GRPCCode)),
 		slog.Int64("appCode", int64(e.AppCode)),
 		slog.String("title", e.Title),
-		slog.String("detali", e.Detail),
+		slog.String("detail", e.Detail),
 	)
 }
 
@@ -93,5 +93,15 @@ func NewInternal(message, traceID string, causedBy error) *AppError {
 		Detail:   message,
 		TraceID:  traceID,
 		CausedBy: causedBy,
+	}
+}
+
+func NewNotFound(resource string, id string, traceID string) *AppError {
+	return &AppError{
+		GRPCCode: codes.NotFound,
+		AppCode:  errorspb.AppErrorCode_APP_ERROR_CODE_RESOURCE_NOT_FOUND,
+		Title:    "Resource Not Found",
+		Detail:   fmt.Sprintf("%s with ID '%s' was not found.", resource, id),
+		TraceID:  traceID,
 	}
 }
