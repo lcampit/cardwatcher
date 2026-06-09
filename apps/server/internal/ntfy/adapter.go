@@ -28,7 +28,16 @@ type NtfyAdapterConfig struct {
 	Topic  string
 }
 
+func (config NtfyAdapterConfig) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("host", config.Host),
+		slog.String("port", config.Port),
+		slog.String("topic", config.Topic),
+	)
+}
+
 func NewNtfyAdapter(config NtfyAdapterConfig) NtfyAdapter {
+	config.Logger.Debug("creating ntfy adapter", slog.Any("config", config))
 	return &ntfyAdapter{
 		logger: config.Logger,
 		client: resty.New().SetBaseURL(fmt.Sprintf("http://%s:%s", config.Host, config.Port)),

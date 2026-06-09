@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"log/slog"
+	"strings"
 	"sync"
 	"time"
 
@@ -16,12 +17,13 @@ import (
 )
 
 type Service interface {
-	SaveWatch(ctx context.Context, expansionID, blueprintID uint64, condition apiv1.Condition, language apiv1.Language, foil bool) (string, error)
+	CreateWatch(ctx context.Context, request *apiv1.CreateWatchRequest) (string, error)
 	ListExpansions(ctx context.Context, gameName, expansionName, expansionCode string) (*apiv1.ListExpansionsResponse, error)
 	ListBlueprints(ctx context.Context, expansionID uint64, name string) (*apiv1.ListBlueprintsResponse, error)
 	ListWatches(ctx context.Context) (*apiv1.ListWatchesResponse, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
 
+	Health(ctx context.Context) error
 	Close()
 }
 
@@ -31,8 +33,10 @@ type service struct {
 	mongoAdapter      mongo.MongoAdapter
 	ntfyAdapter       ntfy.NtfyAdapter
 
-	cron      *cron.Cron
-	gameIDMap sync.Map
+	cron             *cron.Cron
+	gameNameToIDMap  sync.Map
+	expansionNameMap sync.Map
+	expansionCodeMap sync.Map
 }
 
 type ServiceConfig struct {
@@ -44,15 +48,24 @@ type ServiceConfig struct {
 	UpdateMapsSchedule   string
 }
 
+func (config ServiceConfig) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("notificationSchedule", config.NotificationSchedule),
+		slog.String("updateMapsSchedule", config.UpdateMapsSchedule),
+	)
+}
+
 func NewService(ctx context.Context, config ServiceConfig) *service {
+	config.Logger.Debug("creating service", slog.Any("config", config))
 	service := &service{
 		logger:            config.Logger,
 		cardtraderAdapter: config.CardtraderAdapter,
 		mongoAdapter:      config.MongoAdapter,
 		ntfyAdapter:       config.NtfyAdapter,
 	}
-	service.gameIDMap = sync.Map{}
+	service.gameNameToIDMap = sync.Map{}
 	service.updateGamesMap()
+	service.updateExpansionsMaps()
 
 	loc, _ := time.LoadLocation("Europe/Rome")
 	c := cron.New(cron.WithLocation(loc))
@@ -62,7 +75,11 @@ func NewService(ctx context.Context, config ServiceConfig) *service {
 	}
 	_, err = c.AddFunc(config.UpdateMapsSchedule, service.updateGamesMap)
 	if err != nil {
-		service.logger.Error("setting up notification cron job", slog.Any("error", err))
+		service.logger.Error("setting up update games map cron job", slog.Any("error", err))
+	}
+	_, err = c.AddFunc(config.UpdateMapsSchedule, service.updateExpansionsMaps)
+	if err != nil {
+		service.logger.Error("setting up update expansions maps cron job", slog.Any("error", err))
 	}
 	c.Start()
 	service.cron = c
@@ -74,21 +91,72 @@ func (s *service) Close() {
 	s.cron.Stop()
 }
 
-func HashAccessToken(accessToken string) string {
-	h := sha256.New()
-	h.Write([]byte(accessToken))
-	return string(h.Sum(nil))
-}
-
 func (s *service) updateGamesMap() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	games, err := s.cardtraderAdapter.GetGames(ctx)
 	if err != nil {
 		s.logger.Error("getting games from cardtrader adapter", slog.Any("error", err))
+		return
 	}
 
 	for _, game := range games {
-		s.gameIDMap.Store(game.GetNormalizedName(), game.ID)
+		s.gameNameToIDMap.Store(game.GetNormalizedName(), game.ID)
 	}
+}
+
+func (s *service) updateExpansionsMaps() {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	expansions, err := s.cardtraderAdapter.GetExpansions(ctx)
+	if err != nil {
+		s.logger.Error("getting expansions from cardtrader adapter", slog.Any("error", err))
+		return
+	}
+
+	for _, expansion := range expansions {
+		s.expansionCodeMap.Store(expansion.GetNormalizedCode(), expansion)
+		s.expansionNameMap.Store(expansion.GetNormalizedName(), expansion)
+	}
+}
+
+// getExpansionFromMaps returns the preloaded expansion
+// from either one of the preloaded expansion maps.
+//
+// Returns a control boolean value if the given expansion name or code
+// was found in the preloaded maps, false otherwise
+func (s *service) getExpansionFromMaps(expansionNameOrCode string) (*cardtrader.Expansion, bool) {
+	nameOrCodeRequested := normalizeString(expansionNameOrCode)
+	savedExpansion, ok := s.expansionCodeMap.Load(nameOrCodeRequested)
+	if ok {
+		result, _ := savedExpansion.(*cardtrader.Expansion)
+		return result, true
+	}
+
+	savedExpansion, ok = s.expansionNameMap.Load(nameOrCodeRequested)
+	if ok {
+		result, _ := savedExpansion.(*cardtrader.Expansion)
+		return result, true
+	}
+
+	return nil, false
+}
+
+func HashAccessToken(accessToken string) string {
+	h := sha256.New()
+	h.Write([]byte(accessToken))
+	return string(h.Sum(nil))
+}
+
+func normalizeString(input string) string {
+	return strings.TrimSpace(strings.ToLower(input))
+}
+
+func (s *service) Health(ctx context.Context) error {
+	err := s.mongoAdapter.Health(ctx)
+	if err != nil {
+		return err
+	}
+	return s.cardtraderAdapter.Health(ctx)
 }

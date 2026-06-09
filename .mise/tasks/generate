@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-#MISE description="generate code from protobuf files"
+#MISE description="generate code from protobuf, mockery, etc"
 #MISE alias="g"
 
 buf dep update
 buf generate
+mockery

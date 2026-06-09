@@ -18,3 +18,7 @@ message SaveWatchResponse {
 message ListWatchesResponse {
   repeated Watch watches = 1;
 }
+
+message CreateWatchResponse {
+  string watch_id = 1;
+}

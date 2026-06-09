@@ -26,35 +26,35 @@ var File_cardwatcher_v1_service_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1ccardwatcher/v1/service.proto\x12\x0ecardwatcher.v1\x1a\x1dcardwatcher/v1/requests.proto\x1a\x1ecardwatcher/v1/responses.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xd8\x04\n" +
-	"\x12CardWatcherService\x12{\n" +
+	"\x1ccardwatcher/v1/service.proto\x12\x0ecardwatcher.v1\x1a\x1dcardwatcher/v1/requests.proto\x1a\x1ecardwatcher/v1/responses.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xde\x04\n" +
+	"\x12CardWatcherService\x12r\n" +
+	"\vCreateWatch\x12\".cardwatcher.v1.CreateWatchRequest\x1a#.cardwatcher.v1.CreateWatchResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/watches\x12{\n" +
 	"\x0eListExpansions\x12%.cardwatcher.v1.ListExpansionsRequest\x1a&.cardwatcher.v1.ListExpansionsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/expansions\x12{\n" +
-	"\x0eListBlueprints\x12%.cardwatcher.v1.ListBlueprintsRequest\x1a&.cardwatcher.v1.ListBlueprintsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/blueprints\x12l\n" +
-	"\tSaveWatch\x12 .cardwatcher.v1.SaveWatchRequest\x1a!.cardwatcher.v1.SaveWatchResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/watches\x12c\n" +
+	"\x0eListBlueprints\x12%.cardwatcher.v1.ListBlueprintsRequest\x1a&.cardwatcher.v1.ListBlueprintsResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/v1/blueprints\x12c\n" +
 	"\vListWatches\x12\x16.google.protobuf.Empty\x1a#.cardwatcher.v1.ListWatchesResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/api/v1/watches\x12u\n" +
 	"\x0fDeleteWatchByID\x12&.cardwatcher.v1.DeleteWatchByIDRequest\x1a\x16.google.protobuf.Empty\"\"\x82\xd3\xe4\x93\x02\x1c*\x1a/api/v1/watches/{watch_id}B\xbf\x01\n" +
 	"\x12com.cardwatcher.v1B\fServiceProtoP\x01ZBgithub.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
 
 var file_cardwatcher_v1_service_proto_goTypes = []any{
-	(*ListExpansionsRequest)(nil),  // 0: cardwatcher.v1.ListExpansionsRequest
-	(*ListBlueprintsRequest)(nil),  // 1: cardwatcher.v1.ListBlueprintsRequest
-	(*SaveWatchRequest)(nil),       // 2: cardwatcher.v1.SaveWatchRequest
+	(*CreateWatchRequest)(nil),     // 0: cardwatcher.v1.CreateWatchRequest
+	(*ListExpansionsRequest)(nil),  // 1: cardwatcher.v1.ListExpansionsRequest
+	(*ListBlueprintsRequest)(nil),  // 2: cardwatcher.v1.ListBlueprintsRequest
 	(*emptypb.Empty)(nil),          // 3: google.protobuf.Empty
 	(*DeleteWatchByIDRequest)(nil), // 4: cardwatcher.v1.DeleteWatchByIDRequest
-	(*ListExpansionsResponse)(nil), // 5: cardwatcher.v1.ListExpansionsResponse
-	(*ListBlueprintsResponse)(nil), // 6: cardwatcher.v1.ListBlueprintsResponse
-	(*SaveWatchResponse)(nil),      // 7: cardwatcher.v1.SaveWatchResponse
+	(*CreateWatchResponse)(nil),    // 5: cardwatcher.v1.CreateWatchResponse
+	(*ListExpansionsResponse)(nil), // 6: cardwatcher.v1.ListExpansionsResponse
+	(*ListBlueprintsResponse)(nil), // 7: cardwatcher.v1.ListBlueprintsResponse
 	(*ListWatchesResponse)(nil),    // 8: cardwatcher.v1.ListWatchesResponse
 }
 var file_cardwatcher_v1_service_proto_depIdxs = []int32{
-	0, // 0: cardwatcher.v1.CardWatcherService.ListExpansions:input_type -> cardwatcher.v1.ListExpansionsRequest
-	1, // 1: cardwatcher.v1.CardWatcherService.ListBlueprints:input_type -> cardwatcher.v1.ListBlueprintsRequest
-	2, // 2: cardwatcher.v1.CardWatcherService.SaveWatch:input_type -> cardwatcher.v1.SaveWatchRequest
+	0, // 0: cardwatcher.v1.CardWatcherService.CreateWatch:input_type -> cardwatcher.v1.CreateWatchRequest
+	1, // 1: cardwatcher.v1.CardWatcherService.ListExpansions:input_type -> cardwatcher.v1.ListExpansionsRequest
+	2, // 2: cardwatcher.v1.CardWatcherService.ListBlueprints:input_type -> cardwatcher.v1.ListBlueprintsRequest
 	3, // 3: cardwatcher.v1.CardWatcherService.ListWatches:input_type -> google.protobuf.Empty
 	4, // 4: cardwatcher.v1.CardWatcherService.DeleteWatchByID:input_type -> cardwatcher.v1.DeleteWatchByIDRequest
-	5, // 5: cardwatcher.v1.CardWatcherService.ListExpansions:output_type -> cardwatcher.v1.ListExpansionsResponse
-	6, // 6: cardwatcher.v1.CardWatcherService.ListBlueprints:output_type -> cardwatcher.v1.ListBlueprintsResponse
-	7, // 7: cardwatcher.v1.CardWatcherService.SaveWatch:output_type -> cardwatcher.v1.SaveWatchResponse
+	5, // 5: cardwatcher.v1.CardWatcherService.CreateWatch:output_type -> cardwatcher.v1.CreateWatchResponse
+	6, // 6: cardwatcher.v1.CardWatcherService.ListExpansions:output_type -> cardwatcher.v1.ListExpansionsResponse
+	7, // 7: cardwatcher.v1.CardWatcherService.ListBlueprints:output_type -> cardwatcher.v1.ListBlueprintsResponse
 	8, // 8: cardwatcher.v1.CardWatcherService.ListWatches:output_type -> cardwatcher.v1.ListWatchesResponse
 	3, // 9: cardwatcher.v1.CardWatcherService.DeleteWatchByID:output_type -> google.protobuf.Empty
 	5, // [5:10] is the sub-list for method output_type

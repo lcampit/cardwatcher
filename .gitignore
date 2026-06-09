@@ -35,3 +35,4 @@ bin/
 
 # local env vars
 .mise.local.toml
+mise.local.lock

@@ -1,0 +1,53 @@
+amends "package://github.com/jdx/hk/releases/download/v1.47.0/hk@1.47.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.47.0/hk@1.47.0#/Builtins.pkl"
+
+default_branch = "origin/main"
+
+exclude = List("gen", "**/*_mock.go")
+
+fail_fast = true
+
+terminal_progress = true
+
+local linters = new Mapping<String, Step> {
+    ["lint-go"] = Builtins.golangci_lint
+    ["lint-buf"] = Builtins.buf_lint
+}
+
+local formatters = new Mapping<String, Step> {
+  ["format-go"] {
+    glob = List("**/*.go")
+    check = "golangci-lint fmt -d ./..."
+    fix = "golangci-lint fmt ./..."
+  }
+  ["format-buf"] {
+      glob = List("**/*.proto")
+      check = "buf format"
+      fix = "buf format -w"
+  }
+}
+
+hooks {
+    ["pre-commit"] {
+        fix = true       // runs the fix step to make modifications
+        stash = "git"    // stashes unstaged changes before running fix steps
+        steps {
+          ...formatters 
+          ...linters
+      }
+    }
+    // "fix" and "check" are special steps for `hk fix` and `hk check` commands
+    ["fix"] {
+        fix = true
+        steps {
+          ...formatters 
+          ...linters
+      }
+    }
+    ["check"] {
+        steps {
+          ...formatters 
+          ...linters
+      }
+    }
+}

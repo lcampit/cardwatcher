@@ -16,9 +16,11 @@ type CardtraderAdapter interface {
 	GetGames(ctx context.Context) ([]*game, error)
 	GetBlueprintNameByExpansionID(ctx context.Context, expansionID, blueprintID uint64) (string, error)
 	GetExpansionNameByID(ctx context.Context, expansionID uint64) (string, error)
-	GetExpansions(ctx context.Context) ([]*expansion, error)
-	GetBlueprints(ctx context.Context, expansionID uint64) ([]*blueprint, error)
+	GetExpansions(ctx context.Context) ([]*Expansion, error)
+	GetBlueprints(ctx context.Context, expansionID uint64) ([]*Blueprint, error)
 	GetProducts(ctx context.Context, blueprintID uint64, foil bool) ([]Product, error)
+
+	Health(ctx context.Context) error
 }
 
 type cardtraderAdapter struct {
@@ -34,7 +36,14 @@ type CardtraderAdapterConfig struct {
 	SkipVerify bool
 }
 
+func (config CardtraderAdapterConfig) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("baseurl", config.BaseURL),
+	)
+}
+
 func NewCardtraderAdapter(config CardtraderAdapterConfig) CardtraderAdapter {
+	config.Logger.Debug("creating cardtrader adapter", slog.Any("config", config))
 	tlsConfig := tls.Config{
 		InsecureSkipVerify: config.SkipVerify,
 	}
@@ -48,4 +57,12 @@ func NewCardtraderAdapter(config CardtraderAdapterConfig) CardtraderAdapter {
 		logger: config.Logger,
 		client: client,
 	}
+}
+
+func (a *cardtraderAdapter) Health(ctx context.Context) error {
+	endpoint := "/info"
+	_, err := a.client.R().
+		Get(endpoint)
+
+	return err
 }

@@ -1,6 +1,7 @@
 syntax = "proto3";
 package cardwatcher.v1;
 
+import "buf/validate/validate.proto";
 import "cardwatcher/v1/entities.proto";
 
 message ListExpansionsRequest {
@@ -24,4 +25,12 @@ message SaveWatchRequest {
 
 message DeleteWatchByIDRequest {
   string watch_id = 1;
+}
+
+message CreateWatchRequest {
+  string expansion_name_or_code = 1 [(buf.validate.field).required = true];
+  string card_name = 2 [(buf.validate.field).required = true];
+  Condition condition = 3;
+  bool foil = 4;
+  Language language = 5;
 }

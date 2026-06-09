@@ -21,7 +21,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 
 	if gameName != "" {
 		normalizedGameName := strings.ToLower(gameName)
-		gameIDFromMap, ok := s.gameIDMap.Load(normalizedGameName)
+		gameIDFromMap, ok := s.gameNameToIDMap.Load(normalizedGameName)
 		if !ok {
 			s.logger.Debug("filtering expansions for game name: game not found in map", slog.String("gameName", gameName))
 		} else {

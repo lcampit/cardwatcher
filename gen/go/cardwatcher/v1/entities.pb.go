@@ -7,12 +7,11 @@
 package cardwatcherv1
 
 import (
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -416,17 +415,15 @@ func file_cardwatcher_v1_entities_proto_rawDescGZIP() []byte {
 	return file_cardwatcher_v1_entities_proto_rawDescData
 }
 
-var (
-	file_cardwatcher_v1_entities_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-	file_cardwatcher_v1_entities_proto_msgTypes  = make([]protoimpl.MessageInfo, 3)
-	file_cardwatcher_v1_entities_proto_goTypes   = []any{
-		Condition(0),      // 0: cardwatcher.v1.Condition
-		Language(0),       // 1: cardwatcher.v1.Language
-		(*Expansion)(nil), // 2: cardwatcher.v1.Expansion
-		(*Blueprint)(nil), // 3: cardwatcher.v1.Blueprint
-		(*Watch)(nil),     // 4: cardwatcher.v1.Watch
-	}
-)
+var file_cardwatcher_v1_entities_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_cardwatcher_v1_entities_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_cardwatcher_v1_entities_proto_goTypes = []any{
+	(Condition)(0),    // 0: cardwatcher.v1.Condition
+	(Language)(0),     // 1: cardwatcher.v1.Language
+	(*Expansion)(nil), // 2: cardwatcher.v1.Expansion
+	(*Blueprint)(nil), // 3: cardwatcher.v1.Blueprint
+	(*Watch)(nil),     // 4: cardwatcher.v1.Watch
+}
 var file_cardwatcher_v1_entities_proto_depIdxs = []int32{
 	0, // 0: cardwatcher.v1.Watch.condition:type_name -> cardwatcher.v1.Condition
 	1, // 1: cardwatcher.v1.Watch.language:type_name -> cardwatcher.v1.Language

@@ -197,6 +197,50 @@ func (x *ListWatchesResponse) GetWatches() []*Watch {
 	return nil
 }
 
+type CreateWatchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WatchId       string                 `protobuf:"bytes,1,opt,name=watch_id,json=watchId,proto3" json:"watch_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateWatchResponse) Reset() {
+	*x = CreateWatchResponse{}
+	mi := &file_cardwatcher_v1_responses_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateWatchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateWatchResponse) ProtoMessage() {}
+
+func (x *CreateWatchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_cardwatcher_v1_responses_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateWatchResponse.ProtoReflect.Descriptor instead.
+func (*CreateWatchResponse) Descriptor() ([]byte, []int) {
+	return file_cardwatcher_v1_responses_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CreateWatchResponse) GetWatchId() string {
+	if x != nil {
+		return x.WatchId
+	}
+	return ""
+}
+
 var File_cardwatcher_v1_responses_proto protoreflect.FileDescriptor
 
 const file_cardwatcher_v1_responses_proto_rawDesc = "" +
@@ -213,7 +257,9 @@ const file_cardwatcher_v1_responses_proto_rawDesc = "" +
 	"\x11SaveWatchResponse\x12\x19\n" +
 	"\bwatch_id\x18\x01 \x01(\tR\awatchId\"F\n" +
 	"\x13ListWatchesResponse\x12/\n" +
-	"\awatches\x18\x01 \x03(\v2\x15.cardwatcher.v1.WatchR\awatchesB\xc1\x01\n" +
+	"\awatches\x18\x01 \x03(\v2\x15.cardwatcher.v1.WatchR\awatches\"0\n" +
+	"\x13CreateWatchResponse\x12\x19\n" +
+	"\bwatch_id\x18\x01 \x01(\tR\awatchIdB\xc1\x01\n" +
 	"\x12com.cardwatcher.v1B\x0eResponsesProtoP\x01ZBgithub.com/lcampit/cardwatcher/gen/go/cardwatcher/v1;cardwatcherv1\xa2\x02\x03CXX\xaa\x02\x0eCardwatcher.V1\xca\x02\x0eCardwatcher\\V1\xe2\x02\x1aCardwatcher\\V1\\GPBMetadata\xea\x02\x0fCardwatcher::V1b\x06proto3"
 
 var (
@@ -228,20 +274,21 @@ func file_cardwatcher_v1_responses_proto_rawDescGZIP() []byte {
 	return file_cardwatcher_v1_responses_proto_rawDescData
 }
 
-var file_cardwatcher_v1_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_cardwatcher_v1_responses_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_cardwatcher_v1_responses_proto_goTypes = []any{
 	(*ListExpansionsResponse)(nil), // 0: cardwatcher.v1.ListExpansionsResponse
 	(*ListBlueprintsResponse)(nil), // 1: cardwatcher.v1.ListBlueprintsResponse
 	(*SaveWatchResponse)(nil),      // 2: cardwatcher.v1.SaveWatchResponse
 	(*ListWatchesResponse)(nil),    // 3: cardwatcher.v1.ListWatchesResponse
-	(*Expansion)(nil),              // 4: cardwatcher.v1.Expansion
-	(*Blueprint)(nil),              // 5: cardwatcher.v1.Blueprint
-	(*Watch)(nil),                  // 6: cardwatcher.v1.Watch
+	(*CreateWatchResponse)(nil),    // 4: cardwatcher.v1.CreateWatchResponse
+	(*Expansion)(nil),              // 5: cardwatcher.v1.Expansion
+	(*Blueprint)(nil),              // 6: cardwatcher.v1.Blueprint
+	(*Watch)(nil),                  // 7: cardwatcher.v1.Watch
 }
 var file_cardwatcher_v1_responses_proto_depIdxs = []int32{
-	4, // 0: cardwatcher.v1.ListExpansionsResponse.expansions:type_name -> cardwatcher.v1.Expansion
-	5, // 1: cardwatcher.v1.ListBlueprintsResponse.blueprints:type_name -> cardwatcher.v1.Blueprint
-	6, // 2: cardwatcher.v1.ListWatchesResponse.watches:type_name -> cardwatcher.v1.Watch
+	5, // 0: cardwatcher.v1.ListExpansionsResponse.expansions:type_name -> cardwatcher.v1.Expansion
+	6, // 1: cardwatcher.v1.ListBlueprintsResponse.blueprints:type_name -> cardwatcher.v1.Blueprint
+	7, // 2: cardwatcher.v1.ListWatchesResponse.watches:type_name -> cardwatcher.v1.Watch
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -261,7 +308,7 @@ func file_cardwatcher_v1_responses_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_cardwatcher_v1_responses_proto_rawDesc), len(file_cardwatcher_v1_responses_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

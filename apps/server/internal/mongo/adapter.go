@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -22,8 +23,9 @@ type MongoAdapter interface {
 	GetWatches(ctx context.Context) ([]*Watch, error)
 	GetWatchByWatchID(ctx context.Context, watchID string) (*Watch, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
+	ClearCollection(ctx context.Context) error
 
-	Health() error
+	Health(ctx context.Context) error
 }
 
 type mongoAdapter struct {
@@ -40,13 +42,26 @@ type MongoAdapterConfig struct {
 	Username            string
 	Password            string
 	Database            string
+	AuthDatabase        string
 	WatchCollectionName string
 	CAFile              string
 	UseReplicaSet       bool
 	ReplicaSetName      string
 }
 
+func (config MongoAdapterConfig) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.String("host", config.Host),
+		slog.String("port", config.Port),
+		slog.String("database", config.Database),
+		slog.String("watchCollectionName", config.WatchCollectionName),
+		slog.Bool("useReplicaSet", config.UseReplicaSet),
+		slog.String("replicaSetName", config.ReplicaSetName),
+	)
+}
+
 func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
+	config.Logger.Debug("creating mongo adapter", slog.Any("config", config))
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancelFunc()
 
@@ -81,7 +96,7 @@ func NewMongoAdapter(config MongoAdapterConfig) (MongoAdapter, error) {
 
 	if config.Username != "" && config.Password != "" {
 		credentials := options.Credential{
-			AuthSource:    config.Database,
+			AuthSource:    config.AuthDatabase,
 			Username:      config.Username,
 			Password:      config.Password,
 			AuthMechanism: "SCRAM-SHA-256",
@@ -133,9 +148,12 @@ func buildTLSConfig(config MongoAdapterConfig) (*tls.Config, error) {
 	return tlsConfig, nil
 }
 
-func (a *mongoAdapter) Health() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+func (a *mongoAdapter) ClearCollection(ctx context.Context) error {
+	_, err := a.client.Database(a.database).Collection(a.watchCollection).
+		DeleteMany(ctx, bson.D{})
+	return err
+}
 
+func (a *mongoAdapter) Health(ctx context.Context) error {
 	return a.client.Ping(ctx, nil)
 }

@@ -1,4 +1,0 @@
-proto_paths = [
-  "proto",
-  "/usr/include", # Common location for well-known types
-]
