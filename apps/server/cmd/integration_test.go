@@ -374,6 +374,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtra
 // TeardownTest stops the app created previously so that the new
 // setupTest can recreate it from scratch
 func (suite *ServerIntegrationTestSuite) TeardownTest() {
+	suite.mongoAdapter.ClearCollection(suite.ctx)
 	suite.conn.Close()
 	suite.app.Shutdown(1 * time.Second)
 	suite.service.Close()

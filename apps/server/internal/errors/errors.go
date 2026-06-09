@@ -96,7 +96,7 @@ func NewInternal(message, traceID string, causedBy error) *AppError {
 	}
 }
 
-func NewNotFound(resource string, id string, traceID string) *AppError {
+func NewNotFound(resource, id, traceID string) *AppError {
 	return &AppError{
 		GRPCCode: codes.NotFound,
 		AppCode:  errorspb.AppErrorCode_APP_ERROR_CODE_RESOURCE_NOT_FOUND,

@@ -38,6 +38,7 @@ url_api = "https://api.github.com/repos/fullstorydev/grpcurl/releases/assets/236
 checksum = "sha256:a926b62a85787ccf73ef8736b3ae554f1242e39d92bb8767a79d6dd23b11d1d5"
 url = "https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_linux_x86_64.tar.gz"
 url_api = "https://api.github.com/repos/fullstorydev/grpcurl/releases/assets/236574401"
+github_attestations = "unavailable"
 
 [tools."github:fullstorydev/grpcurl"."platforms.linux-x64-musl"]
 checksum = "sha256:a926b62a85787ccf73ef8736b3ae554f1242e39d92bb8767a79d6dd23b11d1d5"
@@ -77,6 +78,7 @@ url_api = "https://api.github.com/repos/unkn0wn-root/resterm/releases/assets/413
 checksum = "sha256:5905211404bdd4d4a7fd062a60117a1e63dfd046f19b065665a37ba90d6e8738"
 url = "https://github.com/unkn0wn-root/resterm/releases/download/v0.36.3/resterm_Linux_x86_64"
 url_api = "https://api.github.com/repos/unkn0wn-root/resterm/releases/assets/413439015"
+github_attestations = "unavailable"
 
 [tools."github:unkn0wn-root/resterm"."platforms.linux-x64-musl"]
 checksum = "sha256:5905211404bdd4d4a7fd062a60117a1e63dfd046f19b065665a37ba90d6e8738"

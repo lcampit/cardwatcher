@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -22,6 +23,7 @@ type MongoAdapter interface {
 	GetWatches(ctx context.Context) ([]*Watch, error)
 	GetWatchByWatchID(ctx context.Context, watchID string) (*Watch, error)
 	DeleteWatchByID(ctx context.Context, watchID string) error
+	ClearCollection(ctx context.Context) error
 
 	Health(ctx context.Context) error
 }
@@ -144,6 +146,12 @@ func buildTLSConfig(config MongoAdapterConfig) (*tls.Config, error) {
 	}
 
 	return tlsConfig, nil
+}
+
+func (a *mongoAdapter) ClearCollection(ctx context.Context) error {
+	_, err := a.client.Database(a.database).Collection(a.watchCollection).
+		DeleteMany(ctx, bson.D{})
+	return err
 }
 
 func (a *mongoAdapter) Health(ctx context.Context) error {
