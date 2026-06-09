@@ -4,12 +4,13 @@ docker-compose = "latest"
 "go:gotest.tools/gotestsum" = "1.12.3"
 buf = "1.65"
 golangci-lint = "v2.12.2"
-lefthook = "v2.0.15"
 protoc = "latest"
 gofumpt = "v0.9.2"
 "go:golang.org/x/tools/cmd/goimports" = "latest"
 "github:vektra/mockery" = "v3.7.0"
 "github:fullstorydev/grpcurl" = "latest"
+hk = "latest"
+pkl = "latest"
 
 [env]
 LOG_LEVEL = "debug"
@@ -30,3 +31,7 @@ SERVER_ENABLE_REFLECTION = true
 
 [settings]
 lockfile = true
+
+[hooks]
+# Automatically install/update hooks when tools are installed
+postinstall = "hk install --mise"
