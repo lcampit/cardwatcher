@@ -15,7 +15,7 @@ var (
 	en, de, fr, it, jp, pt, es                               bool
 )
 
-var saveWatchCmd = &cobra.Command{
+var createWatchCmd = &cobra.Command{
 	Use:     "watch",
 	Aliases: []string{"w"},
 	Short:   "create a watch",
@@ -110,24 +110,24 @@ var deleteWatchCmd = &cobra.Command{
 }
 
 func init() {
-	saveWatchCmd.Flags().BoolVarP(&isFoil, "foil", "f", false, "whether to look for foil cards")
+	createWatchCmd.Flags().BoolVarP(&isFoil, "foil", "f", false, "whether to look for foil cards")
 	// add condition flags
-	saveWatchCmd.Flags().BoolVar(&nearMint, "nm", false, "whether to look for near mint condition cards")
-	saveWatchCmd.Flags().BoolVar(&slightlyPlayed, "sp", false, "whether to look for slightly played condition cards")
-	saveWatchCmd.Flags().BoolVar(&moderatelyPlayed, "mp", false, "whether to look for moderately played condition cards")
-	saveWatchCmd.Flags().BoolVar(&played, "pl", false, "whether to look for played condition cards")
-	saveWatchCmd.Flags().BoolVar(&poor, "po", false, "whether to look for poor condition cards")
+	createWatchCmd.Flags().BoolVar(&nearMint, "nm", false, "whether to look for near mint condition cards")
+	createWatchCmd.Flags().BoolVar(&slightlyPlayed, "sp", false, "whether to look for slightly played condition cards")
+	createWatchCmd.Flags().BoolVar(&moderatelyPlayed, "mp", false, "whether to look for moderately played condition cards")
+	createWatchCmd.Flags().BoolVar(&played, "pl", false, "whether to look for played condition cards")
+	createWatchCmd.Flags().BoolVar(&poor, "po", false, "whether to look for poor condition cards")
 
 	// add language flags
-	saveWatchCmd.Flags().BoolVar(&en, "en", false, "whether to look for english cards")
-	saveWatchCmd.Flags().BoolVar(&de, "de", false, "whether to look for german cards")
-	saveWatchCmd.Flags().BoolVar(&fr, "fr", false, "whether to look for french cards")
-	saveWatchCmd.Flags().BoolVar(&it, "it", false, "whether to look for italian cards")
-	saveWatchCmd.Flags().BoolVar(&jp, "jp", false, "whether to look for japanese cards")
-	saveWatchCmd.Flags().BoolVar(&pt, "pt", false, "whether to look for portuguese cards")
-	saveWatchCmd.Flags().BoolVar(&es, "es", false, "whether to look for spanish cards")
+	createWatchCmd.Flags().BoolVar(&en, "en", false, "whether to look for english cards")
+	createWatchCmd.Flags().BoolVar(&de, "de", false, "whether to look for german cards")
+	createWatchCmd.Flags().BoolVar(&fr, "fr", false, "whether to look for french cards")
+	createWatchCmd.Flags().BoolVar(&it, "it", false, "whether to look for italian cards")
+	createWatchCmd.Flags().BoolVar(&jp, "jp", false, "whether to look for japanese cards")
+	createWatchCmd.Flags().BoolVar(&pt, "pt", false, "whether to look for portuguese cards")
+	createWatchCmd.Flags().BoolVar(&es, "es", false, "whether to look for spanish cards")
 
-	saveCmd.AddCommand(saveWatchCmd)
+	createCmd.AddCommand(createWatchCmd)
 	getCmd.AddCommand(getWatchesCmd)
 	deleteCmd.AddCommand(deleteWatchCmd)
 }
