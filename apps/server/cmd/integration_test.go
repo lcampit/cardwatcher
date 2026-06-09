@@ -176,14 +176,6 @@ func (suite *ServerIntegrationTestSuite) SetupTest() {
 	suite.client = apiv1.NewCardWatcherServiceClient(suite.conn)
 }
 
-// TeardownTest stops the app created previously so that the new
-// setupTest can recreate it from scratch
-func (suite *ServerIntegrationTestSuite) TeardownTest() {
-	suite.conn.Close()
-	suite.app.Shutdown(1 * time.Second)
-	suite.service.Close()
-}
-
 func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
 	ctx := context.Background()
 	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
@@ -316,7 +308,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingExpansion
 	suite.Assert().Equal(grpcErr.Code(), codes.NotFound, "create watch returned another error code: %d", grpcErr.Code())
 }
 
-func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtraderError() {
+func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtraderExpansionError() {
 	ctx := context.Background()
 
 	suite.cardtraderMock.On("GetExpansions", mock.Anything).
@@ -337,6 +329,54 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtra
 	grpcErr, ok := status.FromError(err)
 	suite.Assert().True(ok, "create watch returned a non-grpc error %v", err)
 	suite.Assert().Equal(grpcErr.Code(), codes.Internal, "create watch returned another error code: %d", grpcErr.Code())
+}
+
+func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingBlueprintReturnsNotFound() {
+	ctx := context.Background()
+
+	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).
+		Return(nil, nil)
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: expansion.Code,
+		CardName:            "non-existing-card-name",
+		Condition:           condition,
+		Foil:                foil,
+		Language:            apiv1.Language_LANGUAGE_EN,
+	}
+	_, err := suite.client.CreateWatch(ctx, &request)
+	suite.Assert().NotNil(err)
+
+	grpcErr, ok := status.FromError(err)
+	suite.Assert().True(ok, "create watch returned a non-grpc error %v", err)
+	suite.Assert().Equal(grpcErr.Code(), codes.NotFound, "create watch returned another error code: %d", grpcErr.Code())
+}
+
+func (suite *ServerIntegrationTestSuite) TestCreateWatchReturnsInternalOnCardtraderBlueprintError() {
+	ctx := context.Background()
+
+	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).
+		Return(nil, errors.New("internal error"))
+	request := apiv1.CreateWatchRequest{
+		ExpansionNameOrCode: expansion.Code,
+		CardName:            blueprint.Name,
+		Condition:           condition,
+		Foil:                foil,
+		Language:            apiv1.Language_LANGUAGE_EN,
+	}
+	_, err := suite.client.CreateWatch(ctx, &request)
+	suite.Assert().NotNil(err)
+
+	grpcErr, ok := status.FromError(err)
+	suite.Assert().True(ok, "create watch returned a non-grpc error %v", err)
+	suite.Assert().Equal(grpcErr.Code(), codes.Internal, "create watch returned another error code: %d", grpcErr.Code())
+}
+
+// TeardownTest stops the app created previously so that the new
+// setupTest can recreate it from scratch
+func (suite *ServerIntegrationTestSuite) TeardownTest() {
+	suite.conn.Close()
+	suite.app.Shutdown(1 * time.Second)
+	suite.service.Close()
 }
 
 func (suite *ServerIntegrationTestSuite) TearDownSuite() {
