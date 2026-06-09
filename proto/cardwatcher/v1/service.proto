@@ -7,29 +7,23 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 service CardWatcherService {
+  rpc CreateWatch(CreateWatchRequest) returns (CreateWatchResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/watches"
+      body: "*"
+    };
+  }
+
   rpc ListExpansions(ListExpansionsRequest) returns (ListExpansionsResponse) {
     option (google.api.http) = {get: "/api/v1/expansions"};
   }
   rpc ListBlueprints(ListBlueprintsRequest) returns (ListBlueprintsResponse) {
     option (google.api.http) = {get: "/api/v1/blueprints"};
   }
-  rpc SaveWatch(SaveWatchRequest) returns (SaveWatchResponse) {
-    option (google.api.http) = {
-      post: "/api/v1/old-watches"
-      body: "*"
-    };
-  }
   rpc ListWatches(google.protobuf.Empty) returns (ListWatchesResponse) {
     option (google.api.http) = {get: "/api/v1/watches"};
   }
   rpc DeleteWatchByID(DeleteWatchByIDRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/api/v1/watches/{watch_id}"};
-  }
-
-  rpc CreateWatch(CreateWatchRequest) returns (CreateWatchResponse) {
-    option (google.api.http) = {
-      post: "/api/v1/watches"
-      body: "*"
-    };
   }
 }
