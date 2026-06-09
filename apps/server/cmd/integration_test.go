@@ -120,7 +120,9 @@ func (suite *ServerIntegrationTestSuite) SetupTest() {
 	suite.lis = bufconn.Listen(bufSize)
 
 	suite.ntfyMock = ntfy.NewMockNtfyAdapter(suite.T())
-	suite.cardtraderMock = setupCardtraderAdapterMock(suite.T())
+	suite.cardtraderMock = cardtrader.NewMockCardtraderAdapter(suite.T())
+	suite.cardtraderMock.On("GetGames", mock.Anything).Return(nil, nil).Once()
+	suite.cardtraderMock.On("GetExpansions", mock.Anything).Return([]*cardtrader.Expansion{&expansion}, nil).Once()
 	serviceConfig := service.ServiceConfig{
 		Logger:               logger,
 		CardtraderAdapter:    suite.cardtraderMock,
@@ -164,7 +166,7 @@ func (suite *ServerIntegrationTestSuite) TeardownTest() {
 	suite.service.Close()
 }
 
-func (suite *ServerIntegrationTestSuite) TestCreateWatch() {
+func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMap() {
 	ctx := context.Background()
 	conn, err := grpc.NewClient("passthrough:///bufconn",
 		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
@@ -214,7 +216,7 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatch() {
 	suite.Assert().True(found, "created watch not found in list watches response")
 }
 
-func (suite *ServerIntegrationTestSuite) TestCreateWatchDefaultValues() {
+func (suite *ServerIntegrationTestSuite) TestCreateWatchFromCachedMapDefaultValues() {
 	ctx := context.Background()
 	conn, err := grpc.NewClient("passthrough:///bufconn",
 		grpc.WithContextDialer(func(ctx context.Context, target string) (net.Conn, error) {
@@ -273,11 +275,6 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutExpansionFails() 
 	}
 	defer conn.Close()
 	client := apiv1.NewCardWatcherServiceClient(conn)
-	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
-		[]*cardtrader.Blueprint{
-			&blueprint,
-		}, nil,
-	)
 
 	request := apiv1.CreateWatchRequest{
 		CardName:  blueprint.Name,
@@ -305,11 +302,6 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithoutCardnameFails() {
 	}
 	defer conn.Close()
 	client := apiv1.NewCardWatcherServiceClient(conn)
-	suite.cardtraderMock.On("GetBlueprints", mock.Anything, expansion.ID).Return(
-		[]*cardtrader.Blueprint{
-			&blueprint,
-		}, nil,
-	)
 
 	request := apiv1.CreateWatchRequest{
 		ExpansionNameOrCode: expansion.Name,
@@ -337,6 +329,8 @@ func (suite *ServerIntegrationTestSuite) TestCreateWatchWithNonExistingExpansion
 	}
 	defer conn.Close()
 	client := apiv1.NewCardWatcherServiceClient(conn)
+	suite.cardtraderMock.On("GetExpansions", mock.Anything).
+		Return(nil, nil)
 
 	request := apiv1.CreateWatchRequest{
 		ExpansionNameOrCode: "non-existing-expansion-name",
@@ -395,11 +389,4 @@ func (suite *ServerIntegrationTestSuite) TearDownSuite() {
 
 func TestServerIntegrationTestSuite(t *testing.T) {
 	suite.Run(t, new(ServerIntegrationTestSuite))
-}
-
-func setupCardtraderAdapterMock(t *testing.T) *cardtrader.MockCardtraderAdapter {
-	cardtraderMock := cardtrader.NewMockCardtraderAdapter(t)
-	cardtraderMock.On("GetGames", mock.Anything).Return(nil, nil)
-	cardtraderMock.On("GetExpansions", mock.Anything).Return([]*cardtrader.Expansion{&expansion}, nil)
-	return cardtraderMock
 }
