@@ -70,8 +70,9 @@ func NewApp(
 	// all interceptors are chained here
 	opts := []grpc.ServerOption{
 		grpc.ChainUnaryInterceptor(
+			middleware.LoggingInterceptor(logger),
 			protovalidate_middleware.UnaryServerInterceptor(validator),
-			middleware.UnaryErrorInterceptor,
+			middleware.ErrorInterceptor,
 		),
 	}
 
