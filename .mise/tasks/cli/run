@@ -5,4 +5,4 @@ set -euxo pipefail
 #MISE alias="cr"
 #MISE depends=["cb"]
 
-./bin/cli $@
+./bin/cli "$@"
