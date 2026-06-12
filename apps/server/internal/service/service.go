@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"crypto/sha256"
+	"errors"
 	"log/slog"
 	"strings"
 	"sync"
@@ -154,9 +155,8 @@ func normalizeString(input string) string {
 }
 
 func (s *service) Health(ctx context.Context) error {
-	err := s.mongoAdapter.Health(ctx)
-	if err != nil {
-		return err
-	}
-	return s.cardtraderAdapter.Health(ctx)
+	return errors.Join(
+		s.mongoAdapter.Health(ctx),
+		s.cardtraderAdapter.Health(ctx),
+	)
 }
