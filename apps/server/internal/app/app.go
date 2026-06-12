@@ -26,13 +26,14 @@ import (
 )
 
 type App struct {
-	grpcServer   *grpc.Server
-	healthServer *health.Server
-	logger       *slog.Logger
-	listener     net.Listener
-	handler      handler.Handler
-	ctx          context.Context
-	cancel       context.CancelFunc
+	grpcServer          *grpc.Server
+	healthServer        *health.Server
+	logger              *slog.Logger
+	listener            net.Listener
+	handler             handler.Handler
+	ctx                 context.Context
+	cancel              context.CancelFunc
+	healthcheckInterval time.Duration
 }
 
 // NewProductionApp initializes and registers the grpc and health servers
@@ -42,12 +43,13 @@ func NewProductionApp(
 	logger *slog.Logger,
 	serverPort int,
 	enableReflection bool,
+	healthcheckInterval time.Duration,
 ) (*App, error) {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", serverPort))
 	if err != nil {
 		return nil, err
 	}
-	return NewApp(handler, logger, lis, serverPort, enableReflection)
+	return NewApp(handler, logger, lis, serverPort, enableReflection, healthcheckInterval)
 }
 
 // NewApp initializes and registers the grpc and health servers
@@ -58,6 +60,7 @@ func NewApp(
 	listener net.Listener,
 	serverPort int,
 	enableReflection bool,
+	healthcheckInterval time.Duration,
 ) (*App, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -88,18 +91,19 @@ func NewApp(
 	healthcheck.SetServingStatus("", healthgrpc.HealthCheckResponse_SERVING)
 
 	return &App{
-		grpcServer:   grpcServer,
-		healthServer: healthcheck,
-		logger:       logger,
-		handler:      handler,
-		listener:     listener,
-		ctx:          ctx,
-		cancel:       cancel,
+		grpcServer:          grpcServer,
+		healthServer:        healthcheck,
+		logger:              logger,
+		handler:             handler,
+		listener:            listener,
+		ctx:                 ctx,
+		cancel:              cancel,
+		healthcheckInterval: healthcheckInterval,
 	}, nil
 }
 
-// StartHealthChecks runs the background loop to update health status.
-func (a *App) StartHealthChecks(interval time.Duration) {
+// startHealthChecks runs the background loop to update health status.
+func (a *App) startHealthChecks(interval time.Duration) {
 	go func() {
 		ticker := time.NewTicker(interval)
 		defer ticker.Stop()
@@ -129,6 +133,7 @@ func (a *App) updateHealthStatus() {
 // Run starts the server and blocks.
 func (a *App) Run() error {
 	a.logger.Info("starting grpc server", slog.String("addr", a.listener.Addr().String()))
+	a.startHealthChecks(a.healthcheckInterval)
 	return a.grpcServer.Serve(a.listener)
 }
 
@@ -139,13 +144,14 @@ func (a *App) Shutdown(timeout time.Duration) {
 	// Mark NOT_SERVING immediately to fail readiness probes
 	a.healthServer.SetServingStatus("", healthgrpc.HealthCheckResponse_NOT_SERVING)
 
-	// Wait for load balancers to drain (critical for K8s)
+	// Wait for load balancers to drain
 	time.Sleep(5 * time.Second)
 
 	// Graceful stop with timeout
 	done := make(chan struct{})
 	go func() {
 		a.grpcServer.GracefulStop()
+		a.healthServer.Shutdown()
 		close(done)
 	}()
 
