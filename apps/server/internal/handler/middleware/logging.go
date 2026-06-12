@@ -28,10 +28,11 @@ func LoggingInterceptor(logger *slog.Logger) grpc.UnaryServerInterceptor {
 		statusCode := "OK"
 		if err != nil {
 			statusCode = status.Code(err).String()
-			logger.Error("error in request", slog.Any("error", err))
-		}
-
-		if err == nil {
+			logger.Error("error in method",
+				slog.String("service", service),
+				slog.String("method", method),
+				slog.Any("error", err))
+		} else {
 			logger.Debug("response details", slog.Any("response", resp))
 		}
 
