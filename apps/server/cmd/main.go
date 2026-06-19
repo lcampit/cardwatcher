@@ -9,6 +9,8 @@ import (
 	"syscall"
 	"time"
 
+	"golang.org/x/sync/errgroup"
+
 	"github.com/lcampit/cardwatcher/apps/server/internal/app"
 	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
 	"github.com/lcampit/cardwatcher/apps/server/internal/handler"
@@ -112,26 +114,56 @@ func main() {
 		logger,
 		watcherConfig.ServerPort,
 		watcherConfig.ServerEnableReflection,
+		time.Duration(watcherConfig.ServerHealthCheckIntervalMilliseconds)*time.Millisecond,
 	)
 	if err != nil {
 		logger.Error("failed to create cardwatcher server app", slog.Any("error", err))
 		os.Exit(1)
 	}
 
-	app.StartHealthChecks(time.Duration(watcherConfig.ServerHealthCheckIntervalMilliseconds))
+	group, groupCtx := errgroup.WithContext(ctx)
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	// Start app and healthchecks
+	group.Go(func() (err error) {
+		defer func() {
+			if r := recover(); r != nil {
+				err = fmt.Errorf("recovered from panic in app: %v", r)
+			}
+		}()
 
-	go func() {
-		<-c
+		err = app.Run()
+		return err
+	})
+
+	// listen for stopping signals and shutdown
+	group.Go(func() (err error) {
+		defer func() {
+			if r := recover(); r != nil {
+				err = fmt.Errorf("recovered from panic in shutdown: %v", r)
+			}
+		}()
+
+		interceptSignal(groupCtx)
 		app.Shutdown(5 * time.Second)
-	}()
+		return nil
+	})
 
-	if err = app.Run(); err != nil {
+	if err = group.Wait(); err != nil {
 		logger.Error("error running app", slog.Any("error", err))
 		os.Exit(1)
 	}
 
 	os.Exit(0)
+}
+
+func interceptSignal(ctx context.Context) {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
+
+	select {
+	case <-ctx.Done():
+		return
+	case <-c:
+		return
+	}
 }
