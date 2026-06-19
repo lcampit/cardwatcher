@@ -153,6 +153,7 @@ func (suite *ServerIntegrationTestSuite) SetupTest() {
 		suite.lis,
 		0,
 		true,
+		time.Minute,
 	)
 	if err != nil {
 		suite.FailNowf("error creating app", err.Error())
