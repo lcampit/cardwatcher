@@ -36,3 +36,7 @@ bin/
 # local env vars
 .mise.local.toml
 mise.local.lock
+
+# [epiq]: local hydrated state is never committed
+.epiq/events/
+.epiq/log/
