@@ -6,8 +6,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
+
+	"github.com/lcampit/cardwatcher/apps/server/internal/logger"
 )
 
 func LoggingInterceptor(logger *slog.Logger) grpc.UnaryServerInterceptor {
@@ -55,4 +58,14 @@ func splitFullMethodName(fullMethod string) (string, string) {
 		return before, after
 	}
 	return "unknown", "unknown"
+}
+
+func CorrelationIDInterceptor() grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler,
+	) (any, error) {
+		id := uuid.NewString()
+		ctx = logger.WithCorrelationID(ctx, id)
+		return handler(ctx, req)
+	}
 }
