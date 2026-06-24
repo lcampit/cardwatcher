@@ -24,7 +24,7 @@ func ObservabilityInterceptor(
 
 		resp, err := handler(ctx, req)
 
-		duration := time.Since(start)
+		duration := time.Since(start).Milliseconds()
 		st := status.Code(err)
 
 		if err != nil {
@@ -32,7 +32,7 @@ func ObservabilityInterceptor(
 				ctx, "grpc error",
 				slog.String(logger.KeyMethod, info.FullMethod),
 				slog.String(logger.KeyStatus, st.String()),
-				slog.Duration(logger.KeyDuration, duration),
+				slog.Int64(logger.KeyDuration, duration),
 				logger.Err(err),
 			)
 		} else {
@@ -40,7 +40,7 @@ func ObservabilityInterceptor(
 				ctx, "grpc response",
 				slog.String(logger.KeyMethod, info.FullMethod),
 				slog.String(logger.KeyStatus, st.String()),
-				slog.Duration(logger.KeyDuration, duration),
+				slog.Int64(logger.KeyDuration, duration),
 			)
 		}
 

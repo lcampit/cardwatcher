@@ -13,7 +13,7 @@ const (
 	KeyError         = "error"
 	KeyMethod        = "method"
 	KeyStatus        = "status"
-	KeyDuration      = "duration"
+	KeyDuration      = "duration_ms"
 )
 
 // create a private type and use it as a key
