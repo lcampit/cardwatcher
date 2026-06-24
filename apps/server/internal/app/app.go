@@ -1,6 +1,6 @@
 // Package app handles the grpc server lifecycle,
 // leaving main free to just initialize the app
-// and running it
+// and run it
 //
 // App handles the server start, its graceful stop
 // and healthcheck logic
@@ -20,8 +20,9 @@ import (
 	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 
+	errors_middleware "github.com/lcampit/cardwatcher/apps/server/internal/errors/middleware"
 	"github.com/lcampit/cardwatcher/apps/server/internal/handler"
-	"github.com/lcampit/cardwatcher/apps/server/internal/handler/middleware"
+	observability_middleware "github.com/lcampit/cardwatcher/apps/server/internal/observability/middleware"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
 
@@ -73,9 +74,10 @@ func NewApp(
 	// all interceptors are chained here
 	opts := []grpc.ServerOption{
 		grpc.ChainUnaryInterceptor(
-			middleware.LoggingInterceptor(logger),
+			observability_middleware.CorrelationInterceptor(),
+			observability_middleware.ObservabilityInterceptor(logger),
 			protovalidate_middleware.UnaryServerInterceptor(validator),
-			middleware.ErrorInterceptor,
+			errors_middleware.ErrorInterceptor,
 		),
 	}
 

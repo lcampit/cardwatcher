@@ -14,9 +14,9 @@ import (
 	"github.com/lcampit/cardwatcher/apps/server/internal/app"
 	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
 	"github.com/lcampit/cardwatcher/apps/server/internal/handler"
-	"github.com/lcampit/cardwatcher/apps/server/internal/logger"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
 	"github.com/lcampit/cardwatcher/apps/server/internal/ntfy"
+	"github.com/lcampit/cardwatcher/apps/server/internal/observability/logger"
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
 
 	"go-simpler.org/env"
@@ -56,7 +56,11 @@ func main() {
 		return
 	}
 
-	logger := logger.NewLogger(watcherConfig.LogLevel)
+	logger := logger.New(logger.LoggerConfig{
+		Level:     watcherConfig.LogLevel,
+		Service:   "cardwatcher.server",
+		AddSource: false,
+	})
 
 	cardtraderAdapterConfig := cardtrader.CardtraderAdapterConfig{
 		Logger:      logger,

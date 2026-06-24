@@ -37,7 +37,7 @@ func (s *service) ListBlueprints(ctx context.Context, expansionID uint64, name s
 			})
 		}
 	}
-	s.logger.Debug("returning filtered blueprints", slog.Int("blueprintsCount", len(resultingBlueprints)))
+	s.logger.Debug("returning filtered blueprints", slog.Int("blueprints_count", len(resultingBlueprints)))
 	return &apiv1.ListBlueprintsResponse{
 		Blueprints: resultingBlueprints,
 	}, nil
