@@ -54,9 +54,9 @@ func (config MongoAdapterConfig) LogValue() slog.Value {
 		slog.String("host", config.Host),
 		slog.String("port", config.Port),
 		slog.String("database", config.Database),
-		slog.String("watchCollectionName", config.WatchCollectionName),
-		slog.Bool("useReplicaSet", config.UseReplicaSet),
-		slog.String("replicaSetName", config.ReplicaSetName),
+		slog.String("watch_collection_name", config.WatchCollectionName),
+		slog.Bool("use_replica_set", config.UseReplicaSet),
+		slog.String("replica_set_name", config.ReplicaSetName),
 	)
 }
 

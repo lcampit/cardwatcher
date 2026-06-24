@@ -31,7 +31,7 @@ func (a *cardtraderAdapter) GetExpansions(ctx context.Context) ([]*Expansion, er
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get expansions endpoint %w", err)
 	}
-	a.logger.Debug("received expansions", slog.Int("expansionCount", len(response)))
+	a.logger.Debug("received expansions", slog.Int("expansion_count", len(response)))
 	return response, nil
 }
 
@@ -47,8 +47,8 @@ func (a *cardtraderAdapter) GetExpansionNameByID(ctx context.Context, expansionI
 	for _, expansion := range response {
 		if expansion.ID == expansionID {
 			a.logger.Debug("found name for expansion id",
-				slog.Uint64("expansionId", expansionID),
-				slog.String("expansionName", expansion.Name))
+				slog.Uint64("expansion_id", expansionID),
+				slog.String("expansion_name", expansion.Name))
 			return expansion.Name, nil
 		}
 	}

@@ -30,6 +30,6 @@ func (a *cardtraderAdapter) GetGames(ctx context.Context) ([]*game, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cardtrader get games endpoint %w", err)
 	}
-	a.logger.Debug("received games", slog.Int("gamesCount", len(response.GameList)))
+	a.logger.Debug("received games", slog.Int("games_count", len(response.GameList)))
 	return response.GameList, nil
 }

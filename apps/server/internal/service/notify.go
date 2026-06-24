@@ -19,13 +19,13 @@ func (s *service) watchAndNotify() {
 		return
 	}
 
-	s.logger.Debug("handling notifications", slog.Int("blueprintCount", len(watches)))
+	s.logger.Debug("handling notifications", slog.Int("blueprint_count", len(watches)))
 	for _, watch := range watches {
 		availableProducts, err := s.cardtraderAdapter.GetProducts(ctx, watch.BlueprintID, watch.Foil)
 		if err != nil {
 			s.logger.Error("error getting current pricing",
-				slog.Uint64("blueprintId", watch.BlueprintID),
-				slog.String("blueprintName", watch.Name),
+				slog.Uint64("blueprint_id", watch.BlueprintID),
+				slog.String("blueprint_name", watch.Name),
 				slog.Any("error", err))
 			continue
 		}
@@ -33,8 +33,8 @@ func (s *service) watchAndNotify() {
 		msg := buildNotificationMessage(watch, availableProducts)
 		s.logger.Info("notification message built",
 			slog.String("message", msg),
-			slog.Uint64("blueprintId", watch.BlueprintID),
-			slog.String("blueprintName", watch.Name))
+			slog.Uint64("blueprint_id", watch.BlueprintID),
+			slog.String("blueprint_name", watch.Name))
 
 		err = s.ntfyAdapter.Notify(ctx, msg)
 		if err != nil {

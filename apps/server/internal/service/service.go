@@ -51,8 +51,8 @@ type ServiceConfig struct {
 
 func (config ServiceConfig) LogValue() slog.Value {
 	return slog.GroupValue(
-		slog.String("notificationSchedule", config.NotificationSchedule),
-		slog.String("updateMapsSchedule", config.UpdateMapsSchedule),
+		slog.String("notification_schedule", config.NotificationSchedule),
+		slog.String("update_maps_schedule", config.UpdateMapsSchedule),
 	)
 }
 
