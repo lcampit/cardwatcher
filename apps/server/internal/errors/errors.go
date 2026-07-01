@@ -1,8 +1,10 @@
+// Package errors contains errors specification
+// for application errors. These errors will then be converted
+// in grpc status errors before being returned to the client
 package errors
 
 import (
 	"fmt"
-	"log/slog"
 
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -26,17 +28,8 @@ type AppError struct {
 	CausedBy        error // For internal logging
 }
 
-func (e *AppError) Error() string {
+func (e AppError) Error() string {
 	return fmt.Sprintf("gRPC Code: %s, App Code: %s, Title: %s, Detail: %s", e.GRPCCode, e.AppCode, e.Title, e.Detail)
-}
-
-func (e *AppError) LogValue() slog.Value {
-	return slog.GroupValue(
-		slog.Int64("grpcCode", int64(e.GRPCCode)),
-		slog.Int64("appCode", int64(e.AppCode)),
-		slog.String("title", e.Title),
-		slog.String("detail", e.Detail),
-	)
 }
 
 // ToGRPCStatus converts our AppError into a gRPC status.Status.

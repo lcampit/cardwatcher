@@ -23,9 +23,9 @@ import (
 	"github.com/lcampit/cardwatcher/apps/server/internal/app"
 	"github.com/lcampit/cardwatcher/apps/server/internal/cardtrader"
 	"github.com/lcampit/cardwatcher/apps/server/internal/handler"
-	"github.com/lcampit/cardwatcher/apps/server/internal/logger"
 	"github.com/lcampit/cardwatcher/apps/server/internal/mongo"
 	"github.com/lcampit/cardwatcher/apps/server/internal/ntfy"
+	"github.com/lcampit/cardwatcher/apps/server/internal/observability/logger"
 	"github.com/lcampit/cardwatcher/apps/server/internal/service"
 	apiv1 "github.com/lcampit/cardwatcher/gen/go/cardwatcher/v1"
 )
@@ -88,7 +88,11 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 	}
 	suite.mongoTestContainer = mongoContainer
 
-	logger := logger.NewLogger("debug")
+	logger := logger.New(logger.LoggerConfig{
+		Level:     "debug",
+		Service:   "cardwatcher-integration-test",
+		AddSource: false,
+	})
 
 	mongoHost, err := mongoContainer.Host(suite.ctx)
 	if err != nil {
@@ -119,7 +123,11 @@ func (suite *ServerIntegrationTestSuite) SetupSuite() {
 // SetupTest creates the whole service -> handler -> app chain so that
 // every test is performed in isolation between each other
 func (suite *ServerIntegrationTestSuite) SetupTest() {
-	logger := logger.NewLogger("debug")
+	logger := logger.New(logger.LoggerConfig{
+		Level:     "debug",
+		Service:   "cardwatcher-integration-test",
+		AddSource: false,
+	})
 	suite.lis = bufconn.Listen(bufSize)
 
 	suite.ntfyMock = ntfy.NewMockNtfyAdapter(suite.T())

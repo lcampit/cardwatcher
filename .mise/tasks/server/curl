@@ -5,10 +5,9 @@ set -exo pipefail
 #MISE alias="curl"
 #USAGE arg "<method>" help="the server method to invoke"
 #USAGE arg "[request]" help="json body of the request"
-#USAGE arg "<server>" help="server address" default="localhost:$SERVER_PORT"
 
 if [[ -z "${usage_request}" ]]; then
-  grpcurl -plaintext localhost:3000 cardwatcher.v1.CardWatcherService/"${usage_method:?}" -d "${usage_request?}"
-else
   grpcurl -plaintext localhost:3000 cardwatcher.v1.CardWatcherService/"${usage_method:?}"
+else
+  grpcurl -d "${usage_request?}" -plaintext localhost:3000 cardwatcher.v1.CardWatcherService/"${usage_method:?}"
 fi

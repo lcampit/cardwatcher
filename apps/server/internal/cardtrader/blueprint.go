@@ -33,8 +33,8 @@ func (a *cardtraderAdapter) GetBlueprints(ctx context.Context, expansionID uint6
 		return nil, fmt.Errorf("cardtrader get blueprint request for expansion id %d: %w", expansionID, err)
 	}
 	a.logger.Debug("received blueprints for expansion id",
-		slog.Int("blueprintCount", len(response)),
-		slog.Uint64("expansionId", expansionID))
+		slog.Int("blueprint_count", len(response)),
+		slog.Uint64("expansion_id", expansionID))
 	return response, nil
 }
 
@@ -50,15 +50,15 @@ func (a *cardtraderAdapter) GetBlueprintNameByExpansionID(ctx context.Context, e
 		return "", fmt.Errorf("cardtrader get blueprint endpoint for expansion id %d, blueprint id %d: %w", expansionID, blueprintID, err)
 	}
 	a.logger.Debug("received blueprints for expansion id",
-		slog.Int("blueprintCount", len(response)),
-		slog.Uint64("expansionId", expansionID))
+		slog.Int("blueprint_count", len(response)),
+		slog.Uint64("expansion_id", expansionID))
 
 	for _, blueprint := range response {
 		if blueprint.ID == blueprintID {
 			a.logger.Debug("found blueprint name",
-				slog.Uint64("expansionId", expansionID),
-				slog.Uint64("blueprintId", blueprintID),
-				slog.String("blueprintName", blueprint.Name))
+				slog.Uint64("expansion_id", expansionID),
+				slog.Uint64("blueprint_id", blueprintID),
+				slog.String("blueprint_name", blueprint.Name))
 			return blueprint.Name, nil
 		}
 	}

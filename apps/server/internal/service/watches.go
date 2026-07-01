@@ -22,7 +22,7 @@ func (s *service) ListWatches(ctx context.Context) (*apiv1.ListWatchesResponse, 
 		result = append(result, convertEntityWatchToModelWatch(entity))
 	}
 
-	s.logger.Debug("returning watches", slog.Int("watchCount", len(result)))
+	s.logger.Debug("returning watches", slog.Int("watch_count", len(result)))
 	return &apiv1.ListWatchesResponse{
 		Watches: result,
 	}, nil

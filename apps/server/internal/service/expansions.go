@@ -23,13 +23,13 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 		normalizedGameName := strings.ToLower(gameName)
 		gameIDFromMap, ok := s.gameNameToIDMap.Load(normalizedGameName)
 		if !ok {
-			s.logger.Debug("filtering expansions for game name: game not found in map", slog.String("gameName", gameName))
+			s.logger.Debug("filtering expansions for game name: game not found in map", slog.String("game_name", gameName))
 		} else {
 			gameID, ok = gameIDFromMap.(uint64)
 			if !ok {
 				s.logger.Error("filtering expansions for game name: ID found in map is not an int",
-					slog.String("gameName", gameName),
-					slog.Any("gameIdFromMap", gameIDFromMap))
+					slog.String("game_name", gameName),
+					slog.Any("game_id_from_map", gameIDFromMap))
 			}
 		}
 	}
@@ -66,7 +66,7 @@ func (s *service) ListExpansions(ctx context.Context, gameName, expansionName, e
 			})
 		}
 	}
-	s.logger.Debug("returning filtered expansions", slog.Int("expansionCount", len(resultingExpanions)))
+	s.logger.Debug("returning filtered expansions", slog.Int("expansion_count", len(resultingExpanions)))
 	return &apiv1.ListExpansionsResponse{
 		Expansions: resultingExpanions,
 	}, nil
